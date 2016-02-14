@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="y2k.joyreactor.ui.profile.LoginActivity"
+            android:name=".ui.profile.LoginActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait">
             <meta-data
@@ -48,7 +48,7 @@
                 android:value=".ui.MainActivity" />
         </activity>
         <activity
-            android:name="y2k.joyreactor.ui.post.PostActivity"
+            android:name=".ui.post.PostActivity"
             android:label="@string/title_activity_post"
             android:screenOrientation="portrait">
             <meta-data
@@ -67,10 +67,10 @@
             android:label="@string/post_images">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ui.post.PostActivity" />
+                android:value=".ui.post.PostActivity" />
         </activity>
         <activity
-            android:name="y2k.joyreactor.ui.comments.CreateCommentActivity"
+            android:name=".ui.comments.CreateCommentActivity"
             android:label="@string/title_activity_create_comment"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.CreateComment"

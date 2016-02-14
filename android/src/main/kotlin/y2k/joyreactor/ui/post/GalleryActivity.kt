@@ -27,6 +27,9 @@ class GalleryActivity : AppCompatActivity() {
 
         setSupportActionBar(find<Toolbar>(R.id.toolbar))
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true);
+
         val list = findViewById(R.id.list) as RecyclerView
         list.layoutManager = GridLayoutManager(this, 3)
         val adapter = ImageAdapter(); list.adapter = adapter
