@@ -24,6 +24,7 @@ class PostListPresenter(
 
     private fun currentTagChanged(newTag: Tag) {
         service.setTag(newTag)
+        service.setType(view.getPostType())
 
         view.setBusy(true)
         getFromRepository().subscribeOnMain { view.reloadPosts(it, null) }
@@ -86,5 +87,7 @@ class PostListPresenter(
         fun reloadPosts(posts: List<Post>, divider: Int?)
 
         fun setHasNewPosts(hasNewPosts: Boolean)
+
+        fun getPostType() : String
     }
 }

@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
-      tools:context="y2k.joyreactor.PostActivity">
+      tools:context=".PostActivity">
     <item android:id="@+id/reply"
           android:title="@string/reply"
           android:icon="@drawable/ic_comment_white_24dp"

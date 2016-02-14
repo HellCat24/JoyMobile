@@ -9,6 +9,13 @@ import android.support.v7.app.AppCompatActivity
 import y2k.joyreactor.*
 import y2k.joyreactor.common.ActivityLifecycleCallbacksAdapter
 import y2k.joyreactor.common.startActivity
+import y2k.joyreactor.ui.*
+import y2k.joyreactor.ui.comments.CreateCommentActivity
+import y2k.joyreactor.ui.post.PostActivity
+import y2k.joyreactor.ui.post.GalleryActivity
+import y2k.joyreactor.ui.post.VideoActivity
+import y2k.joyreactor.ui.profile.tags.AddTagDialogFragment
+import y2k.joyreactor.ui.profile.LoginActivity
 
 /**
  * Created by y2k on 10/19/15.
@@ -26,8 +33,10 @@ class AndroidNavigation(app: Application) : Navigation {
         currentActivity?.finish()
     }
 
+    //FIXME Add Action To Activity To Open Pofile Screen
+    @Deprecated("Profile Activity is now Fragment")
     override fun switchLoginToProfile() {
-        currentActivity?.startActivity(ProfileActivity::class)
+        currentActivity?.startActivity(MainActivity::class)
         currentActivity?.finish()
     }
 

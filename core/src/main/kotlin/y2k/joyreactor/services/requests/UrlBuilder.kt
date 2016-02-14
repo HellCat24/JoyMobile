@@ -9,8 +9,10 @@ import java.net.URLEncoder
  */
 internal class UrlBuilder {
 
-    fun build(tag: Tag, pageId: String?): String {
+    fun build(tag: Tag, pageId: String?, type: String): String {
         var url = "http://joyreactor.cc/"
+        if(type.length > 0)
+            url += type
         if (tag.isFavorite)
             url += "user/" + URLEncoder.encode(tag.username)
         else if (tag.serverId != null)

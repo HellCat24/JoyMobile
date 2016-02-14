@@ -16,6 +16,7 @@ class TagService(private val dataContext: DataContext.Factory,
                  private val merger: PostMerger) {
 
     private lateinit var tag: Tag
+    private lateinit var type: String
     private @Volatile lateinit var lastPage: PostsForTagRequest.Data
 
     val divider: Int?
@@ -23,6 +24,10 @@ class TagService(private val dataContext: DataContext.Factory,
 
     fun setTag(tag: Tag) {
         this.tag = tag
+    }
+
+    fun setType(type: String) {
+        this.type = type
     }
 
     fun preloadNewPosts(): Observable<Boolean> {
@@ -59,7 +64,7 @@ class TagService(private val dataContext: DataContext.Factory,
 
     fun requestAsync(page: String? = null): Observable<PostsForTagRequest.Data> {
         return postsRequest
-            .requestAsync(tag, page)
+            .requestAsync(tag, page, type)
             .peek { lastPage = it }
     }
 

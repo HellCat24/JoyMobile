@@ -1,5 +1,8 @@
 package y2k.joyreactor
 
+/**
+ * Created by Oleg on 14.02.2016.
+ */
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -10,6 +13,8 @@ import android.widget.TextView
 import y2k.joyreactor.common.BaseFragment
 import y2k.joyreactor.common.ServiceLocator
 import y2k.joyreactor.presenters.TagListPresenter
+import y2k.joyreactor.ui.profile.tags.AddTagDialogFragment
+import y2k.joyreactor.view.WebImageView
 
 /**
  * Created by y2k on 11/12/15.
@@ -19,9 +24,11 @@ class MenuFragment : BaseFragment() {
     lateinit var presenter: TagListPresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_menu, container, false)
+        val view = inflater.inflate(R.layout.fragment_tag, container, false)
         val list = view.findViewById(R.id.list) as RecyclerView
         list.layoutManager = LinearLayoutManager(context)
+
+        view.findViewById(R.id.action_add_tag).setOnClickListener { AddTagDialogFragment.show(activity.supportFragmentManager) }
 
         val adapter = TagsAdapter()
         list.adapter = adapter

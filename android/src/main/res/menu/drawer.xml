@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/tags"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/tags"/>
+        <item
+            android:id="@+id/messages"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/messages"/>
+
+        <item
+            android:id="@+id/settings"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/settings" />
+        <item
+            android:id="@+id/log_in"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/log_in"/>
+
+        <!-- Maybe for the future -->
+        <item
+            android:id="@+id/main_sections"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/main_sections"
+            android:visible="false" />
+        <item
+            android:id="@+id/femdoms"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/fendoms"
+            android:visible="false" />
+    </group>
+</menu>

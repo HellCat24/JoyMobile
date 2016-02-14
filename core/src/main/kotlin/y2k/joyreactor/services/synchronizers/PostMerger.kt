@@ -69,8 +69,8 @@ class PostMerger(
             .flatMap {
                 dataContext.use { entities ->
                     var links = entities.TagPosts.filter { it.tagId == tag.id }
-                    val actualPosts = links.subList(0, divider!!).toArrayList()
-                    val expiredPosts = links.subList(divider!!, links.size).toArrayList()
+                    val actualPosts = links.subList(0, divider!!).toMutableList()
+                    val expiredPosts = links.subList(divider!!, links.size).toMutableList()
 
                     for (p in newPosts) {
                         addIfNew(tag, actualPosts, p)

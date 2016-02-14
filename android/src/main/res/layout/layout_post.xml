@@ -6,17 +6,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <y2k.joyreactor.FixedAspectPanel
+    <y2k.joyreactor.view.FixedAspectPanel
             android:id="@+id/posterPanel"
             android:layout_gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <y2k.joyreactor.LargeImageView
+        <y2k.joyreactor.view.LargeImageView
                 android:id="@+id/image"
                 android:scaleType="centerCrop"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-    </y2k.joyreactor.FixedAspectPanel>
+    </y2k.joyreactor.view.FixedAspectPanel>
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                 android:layout_height="match_parent"/>
     </LinearLayout>
 
-    <y2k.joyreactor.ImagePanel
+    <y2k.joyreactor.view.ImagePanel
             android:id="@+id/images"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -54,7 +54,7 @@
               android:layout_width="wrap_content"
               android:layout_height="48dp"/>
 
-    <y2k.joyreactor.ImagePanel
+    <y2k.joyreactor.view.ImagePanel
             android:id="@+id/similar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

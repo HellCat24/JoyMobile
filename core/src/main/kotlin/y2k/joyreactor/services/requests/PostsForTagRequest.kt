@@ -15,10 +15,10 @@ import java.util.regex.Pattern
  */
 class PostsForTagRequest {
 
-    fun requestAsync(tagId: Tag, pageId: String? = null): Observable<Data> {
+    fun requestAsync(tagId: Tag, pageId: String? = null, type : String): Observable<Data> {
         return Observable
             .fromCallable {
-                val url = UrlBuilder().build(tagId, pageId)
+                val url = UrlBuilder().build(tagId, pageId, type)
                 val doc = HttpClient.instance.getDocument(url)
 
                 val posts = ArrayList<Post>()
