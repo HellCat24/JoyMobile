@@ -21,7 +21,7 @@ class ProfilePresenter(
                 view.setBusy(false)
             }, {
                 it.printStackTrace()
-                Navigation.instance.switchProfileToLogin()
+                //Navigation.instance.switchProfileToLogin()
             })
     }
 

@@ -21,6 +21,7 @@ import android.widget.Toast
 import y2k.joyreactor.*
 import y2k.joyreactor.common.*
 import y2k.joyreactor.presenters.PostPresenter
+import y2k.joyreactor.ui.base.ToolBarActivity
 import y2k.joyreactor.view.FixedAspectPanel
 import y2k.joyreactor.view.ImagePanel
 import y2k.joyreactor.view.LargeImageView
@@ -28,7 +29,13 @@ import y2k.joyreactor.view.WebImageView
 import java.io.File
 import java.util.*
 
-class PostActivity : AppCompatActivity() {
+class PostActivity : ToolBarActivity() {
+
+    override val fragmentContentId: Int
+        get() = throw UnsupportedOperationException()
+
+    override val layoutId: Int
+        get() = R.layout.activity_post
 
     lateinit var presenter: PostPresenter
     val adapter = Adapter()
@@ -37,8 +44,6 @@ class PostActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_post)
-        setSupportActionBar(find<Toolbar>(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val list = find<RecyclerView>(R.id.list)
@@ -245,10 +250,5 @@ class PostActivity : AppCompatActivity() {
                 return (dip * itemView.resources.displayMetrics.density).toInt()
             }
         }
-    }
-
-    override fun finish() {
-        super.finish()
-        overridePendingTransition(0, 0);
     }
 }

@@ -46,6 +46,7 @@ class ProfileFragment : BaseFragment() {
             when (menuItem.itemId) {
                 R.id.tags -> {
                     startActivity(Intent(activity, TagsActivity::class.java))
+                    activity.overridePendingTransition(0, 0);
                     true
                 }
                 R.id.settings -> {
@@ -54,6 +55,7 @@ class ProfileFragment : BaseFragment() {
                 }
                 R.id.messages -> {
                     startActivity(Intent(activity, DialogsActivity::class.java))
+                    activity.overridePendingTransition(0, 0);
                     true
                 }
                 R.id.log_in -> {

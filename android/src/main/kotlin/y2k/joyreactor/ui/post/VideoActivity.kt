@@ -7,14 +7,21 @@ import android.widget.VideoView
 import y2k.joyreactor.R
 import y2k.joyreactor.common.ServiceLocator
 import y2k.joyreactor.presenters.VideoPresenter
+import y2k.joyreactor.ui.base.ToolBarActivity
 
 import java.io.File
 
-class VideoActivity : AppCompatActivity() {
+class VideoActivity : ToolBarActivity() {
+
+    override val fragmentContentId: Int
+        get() = throw UnsupportedOperationException()
+    override val layoutId: Int
+        get() = R.layout.activity_video
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_video)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val videoView = findViewById(R.id.video) as VideoView
         videoView.setOnPreparedListener { mp -> mp.isLooping = true }
@@ -31,10 +38,5 @@ class VideoActivity : AppCompatActivity() {
                         findViewById(R.id.progress).visibility = if (isBusy) View.VISIBLE else View.GONE
                     }
                 })
-    }
-
-    override fun finish() {
-        super.finish()
-        overridePendingTransition(0, 0);
     }
 }

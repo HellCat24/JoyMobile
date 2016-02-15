@@ -24,4 +24,9 @@ abstract class ToolBarActivity : BaseFragmentActivity() {
 
     protected abstract val layoutId: Int
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(0, 0);
+    }
+
 }
