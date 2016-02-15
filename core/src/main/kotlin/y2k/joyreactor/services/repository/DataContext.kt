@@ -24,6 +24,10 @@ class DataContext {
 
     val Posts = register<Post>("posts")
 
+    val AllPosts = register<Post>("all_posts")
+
+    val BestPosts = register<Post>("best_posts")
+
     val Tags = register<Tag>("tags")
 
     val TagPosts = register<TagPost>("tag_posts")

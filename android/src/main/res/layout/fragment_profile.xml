@@ -10,12 +10,14 @@
         android:layout_height="match_parent"
         app:headerLayout="@layout/profile_header"
         app:itemTextColor="?attr/colorPrimary"
-        app:menu="@menu/drawer"/>
+        app:menu="@menu/drawer">
 
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+    </android.support.design.widget.NavigationView>
 
 </RelativeLayout>

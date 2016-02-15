@@ -1,6 +1,8 @@
 package y2k.joyreactor;
 
 import kotlin.Unit;
+
+import org.jetbrains.annotations.NotNull;
 import org.ocpsoft.prettytime.PrettyTime;
 import org.robovm.apple.foundation.NSIndexPath;
 import org.robovm.apple.uikit.*;
@@ -74,6 +76,12 @@ public class PostListViewController extends BaseUIViewController implements Post
     @Override
     public void setHasNewPosts(boolean hasNewPosts) {
         new BottomButton(applyButton).setHidden(!hasNewPosts);
+    }
+
+    @NotNull
+    @Override
+    public String getPostType() {
+        return "";
     }
 
     class PostDataSource extends UITableViewDataSourceAdapter {

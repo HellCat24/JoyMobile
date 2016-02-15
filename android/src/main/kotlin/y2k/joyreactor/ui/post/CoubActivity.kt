@@ -29,6 +29,6 @@ class CoubActivity : AppCompatActivity() {
         coubPlayer.layoutParams.height = size.x * 9 / 16 - 20
         coubPlayer.requestLayout()
         //TODO Move this to the service
-        PostUtils.loadCoub(coubPlayer, size.x, "COUB_URL_HERE")
+        PostUtils.loadCoub(coubPlayer, "COUB_URL_HERE")
     }
 }

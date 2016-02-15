@@ -1,5 +1,6 @@
-package y2k.joyreactor.ui
+package y2k.joyreactor.ui.profile.message
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -11,14 +12,17 @@ import android.widget.TextView
 import org.ocpsoft.prettytime.PrettyTime
 import y2k.joyreactor.Message
 import y2k.joyreactor.R
+import y2k.joyreactor.common.BaseFragment
 import y2k.joyreactor.common.ServiceLocator
 import y2k.joyreactor.presenters.MessageThreadsPresenter
+import y2k.joyreactor.ui.base.BaseFragmentActivity
+import y2k.joyreactor.ui.profile.tags.TagsActivity
 import y2k.joyreactor.view.WebImageView
 
 /**
  * Created by y2k on 11/13/15.
  */
-class ThreadsFragment : Fragment() {
+class DialogsFragment : BaseFragment() {
 
     private var presenter: MessageThreadsPresenter? = null
 
@@ -88,7 +92,10 @@ class ThreadsFragment : Fragment() {
                 time = view.findViewById(R.id.time) as TextView
 
                 view.findViewById(R.id.button).setOnClickListener {
-                    presenter!!.selectThread(threads[adapterPosition])
+                    //presenter!!.selectThread(threads[adapterPosition])
+                    val intent = Intent(activity, MessagesActivity::class.java)
+                    intent.putExtra("dialog", threads[adapterPosition]);
+                    startActivity(intent)
                 }
             }
         }

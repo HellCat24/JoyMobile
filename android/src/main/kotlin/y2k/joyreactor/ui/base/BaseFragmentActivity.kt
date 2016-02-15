@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity
  */
 abstract class BaseFragmentActivity : AppCompatActivity() {
 
-    fun addFragment(f: Fragment, tag: String, isAddToBackStack: Boolean) {
+    fun addFragment(f: Fragment) {
         supportFragmentManager.beginTransaction().add(fragmentContentId, f).addToBackStack(f.javaClass.name).commit()
     }
 

@@ -14,7 +14,7 @@ import y2k.joyreactor.common.BaseFragment
 import y2k.joyreactor.common.ServiceLocator
 import y2k.joyreactor.common.isVisible
 import y2k.joyreactor.presenters.ProfilePresenter
-import y2k.joyreactor.ui.profile.message.MessagesActivity
+import y2k.joyreactor.ui.profile.message.DialogsActivity
 import y2k.joyreactor.ui.profile.tags.TagsActivity
 import y2k.joyreactor.view.WebImageView
 
@@ -53,7 +53,7 @@ class ProfileFragment : BaseFragment() {
                     true
                 }
                 R.id.messages -> {
-                    startActivity(Intent(activity, MessagesActivity::class.java))
+                    startActivity(Intent(activity, DialogsActivity::class.java))
                     true
                 }
                 R.id.log_in -> {

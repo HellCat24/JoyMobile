@@ -17,8 +17,8 @@ open class EndlessRecyclerOnScrollListener(val mLinearLayoutManager: LinearLayou
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
 
-        visibleItemCount = recyclerView.getChildCount()
-        totalItemCount = mLinearLayoutManager.getItemCount()
+        visibleItemCount = recyclerView.childCount
+        totalItemCount = mLinearLayoutManager.itemCount
         firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition()
 
         if (loading) {

@@ -12,7 +12,7 @@ class Image(
         private val width: Int = 0,
         private val height: Int = 0) : Serializable {
 
-    private val url: String? = clearUrl(url)
+    val url: String? = clearUrl(url)
 
     fun fullUrl(format: String?): String {
         try {
@@ -45,6 +45,9 @@ class Image(
 
     val isAnimated: Boolean
         get() = url != null && url.endsWith(".gif")
+
+    val isCoub: Boolean
+        get() = url != null && url.contains("coub")
 
     val aspect: Float
         get() = getAspect(0f)

@@ -34,13 +34,4 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </android.support.design.widget.CoordinatorLayout>
-
-    <android.support.design.widget.NavigationView
-        android:id="@+id/navigation_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/profile_header"
-        app:itemTextColor="?attr/colorPrimary"
-        app:menu="@menu/drawer" />
 </android.support.v4.widget.DrawerLayout>

@@ -1,25 +1,35 @@
 package y2k.joyreactor.ui.profile.message
 
 import android.os.Bundle
-import android.support.v4.widget.DrawerLayout
-import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
+import y2k.joyreactor.Message
 import y2k.joyreactor.R
+import y2k.joyreactor.common.ServiceLocator
+import y2k.joyreactor.services.BroadcastService
+import y2k.joyreactor.ui.base.ToolBarActivity
 
 /**
- * Created by y2k on 11/13/15.
+ * Created by Oleg on 14.02.2016.
  */
-class MessagesActivity : AppCompatActivity() {
+class MessagesActivity() : ToolBarActivity() {
+
+    private var currentDialog: Message? = null
+
+    override val fragmentContentId: Int
+        get() = R.id.container
+
+    override val layoutId: Int
+        get() = R.layout.activity_container
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        currentDialog = intent.getSerializableExtra("dialog") as Message?
+        replaceFragment(MessageFragment())
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true);
+    }
 
-        setContentView(R.layout.activity_messages)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
-
-        ActionBarDrawerToggle(this, findViewById(R.id.drawer_layout) as DrawerLayout,
-                toolbar, R.string.app_name, R.string.app_name).syncState()
+    override fun onPostResume() {
+        super.onPostResume()
+        ServiceLocator.resolve(BroadcastService::class).broadcast(BroadcastService.ThreadSelectedMessage(currentDialog!!))
     }
 }

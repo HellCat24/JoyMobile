@@ -2,12 +2,6 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="y2k.joyreactor.Main2Activity">
-    <item android:id="@+id/addTag"
-          android:title="@string/add_tag"
-          app:showAsAction="never"/>
-    <item android:id="@+id/messages"
-          android:title="@string/messages"
-          app:showAsAction="never"/>
     <item android:id="@+id/updates"
         android:title="Update"
         app:showAsAction="never"/>

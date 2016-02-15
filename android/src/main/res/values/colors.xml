@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="PrimaryColor">#FDB201</color>
+    <color name="PrimaryDarkColor">#694806</color>
+    <color name="WindowBackground">#ffffff</color>
+
+    <color name="like">#EAFFC1</color>
+    <color name="like_border">#9FD731</color>
+    <color name="dislike">#FFF2F0</color>
+    <color name="dislike_border">#F79D91</color>
+
+</resources>

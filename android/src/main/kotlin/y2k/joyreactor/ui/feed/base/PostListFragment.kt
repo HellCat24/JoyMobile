@@ -1,5 +1,6 @@
-package y2k.joyreactor.ui.feed
+package y2k.joyreactor.ui.feed.base
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -21,10 +22,10 @@ import y2k.joyreactor.view.ReloadButton
  */
 abstract class PostListFragment() : BaseFragment() {
 
-    var type  =  postType;
+    var type = postType;
 
     lateinit var adapter: PostAdapter
-    lateinit var presenter : PostListPresenter
+    lateinit var presenter: PostListPresenter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_posts, container, false)
@@ -33,31 +34,34 @@ abstract class PostListFragment() : BaseFragment() {
 
         val refreshLayout = view.findViewById(R.id.refresher) as SwipeRefreshLayout
         val list = view.findViewById(R.id.list) as RecyclerView
-        list.layoutManager = LinearLayoutManager(activity)
+        list.layoutManager = PreLoadLayoutManager(activity)
         list.addOnScrollListener(LoadMoreListener(list.layoutManager as LinearLayoutManager))
 
         presenter = ServiceLocator.resolve(lifeCycleService,
-            object : PostListPresenter.View {
+                object : PostListPresenter.View {
 
-                override fun getPostType(): String {
-                   return type;
-                }
+                    override fun getPostType(): String {
+                        return type;
+                    }
 
-                override fun setBusy(isBusy: Boolean) {
-                    refreshLayout.isRefreshing = isBusy
-                }
+                    override fun setBusy(isBusy: Boolean) {
+                        refreshLayout.isRefreshing = isBusy
+                    }
 
-                override fun reloadPosts(posts: List<Post>, divider: Int?) {
-                    adapter.reloadData(posts, divider)
-                }
+                    override fun reloadPosts(posts: List<Post>, divider: Int?) {
+                        adapter.reloadData(posts, divider)
+                    }
 
-                override fun setHasNewPosts(hasNewPosts: Boolean) {
-                    (view.findViewById(R.id.apply) as ReloadButton).setVisibility(hasNewPosts)
-                }
-            })
+                    override fun setHasNewPosts(hasNewPosts: Boolean) {
+                        (view.findViewById(R.id.apply) as ReloadButton).setVisibility(hasNewPosts)
+                    }
+                })
 
         adapter = PostAdapter(presenter); list.adapter = adapter
-        view.findViewById(R.id.apply).setOnClickListener { presenter.applyNew() }
+        view.findViewById(R.id.apply).setOnClickListener {
+            presenter.applyNew()
+            list.smoothScrollToPosition(0)
+        }
         refreshLayout.setOnRefreshListener { presenter.reloadFirstPage() }
         return view
     }
@@ -66,6 +70,14 @@ abstract class PostListFragment() : BaseFragment() {
 
         override fun onLoadMore(current_page: Int) {
             presenter.loadMore()
+        }
+    }
+
+    inner class PreLoadLayoutManager(context : Context) : LinearLayoutManager(context) {
+
+        // To pre-load next picture in the feed
+        override fun getExtraLayoutSpace(state: RecyclerView.State?): Int {
+            return 300
         }
     }
 

@@ -20,16 +20,21 @@ class VideoActivity : AppCompatActivity() {
         videoView.setOnPreparedListener { mp -> mp.isLooping = true }
 
         ServiceLocator.resolve(
-            object : VideoPresenter.View {
+                object : VideoPresenter.View {
 
-                override fun showVideo(videoFile: File) {
-                    videoView.setVideoPath(videoFile.absolutePath)
-                    videoView.start()
-                }
+                    override fun showVideo(videoFile: File) {
+                        videoView.setVideoPath(videoFile.absolutePath)
+                        videoView.start()
+                    }
 
-                override fun setBusy(isBusy: Boolean) {
-                    findViewById(R.id.progress).visibility = if (isBusy) View.VISIBLE else View.GONE
-                }
-            })
+                    override fun setBusy(isBusy: Boolean) {
+                        findViewById(R.id.progress).visibility = if (isBusy) View.VISIBLE else View.GONE
+                    }
+                })
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(0, 0);
     }
 }

@@ -13,6 +13,14 @@
         <include layout="@layout/toolbar" />
 
         <fragment
+            android:id="@+id/navigation_drawer"
+            android:name="y2k.joyreactor.ui.profile.message.DialogsFragment"
+            android:layout_width="@dimen/navigation_drawer_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            tools:layout="@layout/activity_tag" />
+
+        <fragment
             android:id="@+id/container"
             android:name="y2k.joyreactor.ui.profile.message.MessageFragment"
             android:layout_width="match_parent"
@@ -21,11 +29,5 @@
             tools:layout="@layout/fragment_messages" />
     </LinearLayout>
 
-    <fragment
-        android:id="@+id/navigation_drawer"
-        android:name="y2k.joyreactor.ui.ThreadsFragment"
-        android:layout_width="@dimen/navigation_drawer_width"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        tools:layout="@layout/activity_tag" />
+
 </android.support.v4.widget.DrawerLayout>

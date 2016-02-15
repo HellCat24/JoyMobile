@@ -75,7 +75,6 @@ class PostActivity : AppCompatActivity() {
             }
 
             override fun updateSimilarPosts(similarPosts: List<SimilarPost>) {
-                adapter.updateSimilarPosts(similarPosts)
             }
 
             override fun updatePostImage(image: File) {
@@ -126,7 +125,6 @@ class PostActivity : AppCompatActivity() {
         private var comments: CommentGroup? = null
         private var post: Post? = null
         private var images: List<Image> = emptyList()
-        private var similarPosts: List<SimilarPost> = emptyList()
 
         init {
             setHasStableIds(true)
@@ -168,23 +166,16 @@ class PostActivity : AppCompatActivity() {
             notifyItemChanged(0)
         }
 
-        fun updateSimilarPosts(similarPosts: List<SimilarPost>) {
-            this.similarPosts = similarPosts
-            notifyItemChanged(0)
-        }
-
         internal inner class HeaderViewHolder(parent: ViewGroup) :
             ComplexViewHolder(parent.inflate(R.layout.layout_post)) {
 
             var image: LargeImageView
             var imagePanel: ImagePanel
-            var similar: ImagePanel
             var posterPanel: FixedAspectPanel
 
             init {
                 image = itemView.findViewById(R.id.image) as LargeImageView
                 imagePanel = itemView.findViewById(R.id.images) as ImagePanel
-                similar = itemView.findViewById(R.id.similar) as ImagePanel
                 posterPanel = itemView.findViewById(R.id.posterPanel) as FixedAspectPanel
                 itemView.findViewById(R.id.showMoreImages).setOnClickListener { presenter.showMoreImages() }
             }
@@ -199,14 +190,6 @@ class PostActivity : AppCompatActivity() {
                 imagePath?.let { image.setImage(it) }
 
                 imagePanel.setImages(images)
-                similar.setImages(toImages())
-            }
-
-            private fun toImages(): List<Image> {
-                val result = ArrayList<Image>()
-                for (s in similarPosts)
-                    s.image?.let { result.add(it) }
-                return result
             }
         }
 
@@ -262,5 +245,10 @@ class PostActivity : AppCompatActivity() {
                 return (dip * itemView.resources.displayMetrics.density).toInt()
             }
         }
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(0, 0);
     }
 }

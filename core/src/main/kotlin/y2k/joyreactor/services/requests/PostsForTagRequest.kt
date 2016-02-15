@@ -100,15 +100,28 @@ class PostsForTagRequest {
         }
     }
 
+    internal class CoubThumbnailParser(private val element: Element) {
+
+        fun load(): Image? {
+            val video = element.select("iframe").attr("src") ?: return null
+            try {
+                return Image(video, 0, 0)
+            } catch (e: Exception) {
+                println("ELEMENT | " + video)
+                throw e
+            }
+        }
+    }
+
     internal class VideoThumbnailParser(private val element: Element) {
 
         fun load(): Image? {
             val video = element.select("video[poster]").first() ?: return null
             try {
                 return Image(
-                    element.select("span.video_gif_holder > a").first().attr("href").replace("(/post/).+(-)".toRegex(), "$1$2"),
-                    Integer.parseInt(video.attr("width")),
-                    Integer.parseInt(video.attr("height")))
+                        element.select("span.video_gif_holder > a").first().attr("href").replace("(/post/).+(-)".toRegex(), "$1$2"),
+                        Integer.parseInt(video.attr("width")),
+                        Integer.parseInt(video.attr("height")))
             } catch (e: Exception) {
                 println("ELEMENT | " + video)
                 throw e
@@ -124,6 +137,7 @@ class PostsForTagRequest {
             var image = ThumbnailParser(element).load()
             if (image == null) image = YoutubeThumbnailParser(element).load()
             if (image == null) image = VideoThumbnailParser(element).load()
+            if (image == null) image = CoubThumbnailParser(element).load()
 
             val parser = PostParser(element)
 

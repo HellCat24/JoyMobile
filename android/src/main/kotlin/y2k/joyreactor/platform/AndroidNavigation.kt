@@ -55,6 +55,7 @@ class AndroidNavigation(app: Application) : Navigation {
     override fun openPost(postId: String) {
         sPostIdArgument = postId
         currentActivity?.startActivity(PostActivity::class)
+        currentActivity?.overridePendingTransition(0, 0);
     }
 
     override val argumentPostId: String
@@ -67,6 +68,7 @@ class AndroidNavigation(app: Application) : Navigation {
     override fun openVideo(postId: String) {
         sPostIdArgument = postId // TODO:
         currentActivity?.startActivity(VideoActivity::class)
+        currentActivity?.overridePendingTransition(0, 0);
     }
 
     override fun openImageView(post: Post) {

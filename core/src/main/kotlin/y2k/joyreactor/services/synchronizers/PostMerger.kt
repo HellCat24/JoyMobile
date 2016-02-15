@@ -11,8 +11,7 @@ import java.util.*
 /**
  * Created by y2k on 10/31/15.
  */
-class PostMerger(
-    private val dataContext: DataContext.Factory) {
+class PostMerger(private val dataContext: DataContext.Factory) {
 
     var divider: Int? = null
         private set
