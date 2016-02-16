@@ -2,18 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/tags"
-            android:icon="@mipmap/ic_tags"
-            android:title="@string/tags"/>
-        <item
             android:id="@+id/messages"
             android:icon="@mipmap/ic_messages"
             android:title="@string/messages"/>
         <item
+            android:id="@+id/favorites"
+            android:icon="@mipmap/ic_favorite"
+            android:title="@string/messages"/>
+        <item
+            android:id="@+id/tags"
+            android:icon="@mipmap/ic_tags"
+            android:title="@string/tags"/>
+        <item
             android:id="@+id/log_in"
             android:icon="@mipmap/ic_login"
             android:title="@string/log_in"/>
-
         <!-- Maybe for the future -->
         <item
             android:id="@+id/main_sections"

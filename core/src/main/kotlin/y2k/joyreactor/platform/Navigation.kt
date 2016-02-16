@@ -1,5 +1,6 @@
 package y2k.joyreactor.platform
 
+import y2k.joyreactor.Message
 import y2k.joyreactor.Post
 
 /**
@@ -21,11 +22,21 @@ interface Navigation {
 
     fun openVideo(postId: String)
 
+    fun openVideo(post: Post)
+
     fun openImageView(post: Post)
 
     fun openCreateComment()
 
     fun openPostGallery()
+
+    fun openTags()
+
+    fun openDialogs()
+
+    fun openLogin()
+
+    fun openMessages(dialog : Message)
 
     val argumentPostId: String
 

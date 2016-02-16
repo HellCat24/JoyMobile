@@ -1,5 +1,7 @@
 package y2k.joyreactor.ui.profile.message
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import y2k.joyreactor.Message
 import y2k.joyreactor.R
@@ -12,6 +14,17 @@ import y2k.joyreactor.ui.base.ToolBarActivity
  */
 class MessagesActivity() : ToolBarActivity() {
 
+    companion object {
+
+        var BUNDLE_DIALOG = "dialog"
+
+        fun startActivity(activity: Activity?, dialog: Message) {
+            val intent = Intent(activity, MessagesActivity::class.java)
+            intent.putExtra(BUNDLE_DIALOG, dialog);
+            activity!!.startActivity(intent)
+        }
+    }
+
     private var currentDialog: Message? = null
 
     override val fragmentContentId: Int
@@ -22,12 +35,14 @@ class MessagesActivity() : ToolBarActivity() {
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        currentDialog = intent.getSerializableExtra("dialog") as Message?
-        replaceFragment(MessageFragment())
+        currentDialog = intent.getSerializableExtra(BUNDLE_DIALOG) as Message?
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true);
+        replaceFragment(MessageFragment())
     }
 
+
+    //TODO Refactore this
     override fun onPostResume() {
         super.onPostResume()
         ServiceLocator.resolve(BroadcastService::class).broadcast(BroadcastService.ThreadSelectedMessage(currentDialog!!))

@@ -41,9 +41,7 @@ class TagService(private val dataContext: DataContext.Factory,
     }
 
     fun loadNextPage(): Observable<List<Post>> {
-        return requestAsync(lastPage.nextPage)
-            .flatMap { merger.mergeNextPage(tag, it.posts) }
-            .flatMap { getFromRepository() }
+        return requestAsync(lastPage.nextPage).map {it -> it.posts }
     }
 
     fun reloadFirstPage(): Observable<List<Post>> {

@@ -29,6 +29,7 @@ class ProfileFragment : BaseFragment() {
             override fun setProfile(profile: Profile) {
                 (navigationView.findViewById(R.id.avatar) as WebImageView).setImage(profile.userImage)
                 (navigationView.findViewById(R.id.rating) as TextView).text = "" + profile.rating
+                (navigationView.findViewById(y2k.joyreactor.R.id.stars) as android.widget.RatingBar).rating = profile.stars.toFloat()
                 (navigationView.findViewById(R.id.txt_profile_name) as TextView).text = "" + profile.userName
             }
 
@@ -45,12 +46,7 @@ class ProfileFragment : BaseFragment() {
 
             when (menuItem.itemId) {
                 R.id.tags -> {
-                    startActivity(Intent(activity, TagsActivity::class.java))
-                    activity.overridePendingTransition(0, 0);
-                    true
-                }
-                R.id.settings -> {
-                    Toast.makeText(activity, "Settings", Toast.LENGTH_SHORT).show()
+
                     true
                 }
                 R.id.messages -> {

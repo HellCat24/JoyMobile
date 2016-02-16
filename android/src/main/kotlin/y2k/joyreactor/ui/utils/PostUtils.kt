@@ -6,7 +6,7 @@ import android.webkit.WebView
 object PostUtils {
     fun loadCoub(v: WebView, url: String?) {
         val width = v.measuredWidth;
-        val height = v.measuredWidth * 9 / 16 - 20
+        val height = v.measuredWidth * 9 / 16 - 25
         val pageStart = "<!DOCTYPE HTML> \n" +
                 "<html xmlns=\\\"http://www.w3.org/1999/xhtml\\\" xmlns:og=\\\"http://opengraphprotocol.org/schema/\\\" xmlns:fb=\\\"http://www.facebook.com/2008/fbml\\\">\n" +
                 "   <head></head>\n" +
@@ -18,7 +18,9 @@ object PostUtils {
         webViewSettings.javaScriptEnabled = true
         webViewSettings.setSupportZoom(false)
         webViewSettings.pluginState = WebSettings.PluginState.ON
+        v.setScrollbarFadingEnabled(true);
         v.loadData(pageStart + player + pageEnd, "text/html", "utf-8")
-        v.isVerticalScrollBarEnabled = false
+        v.isScrollContainer = false
+        v.scrollTo(0, 0);
     }
 }

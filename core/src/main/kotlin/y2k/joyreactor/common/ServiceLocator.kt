@@ -84,7 +84,7 @@ object ServiceLocator {
     }
 
     fun resolve(view: ProfilePresenter.View): ProfilePresenter {
-        return ProfilePresenter(view, resolve(ProfileService::class))
+        return ProfilePresenter(view, resolve(ProfileService::class), Navigation.instance)
     }
 
     fun resolve(view: CreateCommentPresenter.View): CreateCommentPresenter {
@@ -104,7 +104,7 @@ object ServiceLocator {
     }
 
     fun resolve(view: MessageThreadsPresenter.View): MessageThreadsPresenter {
-        return MessageThreadsPresenter(view, resolve(BroadcastService::class), resolve(UserMessagesService::class))
+        return MessageThreadsPresenter(view, resolve(BroadcastService::class), resolve(UserMessagesService::class), Navigation.instance)
     }
 
     fun resolve(view: ImagePresenter.View): ImagePresenter {

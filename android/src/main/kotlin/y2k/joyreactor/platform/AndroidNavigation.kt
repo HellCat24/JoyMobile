@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.Toast
 import y2k.joyreactor.*
 import y2k.joyreactor.common.ActivityLifecycleCallbacksAdapter
 import y2k.joyreactor.common.startActivity
@@ -16,11 +17,16 @@ import y2k.joyreactor.ui.post.GalleryActivity
 import y2k.joyreactor.ui.post.VideoActivity
 import y2k.joyreactor.ui.profile.tags.AddTagDialogFragment
 import y2k.joyreactor.ui.profile.LoginActivity
+import y2k.joyreactor.ui.profile.message.DialogsActivity
+import y2k.joyreactor.ui.profile.message.MessagesActivity
+import y2k.joyreactor.ui.profile.tags.TagsActivity
 
 /**
  * Created by y2k on 10/19/15.
  */
-class AndroidNavigation(app: Application) : Navigation {
+open class AndroidNavigation(app: Application) : Navigation {
+
+
 
     internal var currentActivity: Activity? = null
 
@@ -77,6 +83,29 @@ class AndroidNavigation(app: Application) : Navigation {
 
     override fun openCreateComment() {
         currentActivity?.startActivity(CreateCommentActivity::class)
+    }
+
+    //New transitions
+
+    override fun openTags() {
+        currentActivity?.startActivity(TagsActivity::class)
+    }
+
+    override fun openDialogs() {
+        currentActivity?.startActivity(DialogsActivity::class)
+    }
+
+    override fun openLogin() {
+        currentActivity?.startActivity(LoginActivity::class)
+    }
+
+    override fun openMessages(dialog : Message) {
+        MessagesActivity.startActivity(currentActivity, dialog)
+    }
+
+    override fun openVideo(post: Post) {
+        VideoActivity.startActivity(currentActivity, post)
+        currentActivity?.overridePendingTransition(0, 0);
     }
 
     private inner class MyActivityLifecycleCallbacks : ActivityLifecycleCallbacksAdapter() {

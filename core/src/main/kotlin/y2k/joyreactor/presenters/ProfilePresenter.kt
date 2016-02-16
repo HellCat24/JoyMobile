@@ -1,5 +1,6 @@
 package y2k.joyreactor.presenters
 
+import y2k.joyreactor.Message
 import y2k.joyreactor.Profile
 import y2k.joyreactor.common.subscribeOnMain
 import y2k.joyreactor.platform.Navigation
@@ -10,7 +11,8 @@ import y2k.joyreactor.services.ProfileService
  */
 class ProfilePresenter(
     private val view: ProfilePresenter.View,
-    private val service: ProfileService) {
+    private val service: ProfileService,
+    private val navigation: Navigation) {
 
     init {
         view.setBusy(true)
@@ -27,6 +29,18 @@ class ProfilePresenter(
 
     fun logout() {
         service.logout().subscribeOnMain { Navigation.instance.switchProfileToLogin() }
+    }
+
+    fun openTags() {
+        navigation.openTags()
+    }
+
+    fun openDialogs() {
+        navigation.openDialogs()
+    }
+
+    fun openLogin() {
+        navigation.openLogin()
     }
 
     interface View {

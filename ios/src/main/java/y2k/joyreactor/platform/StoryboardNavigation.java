@@ -1,5 +1,6 @@
 package y2k.joyreactor.platform;
 
+import org.jetbrains.annotations.NotNull;
 import org.robovm.apple.foundation.NSArray;
 import org.robovm.apple.foundation.NSMutableArray;
 import org.robovm.apple.foundation.NSURL;
@@ -7,6 +8,7 @@ import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UINavigationController;
 import org.robovm.apple.uikit.UIViewController;
 import y2k.joyreactor.ImageViewController;
+import y2k.joyreactor.Message;
 import y2k.joyreactor.Post;
 
 /**
@@ -93,5 +95,25 @@ public class StoryboardNavigation implements Navigation {
     @Override
     public void openPostGallery() {
         // TODO:
+    }
+
+    @Override
+    public void openTags() {
+
+    }
+
+    @Override
+    public void openDialogs() {
+
+    }
+
+    @Override
+    public void openLogin() {
+
+    }
+
+    @Override
+    public void openMessages(@NotNull Message dialog) {
+
     }
 }

@@ -15,9 +15,9 @@ import java.util.regex.Pattern
  */
 class OriginalImageRequestFactory {
 
-    fun request(imageUrl: String): Observable<File> {
+    fun request(imageUrl: String?): Observable<File> {
         return ioObservable {
-            val file = File(Platform.instance.currentDirectory, "" + imageUrl.hashCode() + "." + getExtension(imageUrl))
+            val file = File(Platform.instance.currentDirectory, "" + imageUrl?.hashCode() + "." + getExtension(imageUrl))
             if (!file.exists()) {
                 try {
                     HttpClient.instance.downloadToFile(imageUrl, file, null)
@@ -49,7 +49,7 @@ class OriginalImageRequestFactory {
         }.subscribeOn(Schedulers.io()).observeOn(ForegroundScheduler.instance)
     }
 
-    private fun getExtension(imageUrl: String): String {
+    private fun getExtension(imageUrl: String?): String {
         val fm = Pattern.compile("format=([^&]+)").matcher(imageUrl)
         if (fm.find()) return fm.group(1)
 

@@ -8,14 +8,16 @@ import y2k.joyreactor.platform.Navigation
 import y2k.joyreactor.services.BroadcastService
 import y2k.joyreactor.services.LifeCycleService
 import y2k.joyreactor.services.TagService
+import y2k.joyreactor.services.requests.OriginalImageRequestFactory
+import java.io.File
 
 /**
  * Created by y2k on 9/26/15.
  */
 class PostListPresenter(
-    private val view: PostListPresenter.View,
-    private val service: TagService,
-    private val lifeCycleService: LifeCycleService) {
+        private val view: PostListPresenter.View,
+        private val service: TagService,
+        private val lifeCycleService: LifeCycleService) {
 
     init {
         lifeCycleService.add(BroadcastService.TagSelected::class) { currentTagChanged(it.tag) }
@@ -26,45 +28,39 @@ class PostListPresenter(
         service.setTag(newTag)
         service.setType(view.getPostType())
 
-        view.setBusy(true)
-        getFromRepository().subscribeOnMain { view.reloadPosts(it, null) }
-
-        service
-            .preloadNewPosts()
-            .subscribeOnMain { unsafeUpdate ->
-                view.setHasNewPosts(unsafeUpdate)
-                view.setBusy(false)
-                if ((!unsafeUpdate)) applyNew()
-            }
+        service.requestAsync().subscribeOnMain { data ->
+            view.setHasNewPosts(false)
+            view.addNewPosts(data.posts)
+        }
     }
 
     fun applyNew() {
         service.
-            applyNew()
-            .subscribeOnMain { posts ->
-                view.setHasNewPosts(false)
-                view.reloadPosts(posts, service.divider)
-            }
+                applyNew()
+                .subscribeOnMain { posts ->
+                    view.setHasNewPosts(false)
+                    view.reloadPosts(posts, service.divider)
+                }
     }
 
     fun loadMore() {
         view.setBusy(true)
         service
-            .loadNextPage()
-            .subscribeOnMain { posts ->
-                view.reloadPosts(posts, service.divider)
-                view.setBusy(false)
-            }
+                .loadNextPage()
+                .subscribeOnMain { posts ->
+                    view.addNewPosts(posts)
+                    view.setBusy(false)
+                }
     }
 
     fun reloadFirstPage() {
         view.setBusy(true)
         service
-            .reloadFirstPage()
-            .subscribeOnMain { posts ->
-                view.reloadPosts(posts, posts.size)
-                view.setBusy(false)
-            }
+                .reloadFirstPage()
+                .subscribeOnMain { posts ->
+                    view.reloadPosts(posts, posts.size)
+                    view.setBusy(false)
+                }
     }
 
     private fun getFromRepository(): Observable<List<Post>> {
@@ -76,7 +72,7 @@ class PostListPresenter(
     }
 
     fun playClicked(post: Post) {
-        if (post.image!!.isAnimated) Navigation.instance.openVideo(post.serverId!!)
+        if (post.image!!.isAnimated) Navigation.instance.openVideo(post)
         else Navigation.instance.openImageView(post)
     }
 
@@ -84,10 +80,12 @@ class PostListPresenter(
 
         fun setBusy(isBusy: Boolean)
 
+        fun addNewPosts(posts: List<Post>)
+
         fun reloadPosts(posts: List<Post>, divider: Int?)
 
         fun setHasNewPosts(hasNewPosts: Boolean)
 
-        fun getPostType() : String
+        fun getPostType(): String
     }
 }

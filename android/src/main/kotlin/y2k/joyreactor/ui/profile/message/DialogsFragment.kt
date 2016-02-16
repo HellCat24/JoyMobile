@@ -92,10 +92,7 @@ class DialogsFragment : BaseFragment() {
                 time = view.findViewById(R.id.time) as TextView
 
                 view.findViewById(R.id.button).setOnClickListener {
-                    //presenter!!.selectThread(threads[adapterPosition])
-                    val intent = Intent(activity, MessagesActivity::class.java)
-                    intent.putExtra("dialog", threads[adapterPosition]);
-                    startActivity(intent)
+                   presenter!!.openMessages(threads[adapterPosition])
                 }
             }
         }

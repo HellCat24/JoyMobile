@@ -1,76 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/relativeLayout"
         android:scaleType="centerCrop"
-        android:src="@drawable/profile_background" />
+        android:src="@drawable/profile_background"/>
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         android:padding="8dp">
-
-        <y2k.joyreactor.view.RoundBorderLayout
-            android:id="@+id/post_user_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-        </y2k.joyreactor.view.RoundBorderLayout>
 
         <TextView
             android:id="@+id/txt_profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/avatar"
+            android:layout_centerHorizontal="true"
             android:padding="4dp"
             android:text="anon"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@android:color/white"
-            android:layout_below="@+id/avatar"
-            android:layout_centerHorizontal="true"/>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_profile_name"
-            android:layout_toEndOf="@+id/post_user_view"
-            android:layout_toRightOf="@+id/post_user_view"
-            android:orientation="horizontal"
-            android:padding="4dp"
-            android:id="@+id/linearLayout">
-
-            <TextView
-                android:id="@+id/rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
-        </LinearLayout>
+            android:textColor="@android:color/white"/>
 
         <y2k.joyreactor.view.WebImageView
             android:id="@+id/avatar"
             android:layout_width="@dimen/profile_image_size"
-            android:layout_height="64dp"
-            android:src="@mipmap/ic_launcher"
-            android:layout_centerHorizontal="true"/>
+            android:layout_height="@dimen/profile_image_size"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_big"
+            android:src="@mipmap/ic_launcher"/>
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/avatar"
+            android:layout_alignStart="@+id/avatar"
+            android:layout_below="@+id/txt_profile_name"
             android:text="@string/rating"
             android:textColor="@android:color/white"
-            android:textSize="14sp"
-            android:layout_alignTop="@+id/linearLayout"
-            android:layout_alignRight="@+id/txt_profile_name"
-            android:layout_alignEnd="@+id/txt_profile_name"/>
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_profile_name"
+            android:layout_toEndOf="@+id/textView"
+            android:layout_toRightOf="@+id/textView"
+            android:paddingLeft="@dimen/dimen_small"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:padding="18dp">
+
+            <RatingBar
+                android:id="@+id/stars"
+                android:layout_width="wrap_content"
+                android:layout_height="17dp"
+                android:layout_gravity="center"
+                android:isIndicator="true"
+                android:numStars="10"
+                android:progressDrawable="@drawable/drawable_star"/>
+        </FrameLayout>
 
     </RelativeLayout>
-
-
 </RelativeLayout>

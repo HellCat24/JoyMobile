@@ -18,10 +18,6 @@ abstract class ToolBarActivity : BaseFragmentActivity() {
         setSupportActionBar(toolbar)
     }
 
-    fun getSupportToolbar(): Toolbar {
-        return toolbar
-    }
-
     protected abstract val layoutId: Int
 
     override fun finish() {

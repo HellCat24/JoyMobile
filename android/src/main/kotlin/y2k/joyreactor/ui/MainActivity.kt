@@ -8,7 +8,9 @@ import android.view.MenuItem
 import y2k.joyreactor.R
 import y2k.joyreactor.ui.adapter.ViewPagerAdapter
 import y2k.joyreactor.ui.base.ToolBarActivity
+import y2k.joyreactor.ui.feed.BestPostsFragment
 import y2k.joyreactor.ui.feed.GoodPostsFragment
+import y2k.joyreactor.ui.feed.NewPostsFragment
 import y2k.joyreactor.ui.profile.ProfileFragment
 
 class MainActivity : ToolBarActivity() {
@@ -29,14 +31,13 @@ class MainActivity : ToolBarActivity() {
     }
 
     fun setupViewPager(viewPager: ViewPager) {
-        var adapter = ViewPagerAdapter(supportFragmentManager) as ViewPagerAdapter;
+        var adapter = ViewPagerAdapter(supportFragmentManager);
+        adapter.addFragment(NewPostsFragment(), "New");
         adapter.addFragment(GoodPostsFragment(), "Good");
-        //adapter.addFragment(NewPostsFragment(), "New");
-        //adapter.addFragment(BestPostsFragment(), "Best");
+        adapter.addFragment(BestPostsFragment(), "Best");
         adapter.addFragment(ProfileFragment(), "Profile");
-        viewPager.setAdapter(adapter);
+        viewPager.adapter = adapter;
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)

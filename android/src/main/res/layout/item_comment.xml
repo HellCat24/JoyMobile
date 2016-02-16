@@ -37,8 +37,8 @@
                 android:layout_height="wrap_content">
             <TextView
                     android:id="@+id/text"
-                    android:paddingLeft="8dp"
-                    android:maxLines="3"
+                    android:paddingLeft="@dimen/dimen_medium"
+                    android:minLines="3"
                     android:ellipsize="end"
                     android:layout_width="match_parent"
                     android:fontFamily="sans-serif-light"

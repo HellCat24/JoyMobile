@@ -19,7 +19,7 @@ import java.util.zip.GZIPInputStream
  */
 open class HttpClient protected constructor() {
 
-    open fun downloadToFile(url: String, file: File, callback: ((Int, Int) -> Unit)?) {
+    open fun downloadToFile(url: String?, file: File, callback: ((Int, Int) -> Unit)?) {
         val connection = URL(url).openConnection()
         connection.inputStream.use { inStream ->
             file.outputStream().use { outStream ->

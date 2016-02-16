@@ -40,6 +40,10 @@ abstract class PostListFragment() : BaseFragment() {
         presenter = ServiceLocator.resolve(lifeCycleService,
                 object : PostListPresenter.View {
 
+                    override fun addNewPosts(posts: List<Post>) {
+                        adapter.addData(posts)
+                    }
+
                     override fun getPostType(): String {
                         return type;
                     }

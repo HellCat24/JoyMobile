@@ -36,6 +36,11 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
         return posts.size
     }
 
+    fun addData(posts: List<Post>) {
+        this.posts.addAll(posts)
+        notifyDataSetChanged()
+    }
+
     fun reloadData(posts: List<Post>, divider: Int?) {
         this.posts.clear()
         this.posts.addAll(posts)
@@ -75,16 +80,7 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
             if (i.image == null) {
                 imagePanel.visibility = View.GONE
             } else {
-                if (i.image!!.isCoub) {
-                    coubPlayer.visibility = View.VISIBLE
-                    imagePanel.visibility = View.GONE
-                    PostUtils.loadCoub(coubPlayer, i.image?.url)
-                } else {
-                    coubPlayer.visibility = View.INVISIBLE
-                    imagePanel.visibility = View.VISIBLE
-                    imagePanel.setAspect(i.image!!.getAspect(0.5f))
-                    image.setImage(i.image)
-                }
+                processCoub(i)
             }
 
             userImage.setImage(i.getUserImage2().toImage())
@@ -93,6 +89,19 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
 
             commentCount.text = "" + i.commentCount
             time.text = prettyTime.format(i.created)
+        }
+
+        private fun processCoub(i: Post) {
+            if (i.image!!.isCoub) {
+                coubPlayer.visibility = View.VISIBLE
+                imagePanel.visibility = View.GONE
+                PostUtils.loadCoub(coubPlayer, i.image?.url)
+            } else {
+                coubPlayer.visibility = View.INVISIBLE
+                imagePanel.visibility = View.VISIBLE
+                imagePanel.setAspect(i.image!!.getAspect(0.5f))
+                image.setImage(i.image)
+            }
         }
     }
 }
