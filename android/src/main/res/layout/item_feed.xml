@@ -130,6 +130,16 @@
             android:layout_marginLeft="@dimen/dimen_small"
             android:background="@drawable/dislike_background"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_rating"
+            android:layout_alignBottom="@+id/btn_post_like"
+            android:layout_toLeftOf="@+id/btn_post_like"
+            android:layout_toStartOf="@+id/btn_post_like"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/dimen_medium"/>
+
     </RelativeLayout>
 
 </LinearLayout>

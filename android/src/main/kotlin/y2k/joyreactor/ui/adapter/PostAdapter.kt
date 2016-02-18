@@ -59,6 +59,7 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
         val commentCount: TextView
         val time: TextView
         val userName: TextView
+        val rating: TextView
         val coubPlayer: WebView
 
         init {
@@ -69,6 +70,7 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
             commentCount = itemView.findViewById(R.id.commentCount) as TextView
             time = itemView.findViewById(R.id.time) as TextView
             userName = itemView.findViewById(R.id.userName) as TextView
+            rating = itemView.findViewById(R.id.txt_rating) as TextView
             coubPlayer = itemView.findViewById(R.id.coub_view) as WebView
 
             itemView.findViewById(R.id.card).setOnClickListener { presenter.postClicked(posts[adapterPosition]!!) }
@@ -76,20 +78,21 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
         }
 
         override fun bind() {
-            val i = posts[adapterPosition]!!
+            val post = posts[adapterPosition]!!
 
-            if (i.image == null) {
+            if (post.image == null) {
                 imagePanel.visibility = View.GONE
             } else {
-                processCoub(i.image as Image)
+                processCoub(post.image as Image)
             }
 
-            userImage.setImage(i.getUserImage2().toImage())
-            userName.text = i.userName
-            videoMark.visibility = if (i.image?.isAnimated ?: false) View.VISIBLE else View.GONE
+            userImage.setImage(post.getUserImage2().toImage())
+            userName.text = post.userName
+            videoMark.visibility = if (post.image?.isAnimated ?: false) View.VISIBLE else View.GONE
+            rating.text = post.rating.toString()
 
-            commentCount.text = "" + i.commentCount
-            time.text = prettyTime.format(i.created)
+            commentCount.text = post.commentCount.toString()
+            time.text = prettyTime.format(post.created)
         }
 
         private fun processCoub(i: Image) {

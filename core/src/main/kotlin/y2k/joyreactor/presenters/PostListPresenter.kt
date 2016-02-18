@@ -8,8 +8,6 @@ import y2k.joyreactor.platform.Navigation
 import y2k.joyreactor.services.BroadcastService
 import y2k.joyreactor.services.LifeCycleService
 import y2k.joyreactor.services.TagService
-import y2k.joyreactor.services.requests.OriginalImageRequestFactory
-import java.io.File
 
 /**
  * Created by y2k on 9/26/15.
@@ -27,7 +25,6 @@ class PostListPresenter(
     private fun currentTagChanged(newTag: Tag) {
         service.setTag(newTag)
         service.setType(view.getPostType())
-
         service.requestAsync().subscribeOnMain { data ->
             view.setHasNewPosts(false)
             view.addNewPosts(data.posts)
@@ -35,8 +32,7 @@ class PostListPresenter(
     }
 
     fun applyNew() {
-        service.
-                applyNew()
+        service.applyNew()
                 .subscribeOnMain { posts ->
                     view.setHasNewPosts(false)
                     view.reloadPosts(posts, service.divider)
@@ -44,9 +40,7 @@ class PostListPresenter(
     }
 
     fun loadMore() {
-        view.setBusy(true)
-        service
-                .loadNextPage()
+        service.loadNextPage()
                 .subscribeOnMain { posts ->
                     view.addNewPosts(posts)
                     view.setBusy(false)
@@ -55,8 +49,7 @@ class PostListPresenter(
 
     fun reloadFirstPage() {
         view.setBusy(true)
-        service
-                .reloadFirstPage()
+        service.reloadFirstPage()
                 .subscribeOnMain { posts ->
                     view.reloadPosts(posts, posts.size)
                     view.setBusy(false)
@@ -73,13 +66,12 @@ class PostListPresenter(
 
     fun playClicked(post: Post) {
         if (post.image!!.isAnimated) {
-            if(post.image.isYouTube){
+            if (post.image.isYouTube) {
                 Navigation.instance.openYouTube(post.image.getYouTubeLink)
             } else {
                 Navigation.instance.openVideo(post)
             }
-        }
-        else Navigation.instance.openImageView(post)
+        } else Navigation.instance.openImageView(post)
     }
 
     interface View {
