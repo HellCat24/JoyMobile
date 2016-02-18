@@ -44,10 +44,16 @@ class Image(
     }
 
     val isAnimated: Boolean
-        get() = url != null && url.endsWith(".gif")
+        get() = url != null && (url.endsWith(".gif") || url.contains("youtube"))
 
     val isCoub: Boolean
         get() = url != null && url.contains("coub")
+
+    val isYouTube: Boolean
+        get() = url != null && url.contains("youtube")
+
+    val getYouTubeLink: String
+        get() = url?.replace("img.", "")!!.replace("vi/","watch?v=").replace("/0.jpg", "")
 
     val aspect: Float
         get() = getAspect(0f)

@@ -51,7 +51,6 @@ class PostActivity : ToolBarActivity() {
         list.layoutManager = LinearLayoutManager(this)
 
         val createComment = findViewById(R.id.createComment)
-        createComment.setOnClickListener { presenter.replyToPost() }
 
         presenter = ServiceLocator.resolve(object : PostPresenter.View {
 
@@ -65,6 +64,7 @@ class PostActivity : ToolBarActivity() {
 
             override fun updatePostInformation(post: Post) {
                 adapter.updatePostDetails(post)
+                createComment.setOnClickListener { presenter.replyToPost(post) }
             }
 
             override fun setIsBusy(isBusy: Boolean) {
@@ -104,7 +104,7 @@ class PostActivity : ToolBarActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.reply)
-            presenter.replyToPost()
+            //presenter.replyToPost()
         else if (item.itemId == R.id.openInBrowser)
             presenter.openPostInBrowser()
         else if (item.itemId == R.id.saveImageToGallery)

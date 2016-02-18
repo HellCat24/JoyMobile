@@ -86,9 +86,8 @@ class PostPresenter(
         // TODO:
     }
 
-    fun replyToPost() {
-        // TODO:
-        Navigation.instance.openCreateComment()
+    fun replyToPost(p : Post) {
+        Navigation.instance.openCreateComment(p)
     }
 
     fun showMoreImages() {

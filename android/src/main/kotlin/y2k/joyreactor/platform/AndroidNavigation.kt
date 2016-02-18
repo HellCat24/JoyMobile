@@ -6,19 +6,20 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.widget.Toast
-import y2k.joyreactor.*
+import y2k.joyreactor.Message
+import y2k.joyreactor.Post
 import y2k.joyreactor.common.ActivityLifecycleCallbacksAdapter
 import y2k.joyreactor.common.startActivity
-import y2k.joyreactor.ui.*
+import y2k.joyreactor.ui.MainActivity
 import y2k.joyreactor.ui.comments.CreateCommentActivity
-import y2k.joyreactor.ui.post.PostActivity
 import y2k.joyreactor.ui.post.GalleryActivity
+import y2k.joyreactor.ui.post.PostActivity
+import y2k.joyreactor.ui.post.ProfileSession
 import y2k.joyreactor.ui.post.VideoActivity
-import y2k.joyreactor.ui.profile.tags.AddTagDialogFragment
 import y2k.joyreactor.ui.profile.LoginActivity
 import y2k.joyreactor.ui.profile.message.DialogsActivity
 import y2k.joyreactor.ui.profile.message.MessagesActivity
+import y2k.joyreactor.ui.profile.tags.AddTagDialogFragment
 import y2k.joyreactor.ui.profile.tags.TagsActivity
 
 /**
@@ -26,7 +27,9 @@ import y2k.joyreactor.ui.profile.tags.TagsActivity
  */
 open class AndroidNavigation(app: Application) : Navigation {
 
-
+    override fun openYouTube(url: String) {
+        currentActivity?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    }
 
     internal var currentActivity: Activity? = null
 
@@ -39,9 +42,10 @@ open class AndroidNavigation(app: Application) : Navigation {
         currentActivity?.finish()
     }
 
-    //FIXME Add Action To Activity To Open Pofile Screen
     @Deprecated("Profile Activity is now Fragment")
-    override fun switchLoginToProfile() {
+    override fun switchLoginToProfile(token: String) {
+        //TODO Save Token
+        ProfileSession.saveToken(token)
         currentActivity?.startActivity(MainActivity::class)
         currentActivity?.finish()
     }
@@ -81,8 +85,8 @@ open class AndroidNavigation(app: Application) : Navigation {
         // TODO:
     }
 
-    override fun openCreateComment() {
-        currentActivity?.startActivity(CreateCommentActivity::class)
+    override fun openCreateComment(p: Post) {
+        CreateCommentActivity.startActivity(currentActivity, p)
     }
 
     //New transitions
@@ -99,7 +103,7 @@ open class AndroidNavigation(app: Application) : Navigation {
         currentActivity?.startActivity(LoginActivity::class)
     }
 
-    override fun openMessages(dialog : Message) {
+    override fun openMessages(dialog: Message) {
         MessagesActivity.startActivity(currentActivity, dialog)
     }
 

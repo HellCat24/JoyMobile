@@ -72,7 +72,13 @@ class PostListPresenter(
     }
 
     fun playClicked(post: Post) {
-        if (post.image!!.isAnimated) Navigation.instance.openVideo(post)
+        if (post.image!!.isAnimated) {
+            if(post.image.isYouTube){
+                Navigation.instance.openYouTube(post.image.getYouTubeLink)
+            } else {
+                Navigation.instance.openVideo(post)
+            }
+        }
         else Navigation.instance.openImageView(post)
     }
 

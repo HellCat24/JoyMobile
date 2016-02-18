@@ -1,5 +1,6 @@
 package y2k.joyreactor.services.requests
 
+import org.jsoup.Jsoup
 import rx.Observable
 import y2k.joyreactor.common.ioUnitObservable
 import y2k.joyreactor.http.HttpClient
@@ -15,20 +16,20 @@ class CreateCommentRequestFactory {
     fun create(postId: String, commentText: String): Observable<Unit> {
         return ioUnitObservable {
             HttpClient.instance
-                .beginForm()
-                .put("parent_id", commentId ?: "0")
-                .put("post_id", postId)
-                .put("token", getToken())
-                .put("comment_text", commentText)
-                .putHeader("X-Requested-With", "XMLHttpRequest")
-                .putHeader("Referer", "http://joyreactor.cc/post/" + postId)
-                .send("http://joyreactor.cc/post_comment/create")
+                    .beginForm()
+                    .put("parent_id", commentId ?: "0")
+                    .put("post_id", postId)
+                    .put("token", getToken())
+                    .put("comment_text", commentText)
+                    .putHeader("X-Requested-With", "XMLHttpRequest")
+                    .putHeader("Referer", "http://joyreactor.cc/post/" + postId)
+                    .send("http://joyreactor.cc/post_comment/create")
         }
     }
 
     private fun getToken(): String {
-        val document = HttpClient.instance.getText("http://joyreactor.cc/donate")
-        val m = TOKEN_REGEX.matcher(document)
+        var doc = Jsoup.connect("http://joyreactor.cc/donate").get().toString();
+        val m = TOKEN_REGEX.matcher(doc)
         if (!m.find()) throw IllegalStateException()
         return m.group(1)
     }

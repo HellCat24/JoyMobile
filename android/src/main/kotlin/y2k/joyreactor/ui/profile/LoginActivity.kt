@@ -24,9 +24,10 @@ class LoginActivity : AppCompatActivity(), LoginPresenter.View {
         val presenter = ServiceLocator.resolve(this)
 
         findViewById(R.id.login).setOnClickListener {
-            presenter.login(
-                "" + (findViewById(R.id.username) as TextView).text,
-                "" + (findViewById(R.id.password) as TextView).text)
+            val username = (findViewById(R.id.username) as TextView).text.toString()
+            val password = (findViewById(R.id.password) as TextView).text.toString()
+
+            presenter.login(username, password)
         }
     }
 

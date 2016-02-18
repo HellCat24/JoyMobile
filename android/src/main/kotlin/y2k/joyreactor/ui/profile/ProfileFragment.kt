@@ -1,6 +1,5 @@
 package y2k.joyreactor.ui.profile
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.view.LayoutInflater
@@ -14,8 +13,6 @@ import y2k.joyreactor.common.BaseFragment
 import y2k.joyreactor.common.ServiceLocator
 import y2k.joyreactor.common.isVisible
 import y2k.joyreactor.presenters.ProfilePresenter
-import y2k.joyreactor.ui.profile.message.DialogsActivity
-import y2k.joyreactor.ui.profile.tags.TagsActivity
 import y2k.joyreactor.view.WebImageView
 
 class ProfileFragment : BaseFragment() {
@@ -46,17 +43,16 @@ class ProfileFragment : BaseFragment() {
 
             when (menuItem.itemId) {
                 R.id.tags -> {
-
+                    presenter.openTags()
                     true
                 }
                 R.id.messages -> {
-                    startActivity(Intent(activity, DialogsActivity::class.java))
-                    activity.overridePendingTransition(0, 0);
+                    presenter.openDialogs()
                     true
                 }
                 R.id.log_in -> {
                     //TODO Add Log Out
-                    startActivity(Intent(activity, LoginActivity::class.java))
+                    presenter.openLogin()
                     true
                 }
                 else -> {

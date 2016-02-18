@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.TextView
 import org.ocpsoft.prettytime.PrettyTime
+import y2k.joyreactor.Image
 import y2k.joyreactor.Post
 import y2k.joyreactor.R
 import y2k.joyreactor.common.ComplexViewHolder
@@ -80,7 +81,7 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
             if (i.image == null) {
                 imagePanel.visibility = View.GONE
             } else {
-                processCoub(i)
+                processCoub(i.image as Image)
             }
 
             userImage.setImage(i.getUserImage2().toImage())
@@ -91,16 +92,16 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
             time.text = prettyTime.format(i.created)
         }
 
-        private fun processCoub(i: Post) {
-            if (i.image!!.isCoub) {
+        private fun processCoub(i: Image) {
+            if (i.isCoub) {
                 coubPlayer.visibility = View.VISIBLE
                 imagePanel.visibility = View.GONE
-                PostUtils.loadCoub(coubPlayer, i.image?.url)
+                PostUtils.loadCoub(coubPlayer, i.url)
             } else {
                 coubPlayer.visibility = View.INVISIBLE
                 imagePanel.visibility = View.VISIBLE
-                imagePanel.setAspect(i.image!!.getAspect(0.5f))
-                image.setImage(i.image)
+                imagePanel.setAspect(i.getAspect(0.5f))
+                image.setImage(i)
             }
         }
     }

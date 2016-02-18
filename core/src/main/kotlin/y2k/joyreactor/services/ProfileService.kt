@@ -14,7 +14,7 @@ class ProfileService(
     private val profileRequestFactory: ProfileRequestFactory,
     private val loginRequestFactory: LoginRequestFactory) {
 
-    fun login(username: String, password: String): Observable<Unit> {
+    fun login(username: String, password: String): Observable<String> {
         return loginRequestFactory.request(username, password)
     }
 

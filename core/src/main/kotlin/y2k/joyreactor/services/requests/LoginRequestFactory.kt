@@ -9,16 +9,9 @@ import y2k.joyreactor.http.HttpClient
  */
 class LoginRequestFactory {
 
-    fun request(username: String, password: String): Observable<Unit> {
+    fun request(username: String, password: String): Observable<String> {
         return ioObservable {
-            val doc = HttpClient.instance
-                .beginForm()
-                .put("signin[username]", username)
-                .put("signin[password]", password)
-                .put("signin[remember]", "on")
-                .put("signin[_csrf_token]", getCsrf())
-                .send("http://joyreactor.cc/login")
-
+            getCsrf(username, password)
             //            System.out.println(doc.html());
 
             // FIXME:
@@ -27,8 +20,16 @@ class LoginRequestFactory {
         }
     }
 
-    private fun getCsrf(): String {
+    private fun getCsrf(username: String, password: String): String {
         val document = HttpClient.instance.getDocument("http://joyreactor.cc/login")
-        return document.getElementById("signin__csrf_token").attr("value")
+        val token = document.getElementById("signin__csrf_token").attr("value")
+        HttpClient.instance
+                .beginForm()
+                .put("signin[username]", username)
+                .put("signin[password]", password)
+                .put("signin[remember]", "on")
+                .put("signin[_csrf_token]", token)
+                .send("http://joyreactor.cc/login")
+        return token
     }
 }

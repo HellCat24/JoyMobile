@@ -9,18 +9,18 @@ import y2k.joyreactor.services.requests.PostRequest
  * Created by y2k on 04/12/15.
  */
 class CommentService(
-    private val requestFactory: CreateCommentRequestFactory,
-    private val postRequest: PostRequest,
-    private val postBuffer: MemoryBuffer) {
+        private val requestFactory: CreateCommentRequestFactory,
+        private val postRequest: PostRequest,
+        private val postBuffer: MemoryBuffer) {
 
     fun createComment(postId: String, commentText: String): Observable<Unit> {
         return requestFactory
-            .create(postId, commentText)
-            .flatMap {
-                ioObservable {
-                    postRequest.request(postId);
-                    postBuffer.updatePost(postRequest)
+                .create(postId, commentText)
+                .flatMap {
+                    ioObservable {
+                        postRequest.request(postId.toString());
+                        postBuffer.updatePost(postRequest)
+                    }
                 }
-            }
     }
 }

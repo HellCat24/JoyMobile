@@ -9,5 +9,4 @@
     <dimen name="dimen_small">4dp</dimen>
     <dimen name="profile_image_size">64dp</dimen>
     <dimen name="dimen_big">16dp</dimen>
-    <dimen name="dimen_medium">8dp</dimen>
 </resources>
