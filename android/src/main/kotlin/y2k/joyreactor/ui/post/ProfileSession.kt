@@ -24,4 +24,8 @@ object ProfileSession {
         val preferences = context.getSharedPreferences(TAG, Context.MODE_PRIVATE)
         return preferences.getString(TAG, "")
     }
+
+    fun isActive(): Boolean {
+        return getToken().length != 0
+    }
 }

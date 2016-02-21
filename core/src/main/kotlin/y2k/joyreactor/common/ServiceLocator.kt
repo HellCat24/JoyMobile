@@ -29,22 +29,22 @@ object ServiceLocator {
 
         add(PostService::class) {
             PostService(
-                resolve(OriginalImageRequestFactory::class),
-                resolve(PostRequest::class),
-                resolve(MemoryBuffer::class),
-                resolve(DataContext.Factory::class))
+                    resolve(OriginalImageRequestFactory::class),
+                    resolve(PostRequest::class),
+                    resolve(MemoryBuffer::class),
+                    resolve(DataContext.Factory::class))
         }
         add(TagService::class) {
             TagService(
-                resolve(DataContext.Factory::class),
-                resolve(PostsForTagRequest::class),
-                resolve(PostMerger::class))
+                    resolve(DataContext.Factory::class),
+                    resolve(PostsForTagRequest::class),
+                    resolve(PostMerger::class))
         }
         add(TagListService::class) {
             TagListService(
-                resolve(DataContext.Factory::class),
-                resolve(UserNameRequest::class),
-                resolve(MyTagFetcher::class))
+                    resolve(DataContext.Factory::class),
+                    resolve(UserNameRequest::class),
+                    resolve(MyTagFetcher::class))
         }
         add(ProfileService::class) {
             ProfileService(resolve(ProfileRequestFactory::class), resolve(LoginRequestFactory::class))
@@ -54,9 +54,9 @@ object ServiceLocator {
         }
         add(CommentService::class) {
             CommentService(
-                resolve(CreateCommentRequestFactory::class),
-                resolve(PostRequest::class),
-                resolve(MemoryBuffer::class))
+                    resolve(CreateCommentRequestFactory::class),
+                    resolve(PostRequest::class),
+                    resolve(MemoryBuffer::class))
         }
     }
 
@@ -69,7 +69,7 @@ object ServiceLocator {
     }
 
     fun resolve(lifeCycleService: LifeCycleService, view: PostListPresenter.View): PostListPresenter {
-        return PostListPresenter(view, resolve(TagService::class), lifeCycleService)
+        return PostListPresenter(view, resolve(TagService::class), resolve(ProfileService::class), lifeCycleService)
     }
 
     fun resolve(view: PostPresenter.View): PostPresenter {
@@ -78,9 +78,9 @@ object ServiceLocator {
 
     fun resolve(lifeCycleService: LifeCycleService, view: TagListPresenter.View): TagListPresenter {
         return TagListPresenter(view,
-            resolve(TagListService::class),
-            resolve(BroadcastService::class),
-            lifeCycleService)
+                resolve(TagListService::class),
+                resolve(BroadcastService::class),
+                lifeCycleService)
     }
 
     fun resolve(view: ProfilePresenter.View): ProfilePresenter {

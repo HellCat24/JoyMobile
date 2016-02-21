@@ -10,6 +10,7 @@ import java.util.*
 class Post(
     val title: String,
     val image: Image?,
+    val images: List<Image>,
     val userImage: String,
     val userName: String,
     val created: Date,

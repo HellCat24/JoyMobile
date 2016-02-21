@@ -5,11 +5,9 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -27,7 +25,6 @@ import y2k.joyreactor.view.ImagePanel
 import y2k.joyreactor.view.LargeImageView
 import y2k.joyreactor.view.WebImageView
 import java.io.File
-import java.util.*
 
 class PostActivity : ToolBarActivity() {
 
@@ -104,12 +101,12 @@ class PostActivity : ToolBarActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.reply)
-            //presenter.replyToPost()
+        //presenter.replyToPost()
         else if (item.itemId == R.id.openInBrowser)
             presenter.openPostInBrowser()
         else if (item.itemId == R.id.saveImageToGallery)
             saveImageToGallery()
-        else if(item.itemId == android.R.id.home)
+        else if (item.itemId == android.R.id.home)
             onBackPressed()
         else
             super.onOptionsItemSelected(item)
@@ -172,17 +169,14 @@ class PostActivity : ToolBarActivity() {
         }
 
         internal inner class HeaderViewHolder(parent: ViewGroup) :
-            ComplexViewHolder(parent.inflate(R.layout.layout_post)) {
+                ComplexViewHolder(parent.inflate(R.layout.layout_post)) {
 
             var image: LargeImageView
-            var imagePanel: ImagePanel
             var posterPanel: FixedAspectPanel
 
             init {
                 image = itemView.findViewById(R.id.image) as LargeImageView
-                imagePanel = itemView.findViewById(R.id.images) as ImagePanel
                 posterPanel = itemView.findViewById(R.id.posterPanel) as FixedAspectPanel
-                itemView.findViewById(R.id.showMoreImages).setOnClickListener { presenter.showMoreImages() }
             }
 
             override fun bind() {
@@ -193,13 +187,11 @@ class PostActivity : ToolBarActivity() {
                 }
 
                 imagePath?.let { image.setImage(it) }
-
-                imagePanel.setImages(images)
             }
         }
 
         internal inner class CommentViewHolder(parent: ViewGroup) :
-            ComplexViewHolder(parent.inflate(R.layout.item_comment)) {
+                ComplexViewHolder(parent.inflate(R.layout.item_comment)) {
 
             var rating: TextView
             var text: TextView

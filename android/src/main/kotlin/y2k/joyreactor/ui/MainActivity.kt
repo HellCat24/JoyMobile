@@ -32,9 +32,9 @@ class MainActivity : ToolBarActivity() {
 
     fun setupViewPager(viewPager: ViewPager) {
         var adapter = ViewPagerAdapter(supportFragmentManager);
-        adapter.addFragment(NewPostsFragment(), "New");
+        //adapter.addFragment(NewPostsFragment(), "New");
         adapter.addFragment(GoodPostsFragment(), "Good");
-        adapter.addFragment(BestPostsFragment(), "Best");
+        //adapter.addFragment(BestPostsFragment(), "Best");
         adapter.addFragment(ProfileFragment(), "Profile");
         viewPager.adapter = adapter;
     }

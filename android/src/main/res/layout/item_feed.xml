@@ -9,6 +9,14 @@
     android:orientation="vertical"
     app:cardCornerRadius="4dp">
 
+    <TextView
+        android:id="@+id/text_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dimen_medium"
+        android:textSize="14sp"
+        android:visibility="gone"/>
+
     <!-- Ignore the warning -->
     <RelativeLayout
         android:id="@+id/image_container"
@@ -45,6 +53,17 @@
             android:visibility="invisible"/>
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/btn_expand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/darker_gray"
+        android:gravity="right"
+        android:padding="@dimen/dimen_medium"
+        android:text="@string/show_more"
+        android:textColor="@color/grey"
+        android:visibility="visible"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -111,35 +130,35 @@
             android:textColor="#a9a9a9"
             android:textSize="12sp"/>
 
-        <ImageButton
-            android:id="@+id/btn_post_like"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignTop="@+id/userImagePanel"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/btn_post_dislike"
-            android:layout_toStartOf="@+id/btn_post_dislike"
-            android:background="@drawable/like_backgroud"/>
-
-        <ImageButton
-            android:id="@+id/btn_post_dislike"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignRight="@+id/time"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_small"
-            android:background="@drawable/dislike_background"/>
-
         <TextView
+            android:id="@+id/txt_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txt_rating"
-            android:layout_alignBottom="@+id/btn_post_like"
-            android:layout_toLeftOf="@+id/btn_post_like"
-            android:layout_toStartOf="@+id/btn_post_like"
+            android:layout_alignRight="@+id/time"
             android:layout_centerVertical="true"
             android:padding="@dimen/dimen_medium"/>
 
-    </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/like_dislike_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/time"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
+            <ImageButton
+                android:id="@+id/btn_post_like"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/like_backgroud"/>
+
+            <ImageButton
+                android:id="@+id/btn_post_dislike"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="@dimen/dimen_small"
+                android:background="@drawable/dislike_background"/>
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

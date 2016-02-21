@@ -15,8 +15,10 @@ class CookieStorage {
         if (map.isEmpty) return
 
         val cookie = StringBuilder()
-        for (key in map.keySet())
+        for (key in map.keySet()){
             cookie.append(key).append("=").append(map.get(key)).append("; ")
+        }
+
         connection.addRequestProperty("Cookie", cookie.toString())
     }
 

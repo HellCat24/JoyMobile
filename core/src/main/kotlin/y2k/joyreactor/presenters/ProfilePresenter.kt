@@ -14,17 +14,17 @@ class ProfilePresenter(
     private val service: ProfileService,
     private val navigation: Navigation) {
 
-    init {
+    fun loadProfile() {
         view.setBusy(true)
-        service
-            .getProfile()
-            .subscribeOnMain({
-                view.setProfile(it)
-                view.setBusy(false)
-            }, {
-                it.printStackTrace()
-                //Navigation.instance.switchProfileToLogin()
-            })
+        service.getProfile()
+                .subscribeOnMain({
+                    view.setProfile(it)
+                    view.setBusy(false)
+                }, {
+                    it.printStackTrace()
+                    view.setBusy(false)
+                    view.hideProfileMenu()
+                })
     }
 
     fun logout() {
@@ -48,5 +48,7 @@ class ProfilePresenter(
         fun setProfile(profile: Profile)
 
         fun setBusy(isBusy: Boolean)
+
+        fun hideProfileMenu()
     }
 }

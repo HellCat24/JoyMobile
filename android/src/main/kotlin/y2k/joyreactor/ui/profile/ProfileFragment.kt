@@ -17,11 +17,17 @@ import y2k.joyreactor.view.WebImageView
 
 class ProfileFragment : BaseFragment() {
 
+    lateinit var presenter: ProfilePresenter
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         var navigationView = view.findViewById(R.id.navigation_view) as NavigationView
 
-        val presenter = ServiceLocator.resolve(object : ProfilePresenter.View {
+        presenter = ServiceLocator.resolve(object : ProfilePresenter.View {
+
+            override fun hideProfileMenu() {
+                navigationView.visibility = View.GONE
+            }
 
             override fun setProfile(profile: Profile) {
                 (navigationView.findViewById(R.id.avatar) as WebImageView).setImage(profile.userImage)
@@ -34,6 +40,8 @@ class ProfileFragment : BaseFragment() {
                 view.findViewById(R.id.progress).isVisible = isBusy
             }
         })
+
+        view.findViewById(R.id.btn_login).setOnClickListener { presenter.openLogin() };
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             if (menuItem.isChecked)
@@ -50,9 +58,8 @@ class ProfileFragment : BaseFragment() {
                     presenter.openDialogs()
                     true
                 }
-                R.id.log_in -> {
-                    //TODO Add Log Out
-                    presenter.openLogin()
+                R.id.log_out -> {
+                    presenter.logout()
                     true
                 }
                 else -> {
@@ -63,5 +70,10 @@ class ProfileFragment : BaseFragment() {
         }
 
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.loadProfile()
     }
 }

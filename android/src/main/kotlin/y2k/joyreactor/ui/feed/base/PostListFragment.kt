@@ -40,6 +40,10 @@ abstract class PostListFragment() : BaseFragment() {
         presenter = ServiceLocator.resolve(lifeCycleService,
                 object : PostListPresenter.View {
 
+                    override fun setLikesDislikesEnable() {
+                        adapter.setLikesDislikesEnable()
+                    }
+
                     override fun addNewPosts(posts: List<Post>) {
                         adapter.addData(posts)
                     }
@@ -77,7 +81,7 @@ abstract class PostListFragment() : BaseFragment() {
         }
     }
 
-    inner class PreLoadLayoutManager(context : Context) : LinearLayoutManager(context) {
+    inner class PreLoadLayoutManager(context: Context) : LinearLayoutManager(context) {
 
         // To pre-load next picture in the feed
         override fun getExtraLayoutSpace(state: RecyclerView.State?): Int {

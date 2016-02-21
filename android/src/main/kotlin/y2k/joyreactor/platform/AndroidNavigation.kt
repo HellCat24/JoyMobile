@@ -38,13 +38,12 @@ open class AndroidNavigation(app: Application) : Navigation {
     }
 
     override fun switchProfileToLogin() {
-        currentActivity?.startActivity(LoginActivity::class)
+        currentActivity?.startActivity(MainActivity::class)
         currentActivity?.finish()
     }
 
     @Deprecated("Profile Activity is now Fragment")
     override fun switchLoginToProfile(token: String) {
-        //TODO Save Token
         ProfileSession.saveToken(token)
         currentActivity?.startActivity(MainActivity::class)
         currentActivity?.finish()
@@ -78,7 +77,7 @@ open class AndroidNavigation(app: Application) : Navigation {
     override fun openVideo(postId: String) {
         sPostIdArgument = postId // TODO:
         currentActivity?.startActivity(VideoActivity::class)
-        currentActivity?.overridePendingTransition(0, 0);
+        currentActivity?.overridePendingTransition(0, 0)
     }
 
     override fun openImageView(post: Post) {
@@ -101,6 +100,7 @@ open class AndroidNavigation(app: Application) : Navigation {
 
     override fun openLogin() {
         currentActivity?.startActivity(LoginActivity::class)
+        currentActivity?.overridePendingTransition(0, 0)
     }
 
     override fun openMessages(dialog: Message) {

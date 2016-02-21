@@ -9,26 +9,27 @@ import y2k.joyreactor.Tag
 import y2k.joyreactor.http.HttpClient
 import java.util.*
 import java.util.regex.Pattern
+import kotlin.properties.Delegates
 
 /**
  * Created by y2k on 9/26/15.
  */
 class PostsForTagRequest {
 
-    fun requestAsync(tagId: Tag, pageId: String? = null, type : String): Observable<Data> {
+    fun requestAsync(tagId: Tag, pageId: String? = null, type: String): Observable<Data> {
         return Observable
-            .fromCallable {
-                val url = UrlBuilder().build(tagId, pageId, type)
-                val doc = HttpClient.instance.getDocument(url)
+                .fromCallable {
+                    val url = UrlBuilder().build(tagId, pageId, type)
+                    val doc = HttpClient.instance.getDocument(url)
 
-                val posts = ArrayList<Post>()
-                for (e in doc.select("div.postContainer"))
-                    posts.add(newPost(e))
+                    val posts = ArrayList<Post>()
+                    for (e in doc.select("div.postContainer"))
+                        posts.add(newPost(e))
 
-                val next = doc.select("a.next").first()
-                Data(posts, next?.let { extractNumberFromEnd(next.attr("href")) })
-            }
-            .subscribeOn(Schedulers.io())
+                    val next = doc.select("a.next").first()
+                    Data(posts, next?.let { extractNumberFromEnd(next.attr("href")) })
+                }
+                .subscribeOn(Schedulers.io())
     }
 
     internal class PostParser(private val element: Element) {
@@ -61,20 +62,34 @@ class PostsForTagRequest {
         }
     }
 
-    internal class ThumbnailParser(private val element: Element) {
+    internal class ImageThumbnailParser(private val element: Element) {
+
+        var imagesList by Delegates.notNull<MutableList<Image>>()
+
+        fun getExpandedImages(): MutableList<Image> {
+            return imagesList;
+        }
 
         fun load(): Image? {
-            val img = element.select("div.post_content img").first()
-            if (img != null && img.hasAttr("width")) {
-                return Image(
-                    if (hasFull(img))
-                        img.parent().attr("href").replace("(/full/).+(-\\d+\\.)".toRegex(), "$1$2")
-                    else
-                        img.attr("src").replace("(/post/).+(-\\d+\\.)".toRegex(), "$1$2"),
-                    Integer.parseInt(img.attr("width")),
-                    Integer.parseInt(img.attr("height")))
+            imagesList = ArrayList<Image>();
+            val imgList = element.select("div.post_content img")
+            for (img in imgList) {
+                if (img != null && img.hasAttr("width")) {
+                    imagesList.add(Image(
+                            if (hasFull(img))
+                                img.parent().attr("href").replace("(/full/).+(-\\d+\\.)".toRegex(), "$1$2")
+                            else
+                                img.attr("src").replace("(/post/).+(-\\d+\\.)".toRegex(), "$1$2"),
+                            Integer.parseInt(img.attr("width")),
+                            Integer.parseInt(img.attr("height"))))
+                }
             }
-            return null
+
+            if (imagesList.size > 0) {
+                return imagesList[0];
+            } else {
+                return null;
+            }
         }
 
         private fun hasFull(img: Element): Boolean {
@@ -89,9 +104,9 @@ class PostsForTagRequest {
             val m = SRC_PATTERN.matcher(iframe.attr("src"))
             if (!m.find()) throw IllegalStateException(iframe.attr("src"))
             return Image(
-                "http://img.youtube.com/vi/" + m.group(1) + "/0.jpg",
-                Integer.parseInt(iframe.attr("width")),
-                Integer.parseInt(iframe.attr("height")))
+                    "http://img.youtube.com/vi/" + m.group(1) + "/0.jpg",
+                    Integer.parseInt(iframe.attr("width")),
+                    Integer.parseInt(iframe.attr("height")))
         }
 
         companion object {
@@ -113,7 +128,7 @@ class PostsForTagRequest {
         }
     }
 
-    internal class VideoThumbnailParser(private val element: Element) {
+    internal class GifThumbnailParser(private val element: Element) {
 
         fun load(): Image? {
             val video = element.select("video[poster]").first() ?: return null
@@ -134,22 +149,24 @@ class PostsForTagRequest {
     companion object {
 
         internal fun newPost(element: Element): Post {
-            var image = ThumbnailParser(element).load()
+            val imageThumbnailParser = ImageThumbnailParser(element)
+            var image = imageThumbnailParser.load()
             if (image == null) image = YoutubeThumbnailParser(element).load()
-            if (image == null) image = VideoThumbnailParser(element).load()
+            if (image == null) image = GifThumbnailParser(element).load()
             if (image == null) image = CoubThumbnailParser(element).load()
 
             val parser = PostParser(element)
 
             return Post(
-                element.select("div.post_content").text(),
-                image,
-                element.select("div.uhead_nick > img").attr("src"),
-                element.select("div.uhead_nick > a").text(),
-                parser.created,
-                extractNumberFromEnd(element.id()),
-                parser.commentCount,
-                parser.rating)
+                    element.select("div.post_content").text(),
+                    image,
+                    imageThumbnailParser.getExpandedImages(),
+                    element.select("div.uhead_nick > img").attr("src"),
+                    element.select("div.uhead_nick > a").text(),
+                    parser.created,
+                    extractNumberFromEnd(element.id()),
+                    parser.commentCount,
+                    parser.rating)
         }
 
         private fun extractNumberFromEnd(text: String): String {

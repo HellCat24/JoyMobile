@@ -38,10 +38,6 @@ class PostPresenter(
                     }
 
                 service
-                    .getSimilarPosts(post.id)
-                    .subscribeOnMain { view.updateSimilarPosts(it) }
-
-                service
                     .mainImagePartial(post.serverId)
                     .subscribeOnMain { partial ->
                         if (partial.result == null) {

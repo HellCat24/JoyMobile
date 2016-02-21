@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import org.ocpsoft.prettytime.PrettyTime
 import y2k.joyreactor.Image
@@ -24,6 +25,7 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
 
     private val prettyTime = PrettyTime()
     private val posts = ArrayList<Post?>()
+    private var isLikesDislikesEnabled = false;
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, itemType: Int): ComplexViewHolder {
         return PostViewHolder(viewGroup)
@@ -45,8 +47,11 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
     fun reloadData(posts: List<Post>, divider: Int?) {
         this.posts.clear()
         this.posts.addAll(posts)
-        //divider?.let { this.posts.add(it, null) }
         notifyDataSetChanged()
+    }
+
+    fun setLikesDislikesEnable() {
+        isLikesDislikesEnabled = true;
     }
 
     inner class PostViewHolder(parent: ViewGroup) :
@@ -60,7 +65,11 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
         val time: TextView
         val userName: TextView
         val rating: TextView
+        val textContent: TextView
         val coubPlayer: WebView
+        val likeDislikeHolder: View
+        val imageContainer: RelativeLayout
+        val btnExpand: TextView
 
         init {
             image = itemView.findViewById(R.id.image) as WebImageView
@@ -71,28 +80,55 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
             time = itemView.findViewById(R.id.time) as TextView
             userName = itemView.findViewById(R.id.userName) as TextView
             rating = itemView.findViewById(R.id.txt_rating) as TextView
+            textContent = itemView.findViewById(R.id.text_content) as TextView
             coubPlayer = itemView.findViewById(R.id.coub_view) as WebView
+            btnExpand = itemView.findViewById(R.id.btn_expand) as TextView
+            likeDislikeHolder = itemView.findViewById(R.id.like_dislike_holder) as View
+            imageContainer = itemView.findViewById(R.id.image_container) as RelativeLayout
+
+            likeDislikeHolder.visibility = if (isLikesDislikesEnabled) View.VISIBLE else View.GONE
+            rating.visibility = if (!isLikesDislikesEnabled) View.VISIBLE else View.GONE
 
             itemView.findViewById(R.id.card).setOnClickListener { presenter.postClicked(posts[adapterPosition]!!) }
             itemView.findViewById(R.id.videoMark).setOnClickListener { presenter.playClicked(posts[adapterPosition]!!) }
+            itemView.findViewById(R.id.btn_post_like).setOnClickListener { presenter.likePost(posts[adapterPosition]!!) }
+            itemView.findViewById(R.id.btn_post_dislike).setOnClickListener { presenter.dislikePost(posts[adapterPosition]!!) }
         }
 
         override fun bind() {
             val post = posts[adapterPosition]!!
 
-            if (post.image == null) {
-                imagePanel.visibility = View.GONE
+            userName.text = post.userName
+            rating.text = post.rating.toString()
+            time.text = prettyTime.format(post.created)
+            commentCount.text = post.commentCount.toString()
+
+            if (post.image == null || post.image?.url?.isEmpty()!!) {
+                imageContainer.visibility = View.GONE
             } else {
+                btnExpand.visibility = if (post.images.size > 1) View.VISIBLE else View.GONE
                 processCoub(post.image as Image)
             }
 
-            userImage.setImage(post.getUserImage2().toImage())
-            userName.text = post.userName
-            videoMark.visibility = if (post.image?.isAnimated ?: false) View.VISIBLE else View.GONE
-            rating.text = post.rating.toString()
+            btnExpand.setOnClickListener {
+                var images = post.images.subList(1, post.images.size)
+                for (img in images) {
+                    var imgView: WebImageView = WebImageView(image.context, null)
+                    imgView.setImage(img)
+                    imageContainer.addView(imgView)
+                    notifyItemChanged(adapterPosition)
+                }
+            }
 
-            commentCount.text = post.commentCount.toString()
-            time.text = prettyTime.format(post.created)
+            userImage.setImage(post.getUserImage2().toImage())
+            videoMark.visibility = if (post.image?.isAnimated ?: false) View.VISIBLE else View.GONE
+
+            if (!post.title.isEmpty()) {
+                textContent.visibility = View.VISIBLE
+                textContent.text = post.title
+            } else {
+                textContent.visibility = View.GONE
+            }
         }
 
         private fun processCoub(i: Image) {

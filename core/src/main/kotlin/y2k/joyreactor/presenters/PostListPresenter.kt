@@ -7,6 +7,7 @@ import y2k.joyreactor.common.subscribeOnMain
 import y2k.joyreactor.platform.Navigation
 import y2k.joyreactor.services.BroadcastService
 import y2k.joyreactor.services.LifeCycleService
+import y2k.joyreactor.services.ProfileService
 import y2k.joyreactor.services.TagService
 
 /**
@@ -15,6 +16,7 @@ import y2k.joyreactor.services.TagService
 class PostListPresenter(
         private val view: PostListPresenter.View,
         private val service: TagService,
+        private val userService: ProfileService,
         private val lifeCycleService: LifeCycleService) {
 
     init {
@@ -29,6 +31,10 @@ class PostListPresenter(
             view.setHasNewPosts(false)
             view.addNewPosts(data.posts)
         }
+
+        userService
+                .isAuthorized()
+                .subscribeOnMain { if (it) view.setLikesDislikesEnable() }
     }
 
     fun applyNew() {
@@ -64,6 +70,14 @@ class PostListPresenter(
         Navigation.instance.openPost(post.serverId!!)
     }
 
+    fun likePost(post: Post) {
+        //TODO
+    }
+
+    fun dislikePost(post: Post) {
+       //TODO
+    }
+
     fun playClicked(post: Post) {
         if (post.image!!.isAnimated) {
             if (post.image.isYouTube) {
@@ -85,5 +99,7 @@ class PostListPresenter(
         fun setHasNewPosts(hasNewPosts: Boolean)
 
         fun getPostType(): String
+
+        fun setLikesDislikesEnable()
     }
 }
