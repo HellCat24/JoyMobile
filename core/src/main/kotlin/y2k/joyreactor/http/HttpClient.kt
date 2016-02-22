@@ -129,8 +129,16 @@ open class HttpClient protected constructor() {
         }
 
         fun send(url: String): Document {
+            return execute(url, "POST")
+        }
+
+        fun get(url: String): Document {
+            return execute(url, "GET")
+        }
+
+        private fun execute(url: String, requestMethod: String): Document {
             val connection = createConnection(url)
-            connection.requestMethod = "POST"
+            connection.requestMethod = requestMethod
             connection.instanceFollowRedirects = false
             connection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded")
             for (name in headers.keys)

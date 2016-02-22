@@ -52,6 +52,7 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
 
     fun setLikesDislikesEnable() {
         isLikesDislikesEnabled = true;
+        notifyDataSetChanged()
     }
 
     inner class PostViewHolder(parent: ViewGroup) :
@@ -86,13 +87,10 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
             likeDislikeHolder = itemView.findViewById(R.id.like_dislike_holder) as View
             imageContainer = itemView.findViewById(R.id.image_container) as RelativeLayout
 
-            likeDislikeHolder.visibility = if (isLikesDislikesEnabled) View.VISIBLE else View.GONE
-            rating.visibility = if (!isLikesDislikesEnabled) View.VISIBLE else View.GONE
-
             itemView.findViewById(R.id.card).setOnClickListener { presenter.postClicked(posts[adapterPosition]!!) }
             itemView.findViewById(R.id.videoMark).setOnClickListener { presenter.playClicked(posts[adapterPosition]!!) }
-            itemView.findViewById(R.id.btn_post_like).setOnClickListener { presenter.likePost(posts[adapterPosition]!!) }
-            itemView.findViewById(R.id.btn_post_dislike).setOnClickListener { presenter.dislikePost(posts[adapterPosition]!!) }
+            itemView.findViewById(R.id.btn_post_like).setOnClickListener { presenter.like(posts[adapterPosition]!!.serverId) }
+            itemView.findViewById(R.id.btn_post_dislike).setOnClickListener { presenter.disLike(posts[adapterPosition]!!.serverId) }
         }
 
         override fun bind() {
@@ -109,6 +107,9 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
                 btnExpand.visibility = if (post.images.size > 1) View.VISIBLE else View.GONE
                 processCoub(post.image as Image)
             }
+
+            likeDislikeHolder.visibility = if (isLikesDislikesEnabled) View.VISIBLE else View.GONE
+            rating.visibility = if (isLikesDislikesEnabled) View.GONE else View.VISIBLE
 
             btnExpand.setOnClickListener {
                 var images = post.images.subList(1, post.images.size)

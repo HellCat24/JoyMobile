@@ -9,6 +9,7 @@ import y2k.joyreactor.services.BroadcastService
 import y2k.joyreactor.services.LifeCycleService
 import y2k.joyreactor.services.ProfileService
 import y2k.joyreactor.services.TagService
+import y2k.joyreactor.services.requests.LikeDislikeService
 
 /**
  * Created by y2k on 9/26/15.
@@ -17,7 +18,8 @@ class PostListPresenter(
         private val view: PostListPresenter.View,
         private val service: TagService,
         private val userService: ProfileService,
-        private val lifeCycleService: LifeCycleService) {
+        private val lifeCycleService: LifeCycleService,
+        private val likeDislikeService: LikeDislikeService) {
 
     init {
         lifeCycleService.add(BroadcastService.TagSelected::class) { currentTagChanged(it.tag) }
@@ -70,12 +72,18 @@ class PostListPresenter(
         Navigation.instance.openPost(post.serverId!!)
     }
 
-    fun likePost(post: Post) {
-        //TODO
+    fun like(serverPostId: String) {
+        likeDislikeService.like(serverPostId)
+                .subscribeOnMain {
+                    //Navigation.instance.closeCreateComment()
+                }
     }
 
-    fun dislikePost(post: Post) {
-       //TODO
+    fun disLike(serverPostId: String) {
+        likeDislikeService.dislike(serverPostId)
+                .subscribeOnMain {
+                    //Navigation.instance.closeCreateComment()
+                }
     }
 
     fun playClicked(post: Post) {
@@ -101,5 +109,6 @@ class PostListPresenter(
         fun getPostType(): String
 
         fun setLikesDislikesEnable()
+
     }
 }

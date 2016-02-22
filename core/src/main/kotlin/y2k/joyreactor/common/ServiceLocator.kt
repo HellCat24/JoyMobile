@@ -34,6 +34,12 @@ object ServiceLocator {
                     resolve(MemoryBuffer::class),
                     resolve(DataContext.Factory::class))
         }
+        add(LikeDislikeService::class) {
+            LikeDislikeService(
+                    resolve(LikeDislikeRequest::class),
+                    resolve(PostRequest::class),
+                    resolve(MemoryBuffer::class))
+        }
         add(TagService::class) {
             TagService(
                     resolve(DataContext.Factory::class),
@@ -69,7 +75,7 @@ object ServiceLocator {
     }
 
     fun resolve(lifeCycleService: LifeCycleService, view: PostListPresenter.View): PostListPresenter {
-        return PostListPresenter(view, resolve(TagService::class), resolve(ProfileService::class), lifeCycleService)
+        return PostListPresenter(view, resolve(TagService::class), resolve(ProfileService::class), lifeCycleService,  resolve(LikeDislikeService::class))
     }
 
     fun resolve(view: PostPresenter.View): PostPresenter {
