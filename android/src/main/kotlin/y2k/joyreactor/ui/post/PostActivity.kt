@@ -1,6 +1,7 @@
 package y2k.joyreactor.ui.post
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -20,6 +21,7 @@ import y2k.joyreactor.*
 import y2k.joyreactor.common.*
 import y2k.joyreactor.presenters.PostPresenter
 import y2k.joyreactor.ui.base.ToolBarActivity
+import y2k.joyreactor.ui.comments.CreateCommentActivity
 import y2k.joyreactor.view.FixedAspectPanel
 import y2k.joyreactor.view.ImagePanel
 import y2k.joyreactor.view.LargeImageView
@@ -94,6 +96,14 @@ class PostActivity : ToolBarActivity() {
         })
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode ==  CreateCommentActivity.ACTION_CREATE_COMMENT && resultCode == RESULT_OK){
+            var userComment = data?.getSerializableExtra("comment") as Comment
+            adapter.addUserComment(userComment)
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_post, menu)
         return true
@@ -156,6 +166,10 @@ class PostActivity : ToolBarActivity() {
         fun updatePostComments(comments: CommentGroup) {
             this.comments = comments
             notifyDataSetChanged()
+        }
+
+        fun addUserComment(comment: Comment?) {
+            comments?.add(comment)
         }
 
         fun updatePostDetails(post: Post) {

@@ -40,6 +40,10 @@ abstract class PostListFragment() : BaseFragment() {
         presenter = ServiceLocator.resolve(lifeCycleService,
                 object : PostListPresenter.View {
 
+                    override fun updatePostRating(post: Post) {
+                       adapter.updatePostRating(post)
+                    }
+
                     override fun setLikesDislikesEnable() {
                         adapter.setLikesDislikesEnable()
                     }

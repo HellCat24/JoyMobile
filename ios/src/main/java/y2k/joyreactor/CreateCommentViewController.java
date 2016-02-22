@@ -1,5 +1,6 @@
 package y2k.joyreactor;
 
+import org.jetbrains.annotations.NotNull;
 import org.robovm.apple.uikit.UIButton;
 import org.robovm.apple.uikit.UITextView;
 import org.robovm.apple.uikit.UIViewController;
@@ -25,8 +26,9 @@ public class CreateCommentViewController extends UIViewController implements Cre
         CreateCommentPresenter presenter = ServiceLocator.INSTANCE.resolve(this);
         cancelButton.addOnTouchUpInsideListener(
                 (sender, e) -> getNavigationController().popViewController(true));
-        sendButton.addOnTouchUpInsideListener(
-                (sender, e) -> presenter.create(commentTextView.getText()));
+        //FIXME
+       /* sendButton.addOnTouchUpInsideListener(
+                (sender, e) -> presenter.create(commentTextView.getText()));*/
     }
 
     // ==========================================
@@ -60,5 +62,10 @@ public class CreateCommentViewController extends UIViewController implements Cre
     @IBOutlet
     void setCancelButton(UIButton cancelButton) {
         this.cancelButton = cancelButton;
+    }
+
+    @Override
+    public void addComment(@NotNull Comment comment) {
+
     }
 }

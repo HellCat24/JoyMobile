@@ -36,9 +36,7 @@ object ServiceLocator {
         }
         add(LikeDislikeService::class) {
             LikeDislikeService(
-                    resolve(LikeDislikeRequest::class),
-                    resolve(PostRequest::class),
-                    resolve(MemoryBuffer::class))
+                    resolve(LikeDislikeRequest::class))
         }
         add(TagService::class) {
             TagService(

@@ -18,24 +18,11 @@ import java.util.regex.Pattern
                     .beginForm()
                     .put("parent_id", commentId ?: "0")
                     .put("post_id", postId)
-                    //.put("token", getToken())
                     .put("comment_text", commentText)
                     .putHeader("X-Requested-With", "XMLHttpRequest")
                     .putHeader("Referer", "http://joyreactor.cc/post/" + postId)
                     .send("http://joyreactor.cc/post_comment/create")
             doc.body();
         }
-    }
-
-    private fun getToken(): String {
-        var doc = Jsoup.connect("http://joyreactor.cc/donate").get().toString();
-        val m = TOKEN_REGEX.matcher(doc)
-        if (!m.find()) throw IllegalStateException()
-        return m.group(1)
-    }
-
-    companion object {
-
-        val TOKEN_REGEX = Pattern.compile("var token = '(.+?)'")
     }
 }

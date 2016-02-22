@@ -55,6 +55,12 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
         notifyDataSetChanged()
     }
 
+    fun updatePostRating(post: Post) {
+        var index = posts.indexOf(post)
+        posts[index] = post
+        notifyItemChanged(index)
+    }
+
     inner class PostViewHolder(parent: ViewGroup) :
             ComplexViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_feed, parent, false)) {
 
@@ -89,8 +95,8 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
 
             itemView.findViewById(R.id.card).setOnClickListener { presenter.postClicked(posts[adapterPosition]!!) }
             itemView.findViewById(R.id.videoMark).setOnClickListener { presenter.playClicked(posts[adapterPosition]!!) }
-            itemView.findViewById(R.id.btn_post_like).setOnClickListener { presenter.like(posts[adapterPosition]!!.serverId) }
-            itemView.findViewById(R.id.btn_post_dislike).setOnClickListener { presenter.disLike(posts[adapterPosition]!!.serverId) }
+            itemView.findViewById(R.id.btn_post_like).setOnClickListener { presenter.like(posts[adapterPosition]!!) }
+            itemView.findViewById(R.id.btn_post_dislike).setOnClickListener { presenter.disLike(posts[adapterPosition]!!) }
         }
 
         override fun bind() {
@@ -100,17 +106,34 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
             rating.text = post.rating.toString()
             time.text = prettyTime.format(post.created)
             commentCount.text = post.commentCount.toString()
+            userImage.setImage(post.getUserImage2().toImage())
+            videoMark.visibility = if (post.image?.isAnimated ?: false) View.VISIBLE else View.GONE
 
+            processPostImage(post)
+            processLikesDislike(post)
+            setExpandListener(post)
+            processPostTitle(post)
+        }
+
+        private fun processPostTitle(post: Post) {
+            if (!post.title.isEmpty()) {
+                textContent.visibility = View.VISIBLE
+                textContent.text = post.title
+            } else {
+                textContent.visibility = View.GONE
+            }
+        }
+
+        private fun processPostImage(post: Post) {
             if (post.image == null || post.image?.url?.isEmpty()!!) {
                 imageContainer.visibility = View.GONE
             } else {
                 btnExpand.visibility = if (post.images.size > 1) View.VISIBLE else View.GONE
                 processCoub(post.image as Image)
             }
+        }
 
-            likeDislikeHolder.visibility = if (isLikesDislikesEnabled) View.VISIBLE else View.GONE
-            rating.visibility = if (isLikesDislikesEnabled) View.GONE else View.VISIBLE
-
+        private fun setExpandListener(post: Post) {
             btnExpand.setOnClickListener {
                 var images = post.images.subList(1, post.images.size)
                 for (img in images) {
@@ -120,15 +143,20 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
                     notifyItemChanged(adapterPosition)
                 }
             }
+        }
 
-            userImage.setImage(post.getUserImage2().toImage())
-            videoMark.visibility = if (post.image?.isAnimated ?: false) View.VISIBLE else View.GONE
-
-            if (!post.title.isEmpty()) {
-                textContent.visibility = View.VISIBLE
-                textContent.text = post.title
+        private fun processLikesDislike(post: Post) {
+            if (isLikesDislikesEnabled) {
+                if (post.isLiked) {
+                    likeDislikeHolder.visibility = View.GONE
+                    rating.visibility = View.VISIBLE
+                } else {
+                    likeDislikeHolder.visibility = View.VISIBLE
+                    rating.visibility = View.GONE
+                }
             } else {
-                textContent.visibility = View.GONE
+                likeDislikeHolder.visibility = View.GONE
+                rating.visibility = View.VISIBLE
             }
         }
 

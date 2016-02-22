@@ -16,9 +16,10 @@ class Post(
     val created: Date,
     val serverId: String,
     val commentCount: Int,
-    val rating: Float) : Serializable, Comparable<Post>, DataSet.Dto {
+    var rating: Float) : Serializable, Comparable<Post>, DataSet.Dto {
 
     override var id: Long = 0
+    var isLiked : Boolean = false
 
     // TODO:
     fun getUserImage2(): UserImage {

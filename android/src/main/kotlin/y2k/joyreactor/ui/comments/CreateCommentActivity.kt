@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.TextView
+import y2k.joyreactor.Comment
 import y2k.joyreactor.Post
 import y2k.joyreactor.Profile
 import y2k.joyreactor.R
@@ -20,11 +21,12 @@ class CreateCommentActivity : AppCompatActivity() {
     companion object {
 
         var BUNDLE_POST = "post"
+        var ACTION_CREATE_COMMENT = 1
 
         fun startActivity(activity: Activity?, post: Post) {
             val intent = Intent(activity, CreateCommentActivity::class.java)
             intent.putExtra(BUNDLE_POST, post);
-            activity!!.startActivity(intent)
+            activity!!.startActivityForResult(intent, ACTION_CREATE_COMMENT)
         }
     }
 
@@ -41,6 +43,12 @@ class CreateCommentActivity : AppCompatActivity() {
 
         val presenter = ServiceLocator.resolve(
                 object : CreateCommentPresenter.View {
+
+                    override fun addComment(comment: Comment) {
+                        intent = Intent();
+                        intent.putExtra("comment", comment);
+                        setResult(RESULT_OK, intent);
+                    }
 
                     override fun setIsBusy(isBusy: Boolean) {
                         // TODO

@@ -4,6 +4,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import rx.Observable
 import y2k.joyreactor.common.ioObservable
+import y2k.joyreactor.services.requests.CreateCommentRequestFactory
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStream
@@ -12,12 +13,15 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
 import java.util.*
+import java.util.regex.Pattern
 import java.util.zip.GZIPInputStream
 
 /**
  * Created by y2k on 9/29/15.
  */
 open class HttpClient protected constructor() {
+
+    internal var token: String? = null
 
     open fun downloadToFile(url: String?, file: File, callback: ((Int, Int) -> Unit)?) {
         val connection = URL(url).openConnection()
@@ -78,7 +82,11 @@ open class HttpClient protected constructor() {
             val conn = createConnection(url)
             stream = getInputStream(conn)
             sCookies.grab(conn)
-            return Jsoup.parse(stream, "utf-8", url)
+            val parse = Jsoup.parse(stream, "utf-8", url)
+            if (token == null) {
+                saveSessionToken(parse.html())
+            }
+            return parse
         } finally {
             if (stream != null) stream.close()
         }
@@ -109,6 +117,12 @@ open class HttpClient protected constructor() {
         return Form()
     }
 
+    private fun saveSessionToken(doc: String) {
+        val m = TOKEN_REGEX.matcher(doc)
+        if (!m.find()) throw IllegalStateException()
+        token = m.group(1)
+    }
+
     fun clearCookies() {
         sCookies.clear()
     }
@@ -137,13 +151,15 @@ open class HttpClient protected constructor() {
         }
 
         private fun execute(url: String, requestMethod: String): Document {
-            val connection = createConnection(url)
+            var connection = createConnection(url + tokenParams());
+
             connection.requestMethod = requestMethod
             connection.instanceFollowRedirects = false
             connection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded")
             for (name in headers.keys)
                 connection.addRequestProperty(name, headers[name])
-            connection.outputStream.write(serializeForm())
+            if (requestMethod.equals("POST"))
+                connection.outputStream.write(serializeForm())
 
             // TODO:
             var stream: InputStream? = null
@@ -167,11 +183,21 @@ open class HttpClient protected constructor() {
             buffer.replace(buffer.length - 1, buffer.length, "")
             return buffer.toString().toByteArray()
         }
+
+        private fun tokenParams(): String {
+            val buffer = StringBuilder()
+            buffer.append("?token")
+            buffer.append("=")
+            buffer.append(token)
+            return buffer.toString()
+        }
     }
 
     companion object {
 
         var instance = HttpClient()
+
+        val TOKEN_REGEX = Pattern.compile("var token = '(.+?)'")
 
         private val sCookies = CookieStorage()
     }

@@ -13,6 +13,8 @@ interface CommentGroup {
 
     fun getId(position: Int): Long
 
+    fun add(comment: Comment?)
+
     /**
      * Created by y2k on 11/28/15.
      */
@@ -25,6 +27,10 @@ interface CommentGroup {
             if (parent == null) return children[position]
             if (position == 0) return parent
             return children[position - 1]
+        }
+
+        override fun add(comment: Comment?) {
+            throw UnsupportedOperationException()
         }
 
         override fun size(): Int {
@@ -44,6 +50,10 @@ interface CommentGroup {
     }
 
     class TwoLevel(private val comments: List<Comment>) : CommentGroup {
+
+        override fun add(comment: Comment?) {
+            throw UnsupportedOperationException()
+        }
 
         override fun isChild(position: Int): Boolean {
             return comments[position].parentId != 0L

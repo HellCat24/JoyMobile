@@ -72,17 +72,21 @@ class PostListPresenter(
         Navigation.instance.openPost(post.serverId!!)
     }
 
-    fun like(serverPostId: String) {
-        likeDislikeService.like(serverPostId)
-                .subscribeOnMain {
-                    //Navigation.instance.closeCreateComment()
+    fun like(post: Post) {
+        likeDislikeService.like(post.serverId)
+                .subscribeOnMain { it ->
+                    post.isLiked = true
+                    post.rating = it
+                    view.updatePostRating(post)
                 }
     }
 
-    fun disLike(serverPostId: String) {
-        likeDislikeService.dislike(serverPostId)
-                .subscribeOnMain {
-                    //Navigation.instance.closeCreateComment()
+    fun disLike(post: Post) {
+        likeDislikeService.dislike(post.serverId)
+                .subscribeOnMain { it ->
+                    post.isLiked = true
+                    post.rating = it
+                    view.updatePostRating(post)
                 }
     }
 
@@ -107,6 +111,8 @@ class PostListPresenter(
         fun setHasNewPosts(hasNewPosts: Boolean)
 
         fun getPostType(): String
+
+        fun updatePostRating(post: Post)
 
         fun setLikesDislikesEnable()
 
