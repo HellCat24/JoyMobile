@@ -2,7 +2,13 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="y2k.joyreactor.Main2Activity">
-    <item android:id="@+id/updates"
-        android:title="Update"
+    <item
+        android:id="@+id/reload"
+        android:icon="@android:drawable/ic_menu_rotate"
+        android:title="@string/reload"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/updates"
+        android:title="@string/update"
         app:showAsAction="never"/>
 </menu>

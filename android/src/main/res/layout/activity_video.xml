@@ -9,7 +9,7 @@
 
     <include layout="@layout/toolbar"/>
 
-    <FrameLayout
+<!--    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar">
@@ -20,7 +20,15 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"/>
 
-    </FrameLayout>
+
+
+    </FrameLayout>-->
+
+    <pl.droidsonroids.gif.GifTextureView
+        android:id="@+id/gif_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
     <ProgressBar
         android:id="@+id/progress"

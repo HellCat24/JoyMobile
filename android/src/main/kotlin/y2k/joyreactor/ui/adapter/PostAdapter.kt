@@ -9,6 +9,8 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import org.ocpsoft.prettytime.PrettyTime
+import pl.droidsonroids.gif.GifTextureView
+import pl.droidsonroids.gif.InputSource
 import y2k.joyreactor.ui.utils.GlideUtils
 import y2k.joyreactor.Image
 import y2k.joyreactor.Post
@@ -16,6 +18,9 @@ import y2k.joyreactor.R
 import y2k.joyreactor.common.ComplexViewHolder
 import y2k.joyreactor.presenters.PostListPresenter
 import y2k.joyreactor.ui.utils.PicassoUtils
+import java.io.BufferedInputStream
+import java.io.IOException
+import java.io.InputStream
 import java.util.*
 
 /**
@@ -26,7 +31,6 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
     private val prettyTime = PrettyTime()
     private val posts = ArrayList<Post?>()
     private var isLikesDislikesEnabled = false;
-
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, itemType: Int): ComplexViewHolder {
         return PostViewHolder(viewGroup)
@@ -45,10 +49,9 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
         notifyDataSetChanged()
     }
 
-    fun reloadData(posts: List<Post>, divider: Int?) {
+    fun reloadData(posts: List<Post>) {
         this.posts.clear()
         this.posts.addAll(posts)
-        notifyDataSetChanged()
     }
 
     fun setLikesDislikesEnable() {
@@ -66,6 +69,7 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
             ComplexViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_feed, parent, false)) {
 
         val image: ImageView
+        val gifView: GifTextureView
         val userImage: ImageView
         val videoMark: View
         val commentCount: TextView
@@ -79,6 +83,7 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
 
         init {
             image = itemView.findViewById(R.id.image) as ImageView
+            gifView = itemView.findViewById(R.id.gif_view) as GifTextureView
             userImage = itemView.findViewById(R.id.userImage) as ImageView
             videoMark = itemView.findViewById(R.id.videoMark)
             commentCount = itemView.findViewById(R.id.commentCount) as TextView
@@ -127,7 +132,7 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
             } else {
                 btnExpand.visibility = if (post.images.size > 1) View.VISIBLE else View.GONE
                 if (post.image!!.isCoub) {
-
+                    image.visibility = View.GONE
                 } else {
                     loadImage(post.image as Image)
                 }
@@ -162,8 +167,27 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
         }
 
         private fun loadImage(i: Image) {
-            PicassoUtils.load(image, i)
-            //GlideUtils.load(image, i)
+            if (i.isAnimated) {
+
+                val assManager = image.context.getAssets()
+                var inputStream: InputStream? = null
+                try {
+                    inputStream = assManager.open("tes_gif.gif")
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+
+                val caInput = BufferedInputStream(inputStream)
+
+                image.visibility = View.GONE
+                gifView.visibility = View.VISIBLE
+                gifView.setInputSource(InputSource.InputStreamSource(caInput))
+                //GlideUtils.load(image, i)
+            } else {
+                image.adjustViewBounds = true
+                gifView.visibility = View.GONE
+                PicassoUtils.load(image, i)
+            }
         }
     }
 }

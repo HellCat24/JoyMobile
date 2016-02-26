@@ -19,7 +19,7 @@ class ViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     }
 
     override fun getItem(position: Int): Fragment {
-        return mFragments.get(position);
+        return mFragments[position];
     }
 
     override fun getCount(): Int {
@@ -28,6 +28,6 @@ class ViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
     @Override
     override fun getPageTitle(position: Int): String {
-        return mFragmentTitles.get(position);
+        return mFragmentTitles[position];
     }
 }

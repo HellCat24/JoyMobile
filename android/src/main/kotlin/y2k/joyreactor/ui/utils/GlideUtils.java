@@ -19,10 +19,10 @@ public class GlideUtils {
                 .addHeader("Referer", "http://joyreactor.cc/")
                 .build());
 
-
         Glide.with(imageView.getContext())
                 .load(glideUrl)
-                .asGif()
+                .asBitmap()
+                .thumbnail( 0.1f )
                 .into(imageView);
     }
 }

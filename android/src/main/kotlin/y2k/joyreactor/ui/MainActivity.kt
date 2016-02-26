@@ -11,10 +11,14 @@ import y2k.joyreactor.ui.base.ToolBarActivity
 import y2k.joyreactor.ui.feed.BestPostsFragment
 import y2k.joyreactor.ui.feed.GoodPostsFragment
 import y2k.joyreactor.ui.feed.NewPostsFragment
+import y2k.joyreactor.ui.feed.base.PostListFragment
 import y2k.joyreactor.ui.profile.ProfileFragment
 import y2k.joyreactor.ui.utils.PicassoUtils
 
 class MainActivity : ToolBarActivity() {
+
+    lateinit var adapter: ViewPagerAdapter
+    lateinit var viewPager: ViewPager
 
     override val fragmentContentId: Int
         get() = throw UnsupportedOperationException()
@@ -24,9 +28,9 @@ class MainActivity : ToolBarActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var viewPager = findViewById(R.id.viewpager) as ViewPager
         var tabs = findViewById(R.id.tabs) as TabLayout
 
+        viewPager = findViewById(R.id.viewpager) as ViewPager
         setupViewPager(viewPager)
         tabs.setupWithViewPager(viewPager)
 
@@ -34,7 +38,7 @@ class MainActivity : ToolBarActivity() {
     }
 
     fun setupViewPager(viewPager: ViewPager) {
-        var adapter = ViewPagerAdapter(supportFragmentManager);
+        adapter = ViewPagerAdapter(supportFragmentManager);
         adapter.addFragment(NewPostsFragment(), "New");
         adapter.addFragment(GoodPostsFragment(), "Good");
         adapter.addFragment(BestPostsFragment(), "Best");
@@ -49,7 +53,13 @@ class MainActivity : ToolBarActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.updates -> UpdateFragment.show(this)
+            R.id.updates -> {
+                UpdateFragment.show(this)
+                return true;
+            }
+            R.id.reload -> {
+                (adapter.getItem(viewPager.getCurrentItem()) as PostListFragment).refresh()
+            }
             else -> return super.onOptionsItemSelected(item)
         }
         return true

@@ -20,62 +20,33 @@ import y2k.joyreactor.view.ReloadButton
 /**
  * Created by y2k on 9/26/15.
  */
-abstract class PostListFragment() : BaseFragment() {
-
-    var type = postType;
+abstract class PostListFragment() : BaseFragment(), PostListPresenter.View {
 
     lateinit var adapter: PostAdapter
     lateinit var presenter: PostListPresenter
+    lateinit var list: RecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_posts, container, false)
 
         view.findViewById(R.id.error).visibility = View.GONE
 
-        //val refreshLayout = view.findViewById(R.id.refresher) as SwipeRefreshLayout
-        val list = view.findViewById(R.id.list) as RecyclerView
+        list = view.findViewById(R.id.list) as RecyclerView
         list.layoutManager = PreLoadLayoutManager(activity)
         list.addOnScrollListener(LoadMoreListener(list.layoutManager as LinearLayoutManager))
+        presenter = ServiceLocator.resolve(lifeCycleService, this)
 
-        presenter = ServiceLocator.resolve(lifeCycleService,
-                object : PostListPresenter.View {
+        adapter = PostAdapter(presenter)
+        list.adapter = adapter
 
-                    override fun updatePostRating(post: Post) {
-                       adapter.updatePostRating(post)
-                    }
-
-                    override fun setLikesDislikesEnable() {
-                        adapter.setLikesDislikesEnable()
-                    }
-
-                    override fun addNewPosts(posts: List<Post>) {
-                        adapter.addData(posts)
-                    }
-
-                    override fun getPostType(): String {
-                        return type;
-                    }
-
-                    override fun setBusy(isBusy: Boolean) {
-                        //refreshLayout.isRefreshing = isBusy
-                    }
-
-                    override fun reloadPosts(posts: List<Post>, divider: Int?) {
-                        adapter.reloadData(posts, divider)
-                    }
-
-                    override fun setHasNewPosts(hasNewPosts: Boolean) {
-                        (view.findViewById(R.id.apply) as ReloadButton).setVisibility(hasNewPosts)
-                    }
-                })
-
-        adapter = PostAdapter(presenter); list.adapter = adapter
         view.findViewById(R.id.apply).setOnClickListener {
-            presenter.applyNew()
-            list.smoothScrollToPosition(0)
+            refresh()
         }
-        //refreshLayout.setOnRefreshListener { presenter.reloadFirstPage() }
         return view
+    }
+
+    fun refresh() {
+        presenter.reloadFirstPage()
     }
 
     inner class LoadMoreListener(val linearLayoutManager: LinearLayoutManager) : EndlessRecyclerOnScrollListener(linearLayoutManager) {
@@ -93,5 +64,27 @@ abstract class PostListFragment() : BaseFragment() {
         }
     }
 
-    protected abstract val postType: String
+    override fun updatePostRating(post: Post) {
+        adapter.updatePostRating(post)
+    }
+
+    override fun setLikesDislikesEnable() {
+        adapter.setLikesDislikesEnable()
+    }
+
+    override fun addNewPosts(posts: List<Post>) {
+        adapter.addData(posts)
+    }
+
+    override fun setBusy(isBusy: Boolean) {
+        //refreshLayout.isRefreshing = isBusy
+    }
+
+    override fun reloadPosts(posts: List<Post>, divider: Int?) {
+        adapter.reloadData(posts)
+    }
+
+    override fun setHasNewPosts(hasNewPosts: Boolean) {
+        (view?.findViewById(R.id.apply) as ReloadButton).setVisibility(hasNewPosts)
+    }
 }

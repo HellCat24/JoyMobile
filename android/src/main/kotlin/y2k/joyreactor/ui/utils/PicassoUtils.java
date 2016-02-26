@@ -1,12 +1,11 @@
 package y2k.joyreactor.ui.utils;
 
 import android.content.Context;
-import android.util.LruCache;
 import android.widget.ImageView;
 
-import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.picasso.Downloader;
+import com.squareup.picasso.LruCache;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
@@ -20,7 +19,7 @@ public class PicassoUtils {
 
     public static void init(Context context) {
         Picasso.Builder builder = new Picasso.Builder(context);
-        //builder.memoryCache(new Cache());
+        builder.memoryCache(new LruCache(24000));
         OkHttpClient client = new OkHttpClient();
         client.interceptors().add(new AuthInterceptor());
         Downloader downloader = new OkHttpDownloader(client);

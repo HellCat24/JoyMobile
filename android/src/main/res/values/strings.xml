@@ -76,4 +76,6 @@
     <string name="similar_posts">Similar posts</string>
     <string name="comments">Comments</string>
     <string name="login_message">Login To Have More Fun</string>
+    <string name="update">Update</string>
+    <string name="reload">Reload</string>
 </resources>
