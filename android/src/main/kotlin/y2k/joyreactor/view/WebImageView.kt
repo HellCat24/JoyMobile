@@ -9,7 +9,7 @@ import y2k.joyreactor.platform.ImageRequest
 /**
  * Created by y2k on 9/26/15.
  */
-class WebImageView(context: Context, attrs: AttributeSet?) : ImageView(context, attrs) {
+class WebImageView(context: Context, attrs: AttributeSet) : ImageView(context, attrs) {
 
     private val invalidator = Invalidator()
 

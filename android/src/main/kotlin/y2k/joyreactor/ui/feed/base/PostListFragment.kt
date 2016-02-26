@@ -32,7 +32,7 @@ abstract class PostListFragment() : BaseFragment() {
 
         view.findViewById(R.id.error).visibility = View.GONE
 
-        val refreshLayout = view.findViewById(R.id.refresher) as SwipeRefreshLayout
+        //val refreshLayout = view.findViewById(R.id.refresher) as SwipeRefreshLayout
         val list = view.findViewById(R.id.list) as RecyclerView
         list.layoutManager = PreLoadLayoutManager(activity)
         list.addOnScrollListener(LoadMoreListener(list.layoutManager as LinearLayoutManager))
@@ -57,7 +57,7 @@ abstract class PostListFragment() : BaseFragment() {
                     }
 
                     override fun setBusy(isBusy: Boolean) {
-                        refreshLayout.isRefreshing = isBusy
+                        //refreshLayout.isRefreshing = isBusy
                     }
 
                     override fun reloadPosts(posts: List<Post>, divider: Int?) {
@@ -74,7 +74,7 @@ abstract class PostListFragment() : BaseFragment() {
             presenter.applyNew()
             list.smoothScrollToPosition(0)
         }
-        refreshLayout.setOnRefreshListener { presenter.reloadFirstPage() }
+        //refreshLayout.setOnRefreshListener { presenter.reloadFirstPage() }
         return view
     }
 

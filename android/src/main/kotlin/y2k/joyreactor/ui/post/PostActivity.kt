@@ -22,8 +22,6 @@ import y2k.joyreactor.common.*
 import y2k.joyreactor.presenters.PostPresenter
 import y2k.joyreactor.ui.base.ToolBarActivity
 import y2k.joyreactor.ui.comments.CreateCommentActivity
-import y2k.joyreactor.view.FixedAspectPanel
-import y2k.joyreactor.view.ImagePanel
 import y2k.joyreactor.view.LargeImageView
 import y2k.joyreactor.view.WebImageView
 import java.io.File
@@ -186,20 +184,12 @@ class PostActivity : ToolBarActivity() {
                 ComplexViewHolder(parent.inflate(R.layout.layout_post)) {
 
             var image: LargeImageView
-            var posterPanel: FixedAspectPanel
 
             init {
                 image = itemView.findViewById(R.id.image) as LargeImageView
-                posterPanel = itemView.findViewById(R.id.posterPanel) as FixedAspectPanel
             }
 
             override fun bind() {
-                if (post != null) {
-                    val aspect = post?.image?.aspect
-                    posterPanel.isVisible = aspect != null
-                    aspect?.let { posterPanel.setAspect(it) }
-                }
-
                 imagePath?.let { image.setImage(it) }
             }
         }

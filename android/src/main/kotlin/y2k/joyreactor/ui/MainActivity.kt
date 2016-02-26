@@ -12,6 +12,7 @@ import y2k.joyreactor.ui.feed.BestPostsFragment
 import y2k.joyreactor.ui.feed.GoodPostsFragment
 import y2k.joyreactor.ui.feed.NewPostsFragment
 import y2k.joyreactor.ui.profile.ProfileFragment
+import y2k.joyreactor.ui.utils.PicassoUtils
 
 class MainActivity : ToolBarActivity() {
 

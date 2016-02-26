@@ -2,6 +2,7 @@ package y2k.joyreactor.ui.post
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -42,12 +43,11 @@ class VideoActivity : ToolBarActivity() {
         videoView.setOnPreparedListener { mp -> mp.isLooping = true }
 
         //TODO Refactor
-
         ServiceLocator.resolve(
                 object : VideoPresenter.View {
 
                     override fun showVideo(videoFile: File) {
-                        videoView.setVideoPath(videoFile.absolutePath)
+                        videoView.setVideoURI(Uri.parse("https://coubsecure-a.akamaihd.net/get/b85/p/coub/simple/cw_file/1ec34ad130f/af257fc7b0baeaf0fe73e/iphone_1434643353_iphone.mp4"))
                         videoView.start()
                     }
 

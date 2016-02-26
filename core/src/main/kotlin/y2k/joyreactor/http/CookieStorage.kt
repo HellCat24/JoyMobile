@@ -13,14 +13,17 @@ class CookieStorage {
 
     fun attach(connection: HttpURLConnection) {
         if (map.isEmpty) return
+        connection.addRequestProperty("Cookie", getCookieString())
+    }
 
+    fun getCookieString(): String {
         val cookie = StringBuilder()
-        for (key in map.keySet()){
+        for (key in map.keySet()) {
             cookie.append(key).append("=").append(map.get(key)).append("; ")
         }
-
-        connection.addRequestProperty("Cookie", cookie.toString())
+        return cookie.toString()
     }
+
 
     fun grab(connection: HttpURLConnection) {
         val cookies = connection.headerFields["Set-Cookie"]

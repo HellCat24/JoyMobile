@@ -8,6 +8,7 @@
         android:id="@+id/navigation_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         app:headerLayout="@layout/profile_header"
         app:itemTextColor="?attr/colorPrimary"
         app:menu="@menu/drawer">

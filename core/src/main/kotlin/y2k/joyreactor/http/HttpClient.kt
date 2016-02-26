@@ -4,7 +4,6 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import rx.Observable
 import y2k.joyreactor.common.ioObservable
-import y2k.joyreactor.services.requests.CreateCommentRequestFactory
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStream
@@ -127,6 +126,10 @@ open class HttpClient protected constructor() {
         sCookies.clear()
     }
 
+    fun getCookie(): String? {
+        return sCookies.getCookieString();
+    }
+
     inner class Form {
 
         internal var form: MutableMap<String, String> = HashMap()
@@ -197,8 +200,8 @@ open class HttpClient protected constructor() {
 
         var instance = HttpClient()
 
-        val TOKEN_REGEX = Pattern.compile("var token = '(.+?)'")
+        var sCookies = CookieStorage()
 
-        private val sCookies = CookieStorage()
+        val TOKEN_REGEX = Pattern.compile("var token = '(.+?)'")
     }
 }

@@ -9,8 +9,8 @@ import java.net.URL
  */
 class Image(
         url: String? = null,
-        private val width: Int = 0,
-        private val height: Int = 0) : Serializable {
+        val width: Int = 0,
+        val height: Int = 0) : Serializable {
 
     val url: String? = clearUrl(url)
 

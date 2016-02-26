@@ -129,7 +129,6 @@ open class AndroidNavigation(app: Application) : Navigation {
 
     companion object {
 
-        internal lateinit var sPostArgument: Post // FIXME:
         internal var sPostIdArgument = "2294127" // FIXME:
     }
 }

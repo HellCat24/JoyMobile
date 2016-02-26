@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <color name="feed_background">#FECC65</color>
     <color name="primary">#ffa726</color>
     <color name="primary_dark">#fb8c00</color>
     <color name="accent">#ffc400</color>
