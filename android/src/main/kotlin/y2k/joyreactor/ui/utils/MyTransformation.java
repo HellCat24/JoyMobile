@@ -20,8 +20,8 @@ public class MyTransformation extends BitmapTransformation {
         Bitmap result = pool.get(width, height, Bitmap.Config.ARGB_8888);
         // If no matching Bitmap is in the pool, get will return null, so we should allocate.
         if (result == null) {
-            float scaleWidth = ((float) 800) / width;
-            float newHeight = 800 * height / width;
+            float scaleWidth = ((float) 1080) / width;
+            float newHeight = 1080 * height / width;
             float scaleHeight = newHeight / height;
             result = Bitmap.createBitmap((int) (width * scaleWidth), (int) (height * scaleHeight), Bitmap.Config.ARGB_8888);
         }

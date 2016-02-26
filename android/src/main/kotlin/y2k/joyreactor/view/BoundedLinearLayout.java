@@ -22,9 +22,9 @@ public class BoundedLinearLayout extends LinearLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         // Adjust width as necessary
         int measuredWidth = MeasureSpec.getSize(widthMeasureSpec);
-        if (800 < measuredWidth) {
+        if (1080 < measuredWidth) {
             int measureMode = MeasureSpec.getMode(widthMeasureSpec);
-            widthMeasureSpec = MeasureSpec.makeMeasureSpec(800, measureMode);
+            widthMeasureSpec = MeasureSpec.makeMeasureSpec(1080, measureMode);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }

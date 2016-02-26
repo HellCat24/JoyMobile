@@ -15,6 +15,7 @@ import y2k.joyreactor.Post
 import y2k.joyreactor.R
 import y2k.joyreactor.common.ComplexViewHolder
 import y2k.joyreactor.presenters.PostListPresenter
+import y2k.joyreactor.ui.utils.PicassoUtils
 import java.util.*
 
 /**
@@ -125,7 +126,7 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
                 imageContainer.visibility = View.GONE
             } else {
                 btnExpand.visibility = if (post.images.size > 1) View.VISIBLE else View.GONE
-                if(post.image!!.isCoub){
+                if (post.image!!.isCoub) {
 
                 } else {
                     loadImage(post.image as Image)
@@ -161,7 +162,8 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
         }
 
         private fun loadImage(i: Image) {
-            GlideUtils.load(image, i)
+            PicassoUtils.load(image, i)
+            //GlideUtils.load(image, i)
         }
     }
 }

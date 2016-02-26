@@ -126,10 +126,6 @@ open class HttpClient protected constructor() {
         sCookies.clear()
     }
 
-    fun getCookie(): String? {
-        return sCookies.getCookieString();
-    }
-
     inner class Form {
 
         internal var form: MutableMap<String, String> = HashMap()

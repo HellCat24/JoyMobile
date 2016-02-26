@@ -21,7 +21,7 @@ public class ScaleTransform implements Transformation {
 
     @Override
     public Bitmap transform(Bitmap source) {
-        int width = source.getWidth();
+   /*     int width = source.getWidth();
         int height = source.getHeight();
         float scaleWidth = ((float) screenWidth) / width;
         float newHeight = screenWidth * height / width;
@@ -35,7 +35,17 @@ public class ScaleTransform implements Transformation {
         if (resizedBitmap != source) {
             source.recycle();
         }
-        return resizedBitmap;
+        return resizedBitmap;*/
+        int targetWidth = 1080;
+
+        double aspectRatio = (double) source.getHeight() / (double) source.getWidth();
+        int targetHeight = (int) (targetWidth * aspectRatio);
+        Bitmap result = Bitmap.createScaledBitmap(source, targetWidth, targetHeight, false);
+        if (result != source) {
+            // Same bitmap is returned if sizes are the same
+            source.recycle();
+        }
+        return result;
 
     }
 

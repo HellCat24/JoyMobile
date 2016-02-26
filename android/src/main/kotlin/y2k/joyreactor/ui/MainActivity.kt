@@ -29,6 +29,8 @@ class MainActivity : ToolBarActivity() {
 
         setupViewPager(viewPager)
         tabs.setupWithViewPager(viewPager)
+
+        PicassoUtils.init(this)
     }
 
     fun setupViewPager(viewPager: ViewPager) {
