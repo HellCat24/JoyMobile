@@ -21,7 +21,6 @@ class ProfilePresenter(
                     view.setProfile(it)
                     view.setBusy(false)
                 }, {
-                    it.printStackTrace()
                     view.setBusy(false)
                     view.hideProfileMenu()
                 })

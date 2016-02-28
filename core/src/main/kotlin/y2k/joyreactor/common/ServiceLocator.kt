@@ -50,6 +50,9 @@ object ServiceLocator {
                     resolve(UserNameRequest::class),
                     resolve(MyTagFetcher::class))
         }
+        add(BlogService::class) {
+            BlogService(resolve(BlogListRequest::class))
+        }
         add(ProfileService::class) {
             ProfileService(resolve(ProfileRequestFactory::class), resolve(LoginRequestFactory::class))
         }
@@ -73,11 +76,15 @@ object ServiceLocator {
     }
 
     fun resolve(lifeCycleService: LifeCycleService, view: PostListPresenter.View): PostListPresenter {
-        return PostListPresenter(view, resolve(TagService::class), resolve(ProfileService::class), lifeCycleService,  resolve(LikeDislikeService::class))
+        return PostListPresenter(view, resolve(TagService::class), resolve(ProfileService::class), lifeCycleService, resolve(LikeDislikeService::class))
     }
 
     fun resolve(view: PostPresenter.View): PostPresenter {
         return PostPresenter(view, resolve(PostService::class), resolve(ProfileService::class), Navigation.instance)
+    }
+
+    fun resolve(view: BlogListPresenter.View): BlogListPresenter {
+        return BlogListPresenter(view, resolve(BlogListRequest::class), Navigation.instance)
     }
 
     fun resolve(lifeCycleService: LifeCycleService, view: TagListPresenter.View): TagListPresenter {

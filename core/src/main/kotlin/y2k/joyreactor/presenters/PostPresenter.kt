@@ -86,10 +86,6 @@ class PostPresenter(
         Navigation.instance.openCreateComment(p)
     }
 
-    fun showMoreImages() {
-        navigation.openPostGallery()
-    }
-
     interface View {
 
         fun updateComments(comments: CommentGroup)

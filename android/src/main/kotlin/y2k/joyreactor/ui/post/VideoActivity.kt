@@ -3,10 +3,7 @@ package y2k.joyreactor.ui.post
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.view.MenuItem
-import pl.droidsonroids.gif.GifDrawable
-import pl.droidsonroids.gif.GifImageView
 import pl.droidsonroids.gif.GifTextureView
 import pl.droidsonroids.gif.InputSource
 import y2k.joyreactor.Post

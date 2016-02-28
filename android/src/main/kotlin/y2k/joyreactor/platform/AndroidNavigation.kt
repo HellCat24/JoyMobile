@@ -10,11 +10,10 @@ import y2k.joyreactor.Message
 import y2k.joyreactor.Post
 import y2k.joyreactor.common.ActivityLifecycleCallbacksAdapter
 import y2k.joyreactor.common.startActivity
+import y2k.joyreactor.ui.blog.BlogPostListActivity
 import y2k.joyreactor.ui.MainActivity
 import y2k.joyreactor.ui.comments.CreateCommentActivity
-import y2k.joyreactor.ui.post.GalleryActivity
 import y2k.joyreactor.ui.post.PostActivity
-import y2k.joyreactor.ui.post.ProfileSession
 import y2k.joyreactor.ui.post.VideoActivity
 import y2k.joyreactor.ui.profile.LoginActivity
 import y2k.joyreactor.ui.profile.message.DialogsActivity
@@ -43,9 +42,7 @@ open class AndroidNavigation(app: Application) : Navigation {
     }
 
     @Deprecated("Profile Activity is now Fragment")
-    override fun switchLoginToProfile(token: String) {
-        ProfileSession.saveToken(token)
-        currentActivity?.startActivity(MainActivity::class)
+    override fun switchLoginToProfile() {
         currentActivity?.finish()
     }
 
@@ -55,10 +52,6 @@ open class AndroidNavigation(app: Application) : Navigation {
 
     override fun closeAddTag() {
         AddTagDialogFragment.dismiss(currentActivity as AppCompatActivity)
-    }
-
-    override fun openPostGallery() {
-        currentActivity?.startActivity(GalleryActivity::class)
     }
 
     override fun openPost(postId: String) {
@@ -92,6 +85,10 @@ open class AndroidNavigation(app: Application) : Navigation {
 
     override fun openTags() {
         currentActivity?.startActivity(TagsActivity::class)
+    }
+
+    override fun openPostListForBlog(url: String) {
+        BlogPostListActivity.startActivity(currentActivity, url)
     }
 
     override fun openDialogs() {

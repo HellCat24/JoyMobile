@@ -10,4 +10,8 @@
     <dimen name="profile_image_size">64dp</dimen>
     <dimen name="dimen_big">16dp</dimen>
     <dimen name="dimen_medium">8dp</dimen>
+
+    <dimen name="max_layout_width">800dp</dimen>
+
+    <bool name="isTablet">false</bool>
 </resources>

@@ -8,6 +8,6 @@
     <color name="like_border">#9FD731</color>
     <color name="dislike">#FFF2F0</color>
     <color name="dislike_border">#F79D91</color>
-    <color name="grey">#F3F3F3</color>
+    <color name="grey">#b3f3f3f3</color>
 
 </resources>

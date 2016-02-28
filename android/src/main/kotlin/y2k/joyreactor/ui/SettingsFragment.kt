@@ -1,4 +1,4 @@
-package y2k.joyreactor.ui.utils
+package y2k.joyreactor.ui
 
 import y2k.joyreactor.common.BaseFragment
 

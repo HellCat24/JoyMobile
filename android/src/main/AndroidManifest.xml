@@ -50,8 +50,7 @@
         </activity>
         <activity
             android:name=".ui.post.PostActivity"
-            android:label="@string/title_activity_post"
-            android:screenOrientation="portrait">
+            android:label="@string/title_activity_post">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.MainActivity" />
@@ -72,24 +71,14 @@
                 android:value=".ui.MainActivity" />
         </activity>
         <activity
-            android:name=".ui.post.AnimationActivity"
-            android:label="@string/title_activity_video">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.MainActivity" />
-        </activity>
-        <activity
-            android:name=".ui.post.GalleryActivity"
-            android:label="@string/post_images">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.post.PostActivity" />
-        </activity>
-        <activity
             android:name=".ui.comments.CreateCommentActivity"
             android:label="@string/title_activity_create_comment"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.CreateComment"
             android:windowSoftInputMode="stateVisible" />
+
+    <!--    <meta-data
+            android:name="y2k.joyreactor.ui.utils.SimpleGlideModule"
+            android:value="GlideModule" />-->
     </application>
 </manifest>

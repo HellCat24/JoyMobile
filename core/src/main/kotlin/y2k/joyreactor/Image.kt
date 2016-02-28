@@ -43,8 +43,8 @@ class Image(
         return if (format == null) "" else "&format=" + format
     }
 
-    val isAnimated: Boolean
-        get() = url != null && (url.endsWith(".gif") || url.contains("youtube"))
+    val isGif: Boolean
+        get() = url != null && url.endsWith(".gif")
 
     val isCoub: Boolean
         get() = url != null && url.contains("coub")

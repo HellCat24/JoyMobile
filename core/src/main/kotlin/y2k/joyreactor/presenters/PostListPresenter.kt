@@ -10,6 +10,7 @@ import y2k.joyreactor.services.LifeCycleService
 import y2k.joyreactor.services.ProfileService
 import y2k.joyreactor.services.TagService
 import y2k.joyreactor.services.requests.LikeDislikeService
+import y2k.joyreactor.services.requests.PostsForTagRequest
 
 /**
  * Created by y2k on 9/26/15.
@@ -91,12 +92,8 @@ class PostListPresenter(
     }
 
     fun playClicked(post: Post) {
-        if (post.image!!.isAnimated) {
-            if (post.image.isYouTube) {
-                Navigation.instance.openYouTube(post.image.getYouTubeLink)
-            } else {
-                Navigation.instance.openVideo(post)
-            }
+        if (post.image!!.isYouTube) {
+            Navigation.instance.openYouTube(post.image.getYouTubeLink)
         } else Navigation.instance.openImageView(post)
     }
 

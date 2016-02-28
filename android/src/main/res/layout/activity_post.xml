@@ -1,51 +1,53 @@
 <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".PostActivity">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PostActivity">
 
     <include layout="@layout/toolbar"/>
 
-    <FrameLayout
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="0dp">
+    <y2k.joyreactor.view.BoundedFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1">
 
         <android.support.v7.widget.RecyclerView
-                android:id="@+id/list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
         <android.support.design.widget.FloatingActionButton
-                android:id="@+id/createComment"
-                android:src="@drawable/ic_comment_white_24dp"
-                android:scaleY="0"
-                android:scaleX="0"
-                android:layout_margin="16dp"
-                android:layout_gravity="bottom|right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            android:id="@+id/createComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            android:scaleX="0"
+            android:scaleY="0"
+            android:src="@drawable/ic_comment_white_24dp"/>
 
         <ProgressBar
-                android:id="@+id/imageProgress"
-                style="?android:progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+            android:id="@+id/imageProgress"
+            style="?android:progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <FrameLayout
-                android:id="@+id/progress"
-                android:background="@android:color/white"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white">
+
             <ProgressBar
-                    style="?android:borderlessButtonStyle"
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                style="?android:borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
         </FrameLayout>
 
-    </FrameLayout>
+    </y2k.joyreactor.view.BoundedFrameLayout>
 
 </LinearLayout>

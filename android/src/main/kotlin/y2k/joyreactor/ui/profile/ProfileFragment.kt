@@ -30,10 +30,14 @@ class ProfileFragment : BaseFragment() {
             }
 
             override fun setProfile(profile: Profile) {
-                (navigationView.findViewById(R.id.avatar) as WebImageView).setImage(profile.userImage)
-                (navigationView.findViewById(R.id.rating) as TextView).text = "" + profile.rating
-                (navigationView.findViewById(y2k.joyreactor.R.id.stars) as android.widget.RatingBar).rating = profile.stars.toFloat()
-                (navigationView.findViewById(R.id.txt_profile_name) as TextView).text = "" + profile.userName
+                navigationView.visibility = View.VISIBLE
+
+                var headerView = navigationView.getHeaderView(0);
+
+                (headerView.findViewById(R.id.avatar) as WebImageView).setImage(profile.userImage)
+                (headerView.findViewById(R.id.rating) as TextView).text = "" + profile.rating
+                (headerView.findViewById(y2k.joyreactor.R.id.stars) as android.widget.RatingBar).rating = profile.stars.toFloat()
+                (headerView.findViewById(R.id.txt_profile_name) as TextView).text = "" + profile.userName
             }
 
             override fun setBusy(isBusy: Boolean) {

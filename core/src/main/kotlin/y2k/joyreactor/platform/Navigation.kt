@@ -10,7 +10,7 @@ interface Navigation {
 
     fun switchProfileToLogin()
 
-    fun switchLoginToProfile(token : String)
+    fun switchLoginToProfile()
 
     fun closeCreateComment()
 
@@ -28,9 +28,9 @@ interface Navigation {
 
     fun openImageView(post: Post)
 
-    fun openCreateComment(p : Post)
+    fun openPostListForBlog(url : String)
 
-    fun openPostGallery()
+    fun openCreateComment(p : Post)
 
     fun openTags()
 

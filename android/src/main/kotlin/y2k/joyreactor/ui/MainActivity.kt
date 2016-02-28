@@ -13,7 +13,6 @@ import y2k.joyreactor.ui.feed.GoodPostsFragment
 import y2k.joyreactor.ui.feed.NewPostsFragment
 import y2k.joyreactor.ui.feed.base.PostListFragment
 import y2k.joyreactor.ui.profile.ProfileFragment
-import y2k.joyreactor.ui.utils.PicassoUtils
 
 class MainActivity : ToolBarActivity() {
 
@@ -33,8 +32,6 @@ class MainActivity : ToolBarActivity() {
         viewPager = findViewById(R.id.viewpager) as ViewPager
         setupViewPager(viewPager)
         tabs.setupWithViewPager(viewPager)
-
-        PicassoUtils.init(this)
     }
 
     fun setupViewPager(viewPager: ViewPager) {
@@ -44,6 +41,7 @@ class MainActivity : ToolBarActivity() {
         adapter.addFragment(BestPostsFragment(), "Best");
         adapter.addFragment(ProfileFragment(), "Profile");
         viewPager.adapter = adapter;
+        viewPager.offscreenPageLimit = 4
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

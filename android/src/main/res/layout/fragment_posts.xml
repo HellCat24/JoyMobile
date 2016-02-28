@@ -6,7 +6,7 @@
               android:background="@color/feed_background"
               android:orientation="vertical">
 
-    <y2k.joyreactor.view.BoundedLinearLayout
+    <y2k.joyreactor.view.BoundedFrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal">
@@ -17,24 +17,5 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-        <y2k.joyreactor.view.ReloadButton
-            android:id="@+id/apply"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/error"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@color/text_secondary"
-            android:gravity="center_horizontal"
-            android:padding="30dp"
-            android:text="@string/unknow_error"
-            android:textAllCaps="true"
-            android:textColor="@color/text_primary"/>
-
-    </y2k.joyreactor.view.BoundedLinearLayout>
+    </y2k.joyreactor.view.BoundedFrameLayout>
 </LinearLayout>

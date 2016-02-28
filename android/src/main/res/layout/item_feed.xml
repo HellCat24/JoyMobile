@@ -3,6 +3,7 @@
     android:id="@+id/cardview"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -25,67 +26,64 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/dimen_medium"
             android:textSize="14sp"
-            android:visibility="gone"/>
+            android:visibility="visible"
+            tools:text="Title"/>
 
-        <!-- Ignore the warning -->
         <RelativeLayout
-            android:id="@+id/image_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/image"
+            <LinearLayout
+                android:id="@+id/image_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"/>
+                android:orientation="vertical">
 
-            <pl.droidsonroids.gif.GifTextureView
-                android:id="@+id/gif_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                />
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:background="@color/grey"/>
+
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/videoMark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="36dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_video"
+                android:background="@drawable/play_drawable"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_send_orange"
                 android:visibility="gone"/>
+
         </RelativeLayout>
 
         <TextView
             android:id="@+id/btn_expand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/darker_gray"
+            android:background="@color/grey"
             android:gravity="right"
             android:padding="@dimen/dimen_medium"
             android:text="@string/show_more"
-            android:textColor="@color/grey"
+            android:textColor="@android:color/darker_gray"
             android:visibility="visible"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <y2k.joyreactor.view.RoundBorderLayout
-                android:id="@+id/userImagePanel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
+            <y2k.joyreactor.view.WebImageView
+                android:id="@+id/userImage"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_marginBottom="9dp"
                 android:layout_marginLeft="9dp"
-                android:layout_marginTop="9dp">
-
-                <y2k.joyreactor.view.WebImageView
-                    android:id="@+id/userImage"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:scaleType="centerCrop"/>
-            </y2k.joyreactor.view.RoundBorderLayout>
+                android:layout_marginTop="9dp"
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:id="@+id/userName"
@@ -93,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="12dp"
-                android:layout_toRightOf="@id/userImagePanel"
+                android:layout_toRightOf="@id/userImage"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:textColor="#616161"
@@ -104,7 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@id/userName"
-                android:layout_alignTop="@id/userImagePanel"
+                android:layout_alignTop="@id/userImage"
                 android:layout_marginRight="4dp"
                 android:layout_marginTop="23dp"
                 android:drawableLeft="@drawable/ic_reply"
@@ -120,7 +118,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_alignTop="@id/userImagePanel"
+                android:layout_alignTop="@id/userImage"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="23dp"
                 android:layout_toRightOf="@id/commentCount"
