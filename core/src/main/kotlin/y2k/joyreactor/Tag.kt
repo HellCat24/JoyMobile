@@ -8,7 +8,7 @@ import java.io.Serializable
  */
 class Tag(
     val serverId: String?,
-    val title: String,
+    val title: String?,
     var isVisible: Boolean, // TODO: сделать val
     val image: Image?) : Serializable, DataSet.Dto {
 
@@ -24,7 +24,7 @@ class Tag(
 
         private val MARK_USERNAME = "username:"
 
-        fun makeFavorite(username: String): Tag {
+        fun makeFavorite(username: String?): Tag {
             return Tag(MARK_USERNAME + username, username, false, null)
         }
 

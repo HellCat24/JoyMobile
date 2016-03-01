@@ -28,11 +28,15 @@ interface Navigation {
 
     fun openImageView(post: Post)
 
+    fun showBlogPostList(tag: String)
+
     fun openPostListForBlog(url : String)
 
     fun openCreateComment(p : Post)
 
     fun openTags()
+
+    fun openUserPosts(username : String)
 
     fun openDialogs()
 

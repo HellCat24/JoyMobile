@@ -52,7 +52,7 @@ class UpdateService(private val context: Context) {
     }
 
     private fun getLatestRelease(): JSONObject {
-        val json = URL("https://api.github.com/repos/y2k/JoyReactor/releases/latest").readText()
+        val json = URL("https://api.github.com/repos/HellCat24/JoyMobile/releases/latest").readText()
         return JSONObject(json)
     }
 }

@@ -30,8 +30,16 @@ class ProfilePresenter(
         service.logout().subscribeOnMain { Navigation.instance.switchProfileToLogin() }
     }
 
+    fun openSecretActivity() {
+        navigation.openPostListForBlog("http://joyreactor.cc/tag/%25D1%2581%25D0%25B5%25D0%25BA%25D1%2580%25D0%25B5%25D1%2582%25D0%25BD%25D1%258B%25D0%25B5%2B%25D1%2580%25D0%25B0%25D0%25B7%25D0%25B4%25D0%25B5%25D0%25BB%25D1%258B/rating")
+    }
+
     fun openTags() {
         navigation.openTags()
+    }
+
+    fun openFavorites(username : String) {
+        navigation.openUserPosts(username + "/favorite")
     }
 
     fun openDialogs() {

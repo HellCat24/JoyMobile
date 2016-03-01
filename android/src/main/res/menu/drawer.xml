@@ -3,19 +3,23 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/messages"
-            android:icon="@mipmap/ic_messages"
+            android:icon="@mipmap/ic_launcher"
             android:title="@string/messages"/>
         <item
             android:id="@+id/favorites"
-            android:icon="@mipmap/ic_favorite"
-            android:title="@string/messages"/>
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/favorite"/>
         <item
             android:id="@+id/tags"
-            android:icon="@mipmap/ic_tags"
+            android:icon="@mipmap/ic_launcher"
             android:title="@string/tags"/>
         <item
+            android:id="@+id/secret"
+            android:icon="@mipmap/ic_launcher"
+            android:title="Secret Stuff"/>
+        <item
             android:id="@+id/log_out"
-            android:icon="@mipmap/ic_login"
+            android:icon="@mipmap/ic_launcher"
             android:title="@string/log_out"/>
         <!-- Maybe for the future -->
         <item

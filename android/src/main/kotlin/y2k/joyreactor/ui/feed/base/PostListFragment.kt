@@ -9,9 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import y2k.joyreactor.Post
 import y2k.joyreactor.R
-import y2k.joyreactor.common.BaseFragment
+import y2k.joyreactor.ui.base.BaseFragment
 import y2k.joyreactor.common.ServiceLocator
-import y2k.joyreactor.image.JoyPicasso
+import y2k.joyreactor.image.JoyImageUtils
 import y2k.joyreactor.presenters.PostListPresenter
 import y2k.joyreactor.ui.adapter.EndlessRecyclerOnScrollListener
 import y2k.joyreactor.ui.adapter.PostAdapter
@@ -53,10 +53,16 @@ abstract class PostListFragment() : BaseFragment(), PostListPresenter.View {
     }
 
     override fun addNewPosts(posts: List<Post>) {
-        for(post in posts){
-            JoyPicasso.preload(activity, post.image)
-        }
+        preloadPostImages(posts)
         adapter.addData(posts)
+    }
+
+    private fun preloadPostImages(posts: List<Post>) {
+        for (post in posts) {
+            if (post.image != null && !post.image!!.isCoub) {
+                JoyImageUtils.preload(activity, post.image)
+            }
+        }
     }
 
     override fun setBusy(isBusy: Boolean) {
@@ -84,5 +90,17 @@ abstract class PostListFragment() : BaseFragment(), PostListPresenter.View {
         override fun getExtraLayoutSpace(state: RecyclerView.State?): Int {
             return 300
         }
+    }
+
+    override fun getCurrentTag(): String? {
+        return null
+    }
+
+    override fun getCurrentUserName(): String? {
+        return null
+    }
+
+    override fun getPostType(): String? {
+        return null
     }
 }

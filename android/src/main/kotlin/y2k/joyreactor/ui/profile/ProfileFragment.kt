@@ -9,7 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import y2k.joyreactor.Profile
 import y2k.joyreactor.R
-import y2k.joyreactor.common.BaseFragment
+import y2k.joyreactor.ui.base.BaseFragment
 import y2k.joyreactor.common.ServiceLocator
 import y2k.joyreactor.common.isVisible
 import y2k.joyreactor.presenters.ProfilePresenter
@@ -30,6 +30,7 @@ class ProfileFragment : BaseFragment() {
             }
 
             override fun setProfile(profile: Profile) {
+                view.findViewById(R.id.btn_login).visibility = View.GONE
                 navigationView.visibility = View.VISIBLE
 
                 var headerView = navigationView.getHeaderView(0);
@@ -54,6 +55,10 @@ class ProfileFragment : BaseFragment() {
                 menuItem.isChecked = true
 
             when (menuItem.itemId) {
+                R.id.favorites -> {
+                    presenter.openFavorites("HellCat")
+                    true
+                }
                 R.id.tags -> {
                     presenter.openTags()
                     true
@@ -66,13 +71,16 @@ class ProfileFragment : BaseFragment() {
                     presenter.logout()
                     true
                 }
+                R.id.secret -> {
+                    presenter.openSecretActivity()
+                    true
+                }
                 else -> {
                     Toast.makeText(activity, "Somethings Wrong", Toast.LENGTH_SHORT).show()
                     true
                 }
             }
         }
-
         return view
     }
 

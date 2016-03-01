@@ -13,7 +13,6 @@ class Post(
     val images: List<Image>,
     val userImage: String,
     val userName: String,
-    val created: Date,
     val serverId: String,
     val commentCount: Int,
     var rating: Float) : Serializable, Comparable<Post>, DataSet.Dto {

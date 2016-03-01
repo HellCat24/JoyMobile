@@ -10,7 +10,6 @@ import y2k.joyreactor.services.LifeCycleService
 import y2k.joyreactor.services.ProfileService
 import y2k.joyreactor.services.TagService
 import y2k.joyreactor.services.requests.LikeDislikeService
-import y2k.joyreactor.services.requests.PostsForTagRequest
 
 /**
  * Created by y2k on 9/26/15.
@@ -24,10 +23,23 @@ class PostListPresenter(
 
     init {
         lifeCycleService.add(BroadcastService.TagSelected::class) { currentTagChanged(it.tag) }
-        currentTagChanged(Tag.makeFeatured())
+        currentTagChanged(tag())
     }
 
-    private fun currentTagChanged(newTag: Tag) {
+    private fun tag(): Tag {
+        var tag = Tag.makeFeatured()
+        var serverId = view.getCurrentTag()
+        if (serverId != null) {
+            tag = Tag(serverId, "", false, null)
+        }
+        val username = view.getCurrentUserName()
+        if (username != null) {
+            tag = Tag.makeFavorite(username)
+        }
+        return tag
+    }
+
+    fun currentTagChanged(newTag: Tag) {
         service.setTag(newTag)
         service.setType(view.getPostType())
         service.requestAsync().subscribeOnMain { data ->
@@ -91,6 +103,10 @@ class PostListPresenter(
                 }
     }
 
+    fun showUserPosts(username: String) {
+       Navigation.instance.openUserPosts(username)
+    }
+
     fun playClicked(post: Post) {
         if (post.image!!.isYouTube) {
             Navigation.instance.openYouTube(post.image.getYouTubeLink)
@@ -107,7 +123,11 @@ class PostListPresenter(
 
         fun setHasNewPosts(hasNewPosts: Boolean)
 
-        fun getPostType(): String
+        fun getPostType(): String?
+
+        fun getCurrentUserName(): String?
+
+        fun getCurrentTag(): String?
 
         fun updatePostRating(post: Post)
 

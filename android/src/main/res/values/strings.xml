@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">JoyReactor</string>
+    <string name="app_name" translatable="false">JoyMobile</string>
     <string name="add_tag">Add tag</string>
     <string name="profile">Profile</string>
     <string name="main_sections">Main Sections</string>
@@ -11,7 +11,7 @@
     <string name="about">About</string>
     <string name="favorite">Favorite</string>
     <string name="feed">Feed</string>
-    <string name="post_acitivty">Post</string>
+    <string name="post_activity">Post</string>
     <string name="create_tag">Create tag</string>
     <string name="tag_name">Tag name</string>
     <string name="example_tag">Example: Android, Anime</string>
@@ -23,7 +23,6 @@
     <string name="activity_private_messages">Private messages</string>
     <string name="new_posts">New posts</string>
     <string name="apply_caps">APPLY</string>
-    <string name="load_more_caps">LOAD MORE</string>
     <string name="old_posts">old posts</string>
     <string name="rating">Rating:</string>
     <string name="star_progress">New star progress:</string>
@@ -78,4 +77,10 @@
     <string name="login_message">Login To Have More Fun</string>
     <string name="update">Update</string>
     <string name="reload">Reload</string>
+
+    <string name="new_">New</string>
+    <string name="good">Good</string>
+    <string name="best">Best</string>
+    <string name="blog">Blog</string>
+    <string name="feedback">Feedback</string>
 </resources>

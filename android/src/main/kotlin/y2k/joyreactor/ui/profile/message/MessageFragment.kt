@@ -11,7 +11,7 @@ import android.widget.TextView
 import org.ocpsoft.prettytime.PrettyTime
 import y2k.joyreactor.Message
 import y2k.joyreactor.R
-import y2k.joyreactor.common.BaseFragment
+import y2k.joyreactor.ui.base.BaseFragment
 import y2k.joyreactor.common.ServiceLocator
 import y2k.joyreactor.common.isVisible
 import y2k.joyreactor.presenters.MessagesPresenter

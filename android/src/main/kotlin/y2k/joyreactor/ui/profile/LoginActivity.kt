@@ -11,13 +11,17 @@ import android.widget.Toast
 import y2k.joyreactor.R
 import y2k.joyreactor.common.ServiceLocator
 import y2k.joyreactor.presenters.LoginPresenter
+import y2k.joyreactor.ui.base.BaseFragmentActivity
+import y2k.joyreactor.ui.base.ToolBarActivity
 
-class LoginActivity : AppCompatActivity(), LoginPresenter.View {
+class LoginActivity : ToolBarActivity(), LoginPresenter.View {
+
+    override val layoutId: Int
+        get() = R.layout.activity_login
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_login)
         setSupportActionBar(findViewById(R.id.toolbar) as Toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 

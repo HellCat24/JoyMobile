@@ -9,16 +9,11 @@
     android:orientation="vertical"
     android:paddingBottom="@dimen/dimen_small"
     android:paddingTop="@dimen/dimen_small"
-    app:cardBackgroundColor="@android:color/white"
     app:cardElevation="2dp">
 
-    <LinearLayout
-        android:id="@+id/card"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:orientation="vertical"
-        app:cardCornerRadius="4dp">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/text_content"
@@ -26,140 +21,115 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/dimen_medium"
             android:textSize="14sp"
-            android:visibility="visible"
+            android:visibility="gone"
             tools:text="Title"/>
 
-        <RelativeLayout
+        <FrameLayout
+            android:id="@+id/image_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/text_content"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/image_container"
+            <ImageView
+                android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/image"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:background="@color/grey"/>
-
-            </LinearLayout>
+                android:adjustViewBounds="true"/>
 
             <ImageView
                 android:id="@+id/videoMark"
                 android:layout_width="48dp"
-                android:layout_height="36dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
                 android:background="@drawable/play_drawable"
-                android:scaleType="centerInside"
+                android:scaleType="center"
                 android:src="@drawable/ic_send_orange"
                 android:visibility="gone"/>
 
-        </RelativeLayout>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/btn_expand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/image_container"
             android:background="@color/grey"
             android:gravity="right"
             android:padding="@dimen/dimen_medium"
             android:text="@string/show_more"
             android:textColor="@android:color/darker_gray"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
 
-        <RelativeLayout
+        <y2k.joyreactor.view.WebImageView
+            android:id="@+id/userImage"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_below="@+id/btn_expand"
+            android:layout_marginBottom="9dp"
+            android:layout_marginLeft="9dp"
+            android:layout_marginTop="9dp"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:id="@+id/userName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/userImage"
+            android:layout_toEndOf="@+id/userImage"
+            android:layout_toRightOf="@+id/userImage"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="#616161"
+            android:textSize="14sp"/>
 
-            <y2k.joyreactor.view.WebImageView
-                android:id="@+id/userImage"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginBottom="9dp"
-                android:layout_marginLeft="9dp"
-                android:layout_marginTop="9dp"
-                android:scaleType="centerCrop"/>
+        <TextView
+            android:id="@+id/commentCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/userName"
+            android:layout_alignTop="@id/userImage"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="23dp"
+            android:drawablePadding="4dp"
+            android:ellipsize="end"
+            android:gravity="bottom"
+            android:singleLine="true"
+            android:textColor="#a9a9a9"
+            android:textSize="12sp"/>
 
-            <TextView
-                android:id="@+id/userName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="12dp"
-                android:layout_toRightOf="@id/userImage"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textColor="#616161"
-                android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/txt_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/commentCount"
+            android:layout_alignEnd="@+id/commentCount"
+            android:layout_alignRight="@+id/commentCount"
+            android:layout_alignTop="@+id/userImage"
+            android:padding="@dimen/dimen_medium"/>
 
-            <TextView
-                android:id="@+id/commentCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/userName"
-                android:layout_alignTop="@id/userImage"
-                android:layout_marginRight="4dp"
-                android:layout_marginTop="23dp"
-                android:drawableLeft="@drawable/ic_reply"
-                android:drawablePadding="4dp"
-                android:ellipsize="end"
-                android:gravity="bottom"
-                android:singleLine="true"
-                android:textColor="#a9a9a9"
-                android:textSize="12sp"/>
+        <LinearLayout
+            android:id="@+id/like_dislike_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/userImage"
+            android:layout_alignEnd="@+id/commentCount"
+            android:layout_alignRight="@+id/commentCount"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignTop="@id/userImage"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="23dp"
-                android:layout_toRightOf="@id/commentCount"
-                android:drawableLeft="@drawable/ic_time"
-                android:drawablePadding="4dp"
-                android:ellipsize="end"
-                android:gravity="bottom"
-                android:singleLine="true"
-                android:textColor="#a9a9a9"
-                android:textSize="12sp"/>
+            <ImageButton
+                android:id="@+id/btn_post_like"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/like_background"/>
 
-            <TextView
-                android:id="@+id/txt_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/time"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/dimen_medium"/>
-
-            <LinearLayout
-                android:id="@+id/like_dislike_holder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/time"
-                android:layout_centerVertical="true"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <ImageButton
-                    android:id="@+id/btn_post_like"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:background="@drawable/like_backgroud"/>
-
-                <ImageButton
-                    android:id="@+id/btn_post_dislike"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginLeft="@dimen/dimen_small"
-                    android:background="@drawable/dislike_background"/>
-            </LinearLayout>
-        </RelativeLayout>
-    </LinearLayout>
+            <ImageButton
+                android:id="@+id/btn_post_dislike"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="@dimen/dimen_small"
+                android:background="@drawable/dislike_background"/>
+        </LinearLayout>
+    </RelativeLayout>
 </android.support.v7.widget.CardView>

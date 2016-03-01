@@ -1,6 +1,7 @@
-package y2k.joyreactor.common
+package y2k.joyreactor.ui.base
 
 import android.support.v4.app.Fragment
+import y2k.joyreactor.common.ServiceLocator
 import y2k.joyreactor.services.BroadcastService
 import y2k.joyreactor.services.LifeCycleService
 

@@ -11,7 +11,8 @@ class Blog(
         val title: String,
         val image: Image?,
         val rating: String,
-        val subscriberCount: String) : Serializable, Comparable<Blog>, DataSet.Dto {
+        val subscriberCount: String,
+        val tagUrl: String) : Serializable, Comparable<Blog>, DataSet.Dto {
 
     override var id: Long = 0
 

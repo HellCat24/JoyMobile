@@ -11,4 +11,8 @@
         android:id="@+id/updates"
         android:title="@string/update"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/feedback"
+        android:title="@string/feedback"
+        app:showAsAction="never"/>
 </menu>

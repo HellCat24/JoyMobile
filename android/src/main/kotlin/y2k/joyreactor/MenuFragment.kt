@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import y2k.joyreactor.common.BaseFragment
+import y2k.joyreactor.ui.base.BaseFragment
 import y2k.joyreactor.common.ServiceLocator
 import y2k.joyreactor.presenters.TagListPresenter
 import y2k.joyreactor.ui.profile.tags.AddTagDialogFragment
@@ -54,18 +54,18 @@ class MenuFragment : BaseFragment() {
 
         override fun onBindViewHolder(vh: ViewHolder, position: Int) {
             if (vh.title != null && vh.icon != null) {
-                val item = tags!![position - 1]
+                val item = tags!![position]
                 vh.title.text = item.title
                 vh.icon.setImage(item.image)
             }
         }
 
         override fun getItemCount(): Int {
-            return (if (tags == null) 0 else tags!!.size) + 1
+            return (if (tags == null) 0 else tags!!.size)
         }
 
         override fun getItemViewType(position: Int): Int {
-            return if (position == 0) R.layout.layout_subscriptions_header else R.layout.item_subscription
+            return R.layout.item_subscription
         }
 
         fun updateData(tags: List<Tag>) {
@@ -77,16 +77,6 @@ class MenuFragment : BaseFragment() {
 
             val title = view.findViewById(R.id.title) as TextView?
             val icon = view.findViewById(R.id.icon) as WebImageView?
-
-            init {
-                val action = view.findViewById(R.id.action)
-                if (action == null) {
-                    view.findViewById(R.id.selectFeatured).setOnClickListener { v -> presenter.selectedFeatured() }
-                    view.findViewById(R.id.selectFavorite).setOnClickListener { v -> presenter.selectedFavorite() }
-                } else {
-                    action.setOnClickListener { presenter.selectTag(tags!![adapterPosition - 1]) }
-                }
-            }
         }
     }
 }

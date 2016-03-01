@@ -31,14 +31,6 @@ abstract class BaseFragmentActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        val count = fragmentManager.backStackEntryCount
-        if (count == 0) {
-            super.onBackPressed()
-        } else {
-            fragmentManager.popBackStack()
-        }
-    }
-
     protected abstract val fragmentContentId: Int
+
 }

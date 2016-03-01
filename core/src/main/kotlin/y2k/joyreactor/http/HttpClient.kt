@@ -118,8 +118,11 @@ open class HttpClient protected constructor() {
 
     private fun saveSessionToken(doc: String) {
         val m = TOKEN_REGEX.matcher(doc)
-        if (!m.find()) throw IllegalStateException()
-        token = m.group(1)
+        if (m.find()) {
+            token = m.group(1)
+        } else {
+            token = ""
+        }
     }
 
     fun clearCookies() {

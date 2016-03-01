@@ -19,29 +19,24 @@ class MainActivity : ToolBarActivity() {
     lateinit var adapter: ViewPagerAdapter
     lateinit var viewPager: ViewPager
 
-    override val fragmentContentId: Int
-        get() = throw UnsupportedOperationException()
-    override val layoutId: Int
-        get() = R.layout.activity_main
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         var tabs = findViewById(R.id.tabs) as TabLayout
-
-        viewPager = findViewById(R.id.viewpager) as ViewPager
-        setupViewPager(viewPager)
+        setupViewPager()
         tabs.setupWithViewPager(viewPager)
     }
 
-    fun setupViewPager(viewPager: ViewPager) {
+    fun setupViewPager() {
         adapter = ViewPagerAdapter(supportFragmentManager);
-        adapter.addFragment(NewPostsFragment(), "New");
-        adapter.addFragment(GoodPostsFragment(), "Good");
-        adapter.addFragment(BestPostsFragment(), "Best");
-        adapter.addFragment(ProfileFragment(), "Profile");
+
+        adapter.addFragment(NewPostsFragment(), getString(R.string.new_));
+        adapter.addFragment(GoodPostsFragment(), getString(R.string.good));
+        adapter.addFragment(BestPostsFragment(), getString(R.string.best));
+        adapter.addFragment(ProfileFragment(), getString(R.string.profile));
+
+        viewPager = findViewById(R.id.viewpager) as ViewPager
         viewPager.adapter = adapter;
-        viewPager.offscreenPageLimit = 4
+        viewPager.offscreenPageLimit = adapter.count
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -56,10 +51,14 @@ class MainActivity : ToolBarActivity() {
                 return true;
             }
             R.id.reload -> {
-                (adapter.getItem(viewPager.getCurrentItem()) as PostListFragment).refresh()
+                (adapter.getItem(viewPager.currentItem) as PostListFragment).refresh()
             }
             else -> return super.onOptionsItemSelected(item)
         }
         return true
     }
+
+    override val layoutId: Int
+        get() = R.layout.activity_main
+
 }

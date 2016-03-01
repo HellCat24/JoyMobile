@@ -25,4 +25,6 @@ abstract class ToolBarActivity : BaseFragmentActivity() {
         overridePendingTransition(0, 0);
     }
 
+    override val fragmentContentId: Int
+        get() = throw UnsupportedOperationException()
 }

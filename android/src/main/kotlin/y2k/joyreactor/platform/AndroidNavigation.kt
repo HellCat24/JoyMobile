@@ -10,12 +10,15 @@ import y2k.joyreactor.Message
 import y2k.joyreactor.Post
 import y2k.joyreactor.common.ActivityLifecycleCallbacksAdapter
 import y2k.joyreactor.common.startActivity
-import y2k.joyreactor.ui.blog.BlogPostListActivity
 import y2k.joyreactor.ui.MainActivity
+import y2k.joyreactor.ui.base.BaseFragmentActivity
+import y2k.joyreactor.ui.blog.BlogPostListActivity
+import y2k.joyreactor.ui.blog.BlogPostListFragment
 import y2k.joyreactor.ui.comments.CreateCommentActivity
 import y2k.joyreactor.ui.post.PostActivity
 import y2k.joyreactor.ui.post.VideoActivity
 import y2k.joyreactor.ui.profile.LoginActivity
+import y2k.joyreactor.ui.profile.UserPostActivity
 import y2k.joyreactor.ui.profile.message.DialogsActivity
 import y2k.joyreactor.ui.profile.message.MessagesActivity
 import y2k.joyreactor.ui.profile.tags.AddTagDialogFragment
@@ -30,7 +33,7 @@ open class AndroidNavigation(app: Application) : Navigation {
         currentActivity?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)));
     }
 
-    internal var currentActivity: Activity? = null
+    internal var currentActivity: BaseFragmentActivity? = null
 
     init {
         app.registerActivityLifecycleCallbacks(MyActivityLifecycleCallbacks())
@@ -85,14 +88,22 @@ open class AndroidNavigation(app: Application) : Navigation {
 
     override fun openTags() {
         currentActivity?.startActivity(TagsActivity::class)
+        currentActivity?.overridePendingTransition(0, 0);
     }
 
     override fun openPostListForBlog(url: String) {
-        BlogPostListActivity.startActivity(currentActivity, url)
+        BlogPostListActivity.startBlogPostActivity(currentActivity, url)
+        currentActivity?.overridePendingTransition(0, 0)
+    }
+
+    override fun openUserPosts(username: String) {
+        UserPostActivity.startActivity(currentActivity, username)
+        currentActivity?.overridePendingTransition(0, 0)
     }
 
     override fun openDialogs() {
         currentActivity?.startActivity(DialogsActivity::class)
+        currentActivity?.overridePendingTransition(0, 0);
     }
 
     override fun openLogin() {
@@ -100,8 +111,13 @@ open class AndroidNavigation(app: Application) : Navigation {
         currentActivity?.overridePendingTransition(0, 0)
     }
 
+    override fun showBlogPostList(tag: String) {
+        currentActivity?.addFragment(BlogPostListFragment.create(tag))
+    }
+
     override fun openMessages(dialog: Message) {
         MessagesActivity.startActivity(currentActivity, dialog)
+        currentActivity?.overridePendingTransition(0, 0);
     }
 
     override fun openVideo(post: Post) {
@@ -112,11 +128,11 @@ open class AndroidNavigation(app: Application) : Navigation {
     private inner class MyActivityLifecycleCallbacks : ActivityLifecycleCallbacksAdapter() {
 
         override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {
-            currentActivity = activity
+            currentActivity = activity as BaseFragmentActivity?
         }
 
         override fun onActivityResumed(activity: Activity?) {
-            currentActivity = activity
+            currentActivity = activity as BaseFragmentActivity?
         }
 
         override fun onActivityPaused(activity: Activity?) {

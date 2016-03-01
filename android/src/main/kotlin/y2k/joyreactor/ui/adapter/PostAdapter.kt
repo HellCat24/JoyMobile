@@ -5,15 +5,14 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
-import org.ocpsoft.prettytime.PrettyTime
 import y2k.joyreactor.Image
 import y2k.joyreactor.Post
 import y2k.joyreactor.R
 import y2k.joyreactor.common.ComplexViewHolder
-import y2k.joyreactor.image.JoyPicasso
+import y2k.joyreactor.image.JoyImageUtils
 import y2k.joyreactor.presenters.PostListPresenter
 import java.util.*
 
@@ -22,7 +21,6 @@ import java.util.*
  */
 class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapter<ComplexViewHolder>() {
 
-    private val prettyTime = PrettyTime()
     private val posts = ArrayList<Post?>()
     private var isLikesDislikesEnabled = false;
 
@@ -68,12 +66,11 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
         val userImage: ImageView
         val videoMark: View
         val commentCount: TextView
-        val time: TextView
         val userName: TextView
         val rating: TextView
         val textContent: TextView
         val likeDislikeHolder: View
-        val imageContainer: LinearLayout
+        val imageContainer: FrameLayout
         val btnExpand: TextView
 
         init {
@@ -82,28 +79,29 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
             userImage = itemView.findViewById(R.id.userImage) as ImageView
             videoMark = itemView.findViewById(R.id.videoMark)
             commentCount = itemView.findViewById(R.id.commentCount) as TextView
-            time = itemView.findViewById(R.id.time) as TextView
             userName = itemView.findViewById(R.id.userName) as TextView
             rating = itemView.findViewById(R.id.txt_rating) as TextView
             textContent = itemView.findViewById(R.id.text_content) as TextView
             btnExpand = itemView.findViewById(R.id.btn_expand) as TextView
             likeDislikeHolder = itemView.findViewById(R.id.like_dislike_holder) as View
-            imageContainer = itemView.findViewById(R.id.image_container) as LinearLayout
+            imageContainer = itemView.findViewById(R.id.image_container) as FrameLayout
 
-            itemView.findViewById(R.id.card).setOnClickListener { presenter.postClicked(posts[adapterPosition]!!) }
+            itemView.findViewById(R.id.cardview).setOnClickListener { presenter.postClicked(posts[adapterPosition]!!) }
             itemView.findViewById(R.id.videoMark).setOnClickListener { presenter.playClicked(posts[adapterPosition]!!) }
             itemView.findViewById(R.id.btn_post_like).setOnClickListener { presenter.like(posts[adapterPosition]!!) }
             itemView.findViewById(R.id.btn_post_dislike).setOnClickListener { presenter.disLike(posts[adapterPosition]!!) }
+
         }
 
         override fun bind() {
             val post = posts[adapterPosition]!!
 
+            userName.setOnClickListener { presenter.showUserPosts(post.userName) }
+
             userName.text = post.userName
             rating.text = post.rating.toString()
-            time.text = prettyTime.format(post.created)
-            commentCount.text = post.commentCount.toString()
             //userImage.setImage(post.getUserImage2().toImage())
+            commentCount.text = post.commentCount.toString() + " comments"
             videoMark.visibility = if (post.image?.isYouTube ?: false) View.VISIBLE else View.GONE
 
             processPostImage(post)
@@ -139,13 +137,10 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
                 var images = post.images.subList(1, post.images.size)
                 for (img in images) {
                     var imgView: ImageView = ImageView(image.context, null)
-                    var imageViewParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    imgView.setLayoutParams(imageViewParams);
-
-                    loadImage(img);
                     imageContainer.addView(imgView)
+                    loadImage(img);
                 }
-                //notifyItemChanged(adapterPosition)
+                notifyItemChanged(adapterPosition)
             }
         }
 
@@ -165,7 +160,7 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
         }
 
         private fun loadImage(i: Image) {
-            JoyPicasso.load(image, i)
+            JoyImageUtils.load(image, i)
         }
     }
 }

@@ -2,6 +2,7 @@ package y2k.joyreactor.image;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -19,7 +20,7 @@ import java.io.IOException;
 
 import y2k.joyreactor.Image;
 
-public class JoyPicasso {
+public class JoyImageUtils {
 
     private static int mDisplayWidth;
 
@@ -35,12 +36,13 @@ public class JoyPicasso {
         display.getSize(size);
         mDisplayWidth = size.x;
 
-        Picasso.with(context).setIndicatorsEnabled(true);
+        //Picasso.with(context).setIndicatorsEnabled(true);
     }
 
     public static void preload(Context context, final Image image) {
-        if (image != null) {
-            Picasso.with(context).load(image.getUrl()).resize(400, 0);
+        String url = image.getUrl();
+        if (url != null && !url.isEmpty()) {
+            Picasso.with(context).load(url).resize(400, 0);
         }
     }
 

@@ -1,6 +1,6 @@
 package y2k.joyreactor.ui.feed
 
-import y2k.joyreactor.common.BaseFragment
+import y2k.joyreactor.ui.base.BaseFragment
 import y2k.joyreactor.ui.feed.base.PostListFragment
 
 /**

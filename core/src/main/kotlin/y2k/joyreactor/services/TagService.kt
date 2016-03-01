@@ -26,8 +26,10 @@ class TagService(private val dataContext: DataContext.Factory,
         this.tag = tag
     }
 
-    fun setType(type: String) {
-        this.type = type
+    fun setType(type: String?) {
+        if (type != null)
+            this.type = type
+        else this.type = ""
     }
 
     fun preloadNewPosts(): Observable<Boolean> {
@@ -36,34 +38,34 @@ class TagService(private val dataContext: DataContext.Factory,
 
     fun applyNew(): Observable<List<Post>> {
         return merger
-            .mergeFirstPage(tag, lastPage.posts)
-            .flatMap { getFromRepository() }
+                .mergeFirstPage(tag, lastPage.posts)
+                .flatMap { getFromRepository() }
     }
 
     fun loadNextPage(): Observable<List<Post>> {
-        return requestAsync(lastPage.nextPage).map {it -> it.posts }
+        return requestAsync(lastPage.nextPage).map { it -> it.posts }
     }
 
     fun reloadFirstPage(): Observable<List<Post>> {
         return requestAsync()
-            .flatMap { data ->
-                dataContext
-                    .use { entities ->
-                        entities.TagPosts
-                            .filter { it.tagId == tag.id }
-                            .forEach { entities.TagPosts.remove(it) }
-                        entities.saveChanges()
-                    }
-                    .map { data }
-            }
-            .flatMap { merger.mergeFirstPage(tag, it.posts) }
-            .flatMap { getFromRepository() }
+                .flatMap { data ->
+                    dataContext
+                            .use { entities ->
+                                entities.TagPosts
+                                        .filter { it.tagId == tag.id }
+                                        .forEach { entities.TagPosts.remove(it) }
+                                entities.saveChanges()
+                            }
+                            .map { data }
+                }
+                .flatMap { merger.mergeFirstPage(tag, it.posts) }
+                .flatMap { getFromRepository() }
     }
 
     fun requestAsync(page: String? = null): Observable<PostsForTagRequest.Data> {
         return postsRequest
-            .requestAsync(tag, page, type)
-            .peek { lastPage = it }
+                .requestAsync(tag, page, type)
+                .peek { lastPage = it }
     }
 
     fun queryAsync(): Observable<List<Post>> {
@@ -73,8 +75,8 @@ class TagService(private val dataContext: DataContext.Factory,
     private fun getFromRepository(): Observable<List<Post>> {
         return dataContext.use { entities ->
             entities.TagPosts
-                .filter { it.tagId == tag.id }
-                .map { link -> entities.Posts.first { it.id == link.postId } }
+                    .filter { it.tagId == tag.id }
+                    .map { link -> entities.Posts.first { it.id == link.postId } }
         }
     }
 }

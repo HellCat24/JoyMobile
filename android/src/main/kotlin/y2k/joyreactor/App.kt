@@ -6,7 +6,7 @@ import com.splunk.mint.Mint
 import rx.Observable
 import y2k.joyreactor.common.ForegroundScheduler
 import y2k.joyreactor.common.ioObservable
-import y2k.joyreactor.image.JoyPicasso
+import y2k.joyreactor.image.JoyImageUtils
 import y2k.joyreactor.platform.AndroidNavigation
 import y2k.joyreactor.platform.HandlerSchedulerFactory
 import y2k.joyreactor.platform.Navigation
@@ -27,7 +27,7 @@ class App : Application() {
             Mint.initAndStartSession(this, "66d8751e")
         };
 
-        JoyPicasso.init(this)
+        JoyImageUtils.init(this)
 
         ForegroundScheduler.instance = HandlerSchedulerFactory().make()
         Platform.instance = object : Platform() {

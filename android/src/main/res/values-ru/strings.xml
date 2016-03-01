@@ -9,7 +9,7 @@
     <string name="about">About</string>
     <string name="favorite">Избранное</string>
     <string name="feed">Лента</string>
-    <string name="post_acitivty">Post</string>
+    <string name="post_activity">Post</string>
     <string name="create_tag">Create tag</string>
     <string name="tag_name">Имя тега</string>
     <string name="example_tag">Example: Android, Anime</string>

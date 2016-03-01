@@ -27,10 +27,6 @@ class TagListPresenter(
         broadcastService.broadcast(BroadcastService.TagSelected(tag))
     }
 
-    fun selectedFeatured() {
-        broadcastService.broadcast(BroadcastService.TagSelected(Tag.makeFeatured()))
-    }
-
     fun selectedFavorite() {
         service
             .getTagForFavorite()

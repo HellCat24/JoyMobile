@@ -49,12 +49,6 @@ class PostsForTagRequest {
                 return if (m.find()) java.lang.Float.parseFloat(m.group()) else 0f
             }
 
-        val created: Date
-            get() {
-                val e = element.select("span.date > span")
-                return Date(1000L * java.lang.Long.parseLong(e.attr("data-time")))
-            }
-
         companion object {
 
             private val COMMENT_COUNT_REGEX = Pattern.compile("\\d+")
@@ -163,7 +157,6 @@ class PostsForTagRequest {
                     imageThumbnailParser.getExpandedImages(),
                     element.select("div.uhead_nick > img").attr("src"),
                     element.select("div.uhead_nick > a").text(),
-                    parser.created,
                     extractNumberFromEnd(element.id()),
                     parser.commentCount,
                     parser.rating)

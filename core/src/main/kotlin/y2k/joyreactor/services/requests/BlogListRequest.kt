@@ -43,52 +43,27 @@ class BlogListRequest {
             return null;
         }
     }
-
-    internal class BlogParse(private val element: Element) {
-
-        val title: String
-            get() {
-
-                return ""
-            }
-
-        val rating: String
-            get() {
-                return ""
-            }
-
-        val subscriberCount: String
-            get() {
-                return ""
-            }
-
-        companion object {
-
-            private val COMMENT_COUNT_REGEX = Pattern.compile("\\d+")
-            private val RATING_REGEX = Pattern.compile("[\\d\\.]+")
-        }
-    }
-
     companion object {
 
         internal fun newBlog(element: Element): Blog {
             var image = ImageThumbnailParser(element).load()
 
-            val parser = BlogParse(element)
+            val links = element.select("a[href]")
 
-            return Blog(element.text(),
+            val url = links[0].attr("href").replace("/tag/", "")
+            val title = links[0].attr("title")
+
+            val data = element.select("small")
+
+            val rating = data[0].text()
+            val subscriberCount = data[1].text()
+
+            return Blog(title,
                     image,
-                    parser.rating,
-                    parser.subscriberCount
+                    rating,
+                    subscriberCount,
+                    url
             )
         }
-
-        private fun extractNumberFromEnd(text: String): String {
-            val m = Pattern.compile("\\d+$").matcher(text)
-            if (!m.find()) throw IllegalStateException()
-            return m.group()
-        }
-
-        private val BLOG_DATA = Pattern.compile("<small>(\\S+)</small>")
     }
 }
