@@ -15,7 +15,3 @@ fun <T> List<T>.groupToPair(): List<Pair<T, T>> {
         .groupBy { it.index and 2 }
         .map { it.value[0].value to it.value[1].value }
 }
-
-//fun <T> MutableMap<T, T>.put(item: Pair<T, T>) {
-//    put(item.first, item.second)
-//}

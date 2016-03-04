@@ -7,12 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import y2k.joyreactor.Profile
 import y2k.joyreactor.R
-import y2k.joyreactor.ui.base.BaseFragment
-import y2k.joyreactor.common.ServiceLocator
+import y2k.joyreactor.common.ServiceInjector
 import y2k.joyreactor.common.isVisible
+import y2k.joyreactor.enteties.Profile
 import y2k.joyreactor.presenters.ProfilePresenter
+import y2k.joyreactor.ui.base.BaseFragment
 import y2k.joyreactor.view.WebImageView
 
 class ProfileFragment : BaseFragment() {
@@ -23,7 +23,7 @@ class ProfileFragment : BaseFragment() {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         var navigationView = view.findViewById(R.id.navigation_view) as NavigationView
 
-        presenter = ServiceLocator.resolve(object : ProfilePresenter.View {
+        presenter = ServiceInjector.resolve(object : ProfilePresenter.View {
 
             override fun hideProfileMenu() {
                 navigationView.visibility = View.GONE

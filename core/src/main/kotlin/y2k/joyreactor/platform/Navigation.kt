@@ -1,7 +1,7 @@
 package y2k.joyreactor.platform
 
-import y2k.joyreactor.Message
-import y2k.joyreactor.Post
+import y2k.joyreactor.enteties.Message
+import y2k.joyreactor.enteties.Post
 
 /**
  * Created by y2k on 02/10/15.
@@ -28,11 +28,11 @@ interface Navigation {
 
     fun openImageView(post: Post)
 
-    fun showBlogPostList(tag: String)
+    fun showBlogPostList(tag: String, title : String)
 
     fun openPostListForBlog(url : String)
 
-    fun openCreateComment(p : Post)
+    fun openCreateComment(postId : String, parentId : Long?)
 
     fun openTags()
 

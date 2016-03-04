@@ -1,7 +1,7 @@
 package y2k.joyreactor.presenters
 
-import y2k.joyreactor.Tag
 import y2k.joyreactor.common.subscribeOnMain
+import y2k.joyreactor.enteties.Tag
 import y2k.joyreactor.services.BroadcastService
 import y2k.joyreactor.services.LifeCycleService
 import y2k.joyreactor.services.TagListService

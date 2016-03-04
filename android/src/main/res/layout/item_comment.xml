@@ -42,6 +42,7 @@
                     android:ellipsize="end"
                     android:layout_width="match_parent"
                     android:fontFamily="sans-serif-light"
+                    android:autoLink="web"
                     android:textSize="14sp"
                     android:layout_height="wrap_content"/>
             <y2k.joyreactor.view.WebImageView

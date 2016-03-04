@@ -3,9 +3,9 @@ package y2k.joyreactor.ui.profile.message
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import y2k.joyreactor.Message
+import y2k.joyreactor.enteties.Message
 import y2k.joyreactor.R
-import y2k.joyreactor.common.ServiceLocator
+import y2k.joyreactor.common.ServiceInjector
 import y2k.joyreactor.services.BroadcastService
 import y2k.joyreactor.ui.base.ToolBarActivity
 
@@ -45,6 +45,6 @@ class MessagesActivity() : ToolBarActivity() {
     //TODO Refactore this
     override fun onPostResume() {
         super.onPostResume()
-        ServiceLocator.resolve(BroadcastService::class).broadcast(BroadcastService.ThreadSelectedMessage(currentDialog!!))
+        ServiceInjector.resolve(BroadcastService::class).broadcast(BroadcastService.ThreadSelectedMessage(currentDialog!!))
     }
 }

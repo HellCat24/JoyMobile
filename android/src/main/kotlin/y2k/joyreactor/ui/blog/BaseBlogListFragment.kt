@@ -1,6 +1,5 @@
 package y2k.joyreactor.ui.blog
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +8,9 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import y2k.joyreactor.R
-import y2k.joyreactor.ui.base.BaseFragment
-import y2k.joyreactor.common.ServiceLocator
+import y2k.joyreactor.common.ServiceInjector
 import y2k.joyreactor.presenters.BlogListPresenter
+import y2k.joyreactor.ui.base.BaseFragment
 import java.util.*
 
 /**
@@ -35,7 +34,7 @@ class BaseBlogListFragment() : BaseFragment(), BlogListPresenter.View {
     lateinit var adapter: ArrayAdapter<String>
     lateinit var presenter: BlogListPresenter
     lateinit var list: ListView
-    lateinit var blogUrl : String
+    lateinit var blogUrl: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_blog, container, false)
@@ -43,10 +42,10 @@ class BaseBlogListFragment() : BaseFragment(), BlogListPresenter.View {
         blogUrl = arguments.getString(BUNDLE_BLOG_URL)
 
         list = view.findViewById(R.id.blog_list) as ListView
-        presenter = ServiceLocator.resolve(this)
+        presenter = ServiceInjector.resolve(this)
         adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, android.R.id.text1, ArrayList())
         list.adapter = adapter
-        list.onItemClickListener = AdapterView.OnItemClickListener { view, parent, i, l ->  presenter.showBlogPostList(i)}
+        list.onItemClickListener = AdapterView.OnItemClickListener { view, parent, i, l -> presenter.showBlogPostList(i) }
 
         return view
     }

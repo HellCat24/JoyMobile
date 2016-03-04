@@ -6,26 +6,29 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.TextView
-import y2k.joyreactor.Comment
-import y2k.joyreactor.Post
-import y2k.joyreactor.Profile
 import y2k.joyreactor.R
-import y2k.joyreactor.common.ServiceLocator
+import y2k.joyreactor.common.ServiceInjector
 import y2k.joyreactor.common.compatAnimate
+import y2k.joyreactor.enteties.Comment
+import y2k.joyreactor.enteties.Post
+import y2k.joyreactor.enteties.Profile
 import y2k.joyreactor.presenters.CreateCommentPresenter
+import y2k.joyreactor.ui.base.ToolBarActivity
 import y2k.joyreactor.ui.post.VideoActivity
 import y2k.joyreactor.view.WebImageView
 
-class CreateCommentActivity : AppCompatActivity() {
+class CreateCommentActivity : ToolBarActivity() {
 
     companion object {
 
         var BUNDLE_POST = "post"
+        var BUNDLE_PARENT_ID = "parent_id"
         var ACTION_CREATE_COMMENT = 1
 
-        fun startActivity(activity: Activity?, post: Post) {
+        fun startActivity(activity: Activity?, serverId: String, parentId: Long?) {
             val intent = Intent(activity, CreateCommentActivity::class.java)
-            intent.putExtra(BUNDLE_POST, post);
+            intent.putExtra(BUNDLE_POST, serverId);
+            intent.putExtra(BUNDLE_PARENT_ID, parentId);
             activity!!.startActivityForResult(intent, ACTION_CREATE_COMMENT)
         }
     }
@@ -39,9 +42,10 @@ class CreateCommentActivity : AppCompatActivity() {
         val sendButton = findViewById(R.id.send)
         val progress = findViewById(R.id.progress)
 
-        val post = intent.getSerializableExtra(VideoActivity.BUNDLE_POST) as Post
+        val serverId = intent.getStringExtra(VideoActivity.BUNDLE_POST)
+        val parentId = intent.getLongExtra(BUNDLE_PARENT_ID, 0)
 
-        val presenter = ServiceLocator.resolve(
+        val presenter = ServiceInjector.resolve(
                 object : CreateCommentPresenter.View {
 
                     override fun addComment(comment: Comment) {
@@ -76,6 +80,11 @@ class CreateCommentActivity : AppCompatActivity() {
                     }
                 })
 
-        sendButton.setOnClickListener { v -> presenter.create(post.serverId, textView.text.toString()) }
+        sendButton.setOnClickListener { v -> presenter.create(serverId, textView.text.toString(), parentId) }
     }
+
+    override val fragmentContentId: Int
+        get() = R.id.container
+    override val layoutId: Int
+        get() = R.layout.activity_create_comment
 }

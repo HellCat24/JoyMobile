@@ -1,11 +1,11 @@
 package y2k.joyreactor.presenters
 
-import y2k.joyreactor.Message
+import y2k.joyreactor.enteties.Message
 import y2k.joyreactor.common.subscribeOnMain
 import y2k.joyreactor.services.BroadcastService
 import y2k.joyreactor.services.LifeCycleService
 import y2k.joyreactor.services.UserMessagesService
-import y2k.joyreactor.services.requests.SendMessageRequest
+import y2k.joyreactor.requests.SendMessageRequest
 
 /**
  * Created by y2k on 01/10/15.

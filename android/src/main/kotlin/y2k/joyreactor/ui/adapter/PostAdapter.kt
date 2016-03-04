@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import y2k.joyreactor.Image
-import y2k.joyreactor.Post
 import y2k.joyreactor.R
 import y2k.joyreactor.common.ComplexViewHolder
+import y2k.joyreactor.enteties.Image
+import y2k.joyreactor.enteties.Post
 import y2k.joyreactor.image.JoyImageUtils
 import y2k.joyreactor.presenters.PostListPresenter
 import java.util.*
@@ -90,7 +90,7 @@ class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapt
             itemView.findViewById(R.id.videoMark).setOnClickListener { presenter.playClicked(posts[adapterPosition]!!) }
             itemView.findViewById(R.id.btn_post_like).setOnClickListener { presenter.like(posts[adapterPosition]!!) }
             itemView.findViewById(R.id.btn_post_dislike).setOnClickListener { presenter.disLike(posts[adapterPosition]!!) }
-
+            itemView.findViewById(R.id.btn_post_favorite).setOnClickListener { presenter.addToFavorite(posts[adapterPosition]!!) }
         }
 
         override fun bind() {

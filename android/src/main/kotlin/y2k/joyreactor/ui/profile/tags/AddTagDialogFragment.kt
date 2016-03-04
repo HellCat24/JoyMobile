@@ -12,7 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import y2k.joyreactor.App
 import y2k.joyreactor.R
-import y2k.joyreactor.common.ServiceLocator
+import y2k.joyreactor.common.ServiceInjector
 import y2k.joyreactor.presenters.AddTagPresenter
 
 /**
@@ -27,7 +27,7 @@ class AddTagDialogFragment : AppCompatDialogFragment() {
         val okButton = view.findViewById(R.id.ok)
         val tagView = view.findViewById(R.id.tag) as TextView
 
-        val presenter = ServiceLocator.resolve(
+        val presenter = ServiceInjector.resolve(
             object : AddTagPresenter.View {
 
                 override fun setIsBusy(isBusy: Boolean) {

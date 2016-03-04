@@ -1,11 +1,11 @@
 package y2k.joyreactor.services.synchronizers
 
 import rx.Observable
-import y2k.joyreactor.Post
-import y2k.joyreactor.Tag
-import y2k.joyreactor.TagPost
 import y2k.joyreactor.common.unionOrdered
-import y2k.joyreactor.services.repository.DataContext
+import y2k.joyreactor.enteties.Post
+import y2k.joyreactor.enteties.Tag
+import y2k.joyreactor.enteties.TagPost
+import y2k.joyreactor.repository.DataContext
 import java.util.*
 
 /**

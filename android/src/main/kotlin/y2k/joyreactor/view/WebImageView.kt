@@ -3,7 +3,7 @@ package y2k.joyreactor.view
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.ImageView
-import y2k.joyreactor.Image
+import y2k.joyreactor.enteties.Image
 import y2k.joyreactor.platform.ImageRequest
 
 /**

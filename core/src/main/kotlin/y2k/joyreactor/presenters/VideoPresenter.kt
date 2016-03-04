@@ -1,11 +1,11 @@
 package y2k.joyreactor.presenters
 
 import rx.Observable
-import y2k.joyreactor.Post
+import y2k.joyreactor.enteties.Post
 import y2k.joyreactor.common.subscribeOnMain
 import y2k.joyreactor.platform.Navigation
 import y2k.joyreactor.services.PostService
-import y2k.joyreactor.services.requests.OriginalImageRequestFactory
+import y2k.joyreactor.requests.factory.OriginalImageRequestFactory
 
 import java.io.File
 

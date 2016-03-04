@@ -7,7 +7,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 
-import y2k.joyreactor.Image;
+import y2k.joyreactor.enteties.Image;
+
 
 /**
  * Created by Oleg on 24.02.2016.

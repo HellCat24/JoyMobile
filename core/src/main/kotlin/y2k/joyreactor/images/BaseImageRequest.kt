@@ -2,8 +2,8 @@ package y2k.joyreactor.images
 
 import rx.Observable
 import rx.Subscription
-import y2k.joyreactor.Image
 import y2k.joyreactor.common.ForegroundScheduler
+import y2k.joyreactor.enteties.Image
 import java.io.File
 import java.util.*
 

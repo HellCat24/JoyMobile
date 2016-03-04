@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import pl.droidsonroids.gif.GifTextureView
 import pl.droidsonroids.gif.InputSource
-import y2k.joyreactor.Post
+import y2k.joyreactor.enteties.Post
 import y2k.joyreactor.R
 import y2k.joyreactor.ui.base.ToolBarActivity
 import java.io.BufferedInputStream

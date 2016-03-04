@@ -6,10 +6,10 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import y2k.joyreactor.Message
-import y2k.joyreactor.Post
 import y2k.joyreactor.common.ActivityLifecycleCallbacksAdapter
 import y2k.joyreactor.common.startActivity
+import y2k.joyreactor.enteties.Message
+import y2k.joyreactor.enteties.Post
 import y2k.joyreactor.ui.MainActivity
 import y2k.joyreactor.ui.base.BaseFragmentActivity
 import y2k.joyreactor.ui.blog.BlogPostListActivity
@@ -80,8 +80,8 @@ open class AndroidNavigation(app: Application) : Navigation {
         // TODO:
     }
 
-    override fun openCreateComment(p: Post) {
-        CreateCommentActivity.startActivity(currentActivity, p)
+    override fun openCreateComment(postId: String, parentId: Long?) {
+        CreateCommentActivity.startActivity(currentActivity, postId, parentId)
     }
 
     //New transitions
@@ -111,8 +111,8 @@ open class AndroidNavigation(app: Application) : Navigation {
         currentActivity?.overridePendingTransition(0, 0)
     }
 
-    override fun showBlogPostList(tag: String) {
-        currentActivity?.addFragment(BlogPostListFragment.create(tag))
+    override fun showBlogPostList(tag: String, title: String) {
+        currentActivity?.addFragment(BlogPostListFragment.create(tag, title))
     }
 
     override fun openMessages(dialog: Message) {

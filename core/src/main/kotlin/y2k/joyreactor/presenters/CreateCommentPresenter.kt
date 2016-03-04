@@ -1,8 +1,8 @@
 package y2k.joyreactor.presenters
 
-import y2k.joyreactor.Comment
-import y2k.joyreactor.Profile
+import y2k.joyreactor.enteties.Comment
 import y2k.joyreactor.common.subscribeOnMain
+import y2k.joyreactor.enteties.Profile
 import y2k.joyreactor.platform.Navigation
 import y2k.joyreactor.services.CommentService
 import y2k.joyreactor.services.ProfileService
@@ -21,10 +21,10 @@ class CreateCommentPresenter(
                 .subscribeOnMain { view.setUser(it) }
     }
 
-    fun create(postId: String, commentText: String) {
+    fun create(postId: String, commentText: String, parentId : Long?) {
         view.setIsBusy(true)
         service
-                .createComment(postId, commentText)
+                .createComment(postId, commentText, parentId)
                 .subscribeOnMain {
                     view.setIsBusy(false)
                     view.addComment(Comment(commentText, null, 0, 0, 0.toFloat()))

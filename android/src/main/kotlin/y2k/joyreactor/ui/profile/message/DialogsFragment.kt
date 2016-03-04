@@ -10,10 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import org.ocpsoft.prettytime.PrettyTime
-import y2k.joyreactor.Message
+import y2k.joyreactor.enteties.Message
 import y2k.joyreactor.R
 import y2k.joyreactor.ui.base.BaseFragment
-import y2k.joyreactor.common.ServiceLocator
+import y2k.joyreactor.common.ServiceInjector
 import y2k.joyreactor.presenters.MessageThreadsPresenter
 import y2k.joyreactor.ui.base.BaseFragmentActivity
 import y2k.joyreactor.ui.profile.tags.TagsActivity
@@ -36,7 +36,7 @@ class DialogsFragment : BaseFragment() {
 
         val progress = view.findViewById(R.id.progress)
 
-        presenter = ServiceLocator.resolve(
+        presenter = ServiceInjector.resolve(
             object : MessageThreadsPresenter.View {
 
                 override fun setIsBusy(isBusy: Boolean) {

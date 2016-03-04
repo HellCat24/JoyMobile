@@ -1,7 +1,7 @@
 package y2k.joyreactor.services
 
-import y2k.joyreactor.*
-import y2k.joyreactor.services.requests.PostRequest
+import y2k.joyreactor.enteties.*
+import y2k.joyreactor.requests.PostRequest
 
 /**
  * Created by y2k on 12/23/15.
@@ -22,10 +22,6 @@ object MemoryBuffer {
 
     val attachments: List<Attachment> get() {
         return request?.getAttachments() ?: emptyList()
-    }
-
-    val similarPosts: List<SimilarPost> get() {
-        return request?.getSimilarPosts() ?: emptyList()
     }
 
     fun updatePost(request: PostRequest) {

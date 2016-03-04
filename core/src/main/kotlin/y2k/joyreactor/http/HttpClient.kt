@@ -120,8 +120,6 @@ open class HttpClient protected constructor() {
         val m = TOKEN_REGEX.matcher(doc)
         if (m.find()) {
             token = m.group(1)
-        } else {
-            token = ""
         }
     }
 
@@ -153,7 +151,8 @@ open class HttpClient protected constructor() {
         }
 
         private fun execute(url: String, requestMethod: String): Document {
-            var connection = createConnection(url + tokenParams());
+            val url = url + tokenParams()
+            var connection = createConnection(url);
 
             connection.requestMethod = requestMethod
             connection.instanceFollowRedirects = false

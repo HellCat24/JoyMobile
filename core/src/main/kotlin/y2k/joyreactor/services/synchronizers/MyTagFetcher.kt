@@ -1,11 +1,11 @@
 package y2k.joyreactor.services.synchronizers
 
 import rx.Observable
-import y2k.joyreactor.Image
-import y2k.joyreactor.Tag
-import y2k.joyreactor.services.repository.DataContext
-import y2k.joyreactor.services.requests.TagsForUserRequest
-import y2k.joyreactor.services.requests.UserNameRequest
+import y2k.joyreactor.enteties.Image
+import y2k.joyreactor.enteties.Tag
+import y2k.joyreactor.repository.DataContext
+import y2k.joyreactor.requests.TagsForUserRequest
+import y2k.joyreactor.requests.UserNameRequest
 import java.util.*
 
 /**

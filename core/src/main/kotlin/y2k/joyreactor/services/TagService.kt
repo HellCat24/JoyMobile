@@ -1,11 +1,11 @@
 package y2k.joyreactor.services
 
 import rx.Observable
-import y2k.joyreactor.Post
-import y2k.joyreactor.Tag
 import y2k.joyreactor.common.peek
-import y2k.joyreactor.services.repository.DataContext
-import y2k.joyreactor.services.requests.PostsForTagRequest
+import y2k.joyreactor.enteties.Post
+import y2k.joyreactor.enteties.Tag
+import y2k.joyreactor.repository.DataContext
+import y2k.joyreactor.requests.PostsForTagRequest
 import y2k.joyreactor.services.synchronizers.PostMerger
 
 /**

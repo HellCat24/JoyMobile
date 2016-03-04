@@ -1,8 +1,7 @@
 package y2k.joyreactor.presenters
 
-import y2k.joyreactor.Message
-import y2k.joyreactor.Profile
 import y2k.joyreactor.common.subscribeOnMain
+import y2k.joyreactor.enteties.Profile
 import y2k.joyreactor.platform.Navigation
 import y2k.joyreactor.services.ProfileService
 

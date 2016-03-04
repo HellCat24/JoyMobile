@@ -7,6 +7,6 @@ import y2k.joyreactor.ui.feed.base.PostListFragment
  */
 class BestPostsFragment : PostListFragment() {
     override fun getPostType(): String {
-        return "best"
+        return "/best"
     }
 }

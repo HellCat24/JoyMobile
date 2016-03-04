@@ -1,14 +1,15 @@
 package y2k.joyreactor.presenters
 
-import y2k.joyreactor.*
 import y2k.joyreactor.common.subscribeOnMain
+import y2k.joyreactor.enteties.Comment
+import y2k.joyreactor.enteties.CommentGroup
+import y2k.joyreactor.enteties.Image
+import y2k.joyreactor.enteties.Post
 import y2k.joyreactor.platform.Navigation
 import y2k.joyreactor.platform.Platform
 import y2k.joyreactor.services.PostService
 import y2k.joyreactor.services.ProfileService
-import y2k.joyreactor.services.requests.OriginalImageRequestFactory
 import java.io.File
-import java.util.*
 
 /**
  * Created by y2k on 28/09/15.
@@ -25,10 +26,6 @@ class PostPresenter(
             .synchronizePostAsync(argumentPostId)
             .subscribeOnMain { post ->
                 view.updatePostInformation(post)
-
-                service
-                    .getPostImages()
-                    .subscribeOnMain { view.updatePostImages(it) }
 
                 service
                     .getCommentsAsync(post.id, 0)
@@ -78,12 +75,12 @@ class PostPresenter(
     private val argumentPostId: String
         get() = Navigation.instance.argumentPostId
 
-    fun replyToComment(comment: Comment) {
-        // TODO:
+    fun replyToComment(post: Post?, comment: Comment) {
+        Navigation.instance.openCreateComment(post!!.serverId, comment.id)
     }
 
-    fun replyToPost(p : Post) {
-        Navigation.instance.openCreateComment(p)
+    fun replyToPost(post : Post) {
+        Navigation.instance.openCreateComment(post!!.serverId, null)
     }
 
     interface View {
@@ -98,8 +95,6 @@ class PostPresenter(
         fun showImageSuccessSavedToGallery()
 
         fun updatePostImages(images: List<Image>)
-
-        fun updateSimilarPosts(similarPosts: List<SimilarPost>)
 
         fun updatePostImage(image: File)
 

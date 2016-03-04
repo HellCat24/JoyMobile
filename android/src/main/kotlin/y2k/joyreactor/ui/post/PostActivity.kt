@@ -17,8 +17,12 @@ import android.view.animation.AccelerateInterpolator
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import y2k.joyreactor.*
+import y2k.joyreactor.R
 import y2k.joyreactor.common.*
+import y2k.joyreactor.enteties.Comment
+import y2k.joyreactor.enteties.CommentGroup
+import y2k.joyreactor.enteties.Image
+import y2k.joyreactor.enteties.Post
 import y2k.joyreactor.presenters.PostPresenter
 import y2k.joyreactor.ui.base.ToolBarActivity
 import y2k.joyreactor.ui.comments.CreateCommentActivity
@@ -27,12 +31,6 @@ import y2k.joyreactor.view.WebImageView
 import java.io.File
 
 class PostActivity : ToolBarActivity() {
-
-    override val fragmentContentId: Int
-        get() = throw UnsupportedOperationException()
-
-    override val layoutId: Int
-        get() = R.layout.activity_post
 
     lateinit var presenter: PostPresenter
     val adapter = Adapter()
@@ -49,7 +47,7 @@ class PostActivity : ToolBarActivity() {
 
         val createComment = findViewById(R.id.createComment)
 
-        presenter = ServiceLocator.resolve(object : PostPresenter.View {
+        presenter = ServiceInjector.resolve(object : PostPresenter.View {
 
             override fun setEnableCreateComments() {
                 createComment.compatAnimate().scaleX(1f).scaleY(1f).setInterpolator(AccelerateInterpolator())
@@ -76,9 +74,6 @@ class PostActivity : ToolBarActivity() {
                 adapter.updatePostImages(images)
             }
 
-            override fun updateSimilarPosts(similarPosts: List<SimilarPost>) {
-            }
-
             override fun updatePostImage(image: File) {
                 this@PostActivity.imagePath = image
                 adapter.notifyItemChanged(0)
@@ -96,7 +91,7 @@ class PostActivity : ToolBarActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode ==  CreateCommentActivity.ACTION_CREATE_COMMENT && resultCode == RESULT_OK){
+        if (requestCode == CreateCommentActivity.ACTION_CREATE_COMMENT && resultCode == RESULT_OK) {
             var userComment = data?.getSerializableExtra("comment") as Comment
             adapter.addUserComment(userComment)
         }
@@ -166,8 +161,19 @@ class PostActivity : ToolBarActivity() {
             notifyDataSetChanged()
         }
 
-        fun addUserComment(comment: Comment?) {
+        fun addUserComment(comment: Comment) {
+            if (comments == null) {
+                var commentList = listOf(comment).toMutableList()
+                comments = CommentGroup.TwoLevel(commentList)
+                notifyItemChanged(1)
+                return
+            }
             comments?.add(comment)
+            var commentCount = 0
+            if (comments != null) {
+                commentCount = (comments as CommentGroup).size()
+            }
+            notifyItemInserted(1 + commentCount)
         }
 
         fun updatePostDetails(post: Post) {
@@ -218,7 +224,7 @@ class PostActivity : ToolBarActivity() {
                     val menu = PopupMenu(parent.context, commentButton)
                     menu.setOnMenuItemClickListener { menuItem ->
                         if (menuItem.itemId == R.id.reply)
-                            presenter.replyToComment(comments!!.get(realPosition))
+                            presenter.replyToComment(post, comments!!.get(realPosition))
                         true
                     }
                     menu.inflate(R.menu.comment)
@@ -247,4 +253,10 @@ class PostActivity : ToolBarActivity() {
             }
         }
     }
+
+    override val fragmentContentId: Int
+        get() = throw UnsupportedOperationException()
+
+    override val layoutId: Int
+        get() = R.layout.activity_post
 }

@@ -1,11 +1,10 @@
 package y2k.joyreactor.presenters
 
-import y2k.joyreactor.Blog
 import y2k.joyreactor.common.subscribeOnMain
+import y2k.joyreactor.enteties.Blog
 import y2k.joyreactor.platform.Navigation
-import y2k.joyreactor.services.requests.BlogListRequest
+import y2k.joyreactor.requests.BlogListRequest
 import java.util.*
-import kotlin.properties.Delegates
 
 /**
  * Created by Oleg on 28.02.2016.
@@ -34,7 +33,8 @@ class BlogListPresenter(
     }
 
     fun showBlogPostList(position : Int){
-        navigation.showBlogPostList(blogList[position].tagUrl)
+        val blog = blogList[position]
+        navigation.showBlogPostList(blog.tagUrl, blog.title)
     }
 
     interface View {

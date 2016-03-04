@@ -10,9 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import y2k.joyreactor.ui.base.BaseFragment
-import y2k.joyreactor.common.ServiceLocator
+import y2k.joyreactor.common.ServiceInjector
+import y2k.joyreactor.enteties.Tag
 import y2k.joyreactor.presenters.TagListPresenter
+import y2k.joyreactor.ui.base.BaseFragment
 import y2k.joyreactor.ui.profile.tags.AddTagDialogFragment
 import y2k.joyreactor.view.WebImageView
 
@@ -33,7 +34,7 @@ class MenuFragment : BaseFragment() {
         val adapter = TagsAdapter()
         list.adapter = adapter
 
-        presenter = ServiceLocator.resolve(lifeCycleService, object : TagListPresenter.View {
+        presenter = ServiceInjector.resolve(lifeCycleService, object : TagListPresenter.View {
 
             override fun reloadData(tags: List<Tag>) {
                 adapter.updateData(tags)

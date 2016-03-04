@@ -9,10 +9,10 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import org.ocpsoft.prettytime.PrettyTime
-import y2k.joyreactor.Message
+import y2k.joyreactor.enteties.Message
 import y2k.joyreactor.R
 import y2k.joyreactor.ui.base.BaseFragment
-import y2k.joyreactor.common.ServiceLocator
+import y2k.joyreactor.common.ServiceInjector
 import y2k.joyreactor.common.isVisible
 import y2k.joyreactor.presenters.MessagesPresenter
 
@@ -29,7 +29,7 @@ class MessageFragment : BaseFragment() {
         list.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         list.adapter = MessageAdapter()
 
-        val presenter = ServiceLocator.resolve(lifeCycleService,
+        val presenter = ServiceInjector.resolve(lifeCycleService,
             object : MessagesPresenter.View {
 
                 override fun clearMessage() {

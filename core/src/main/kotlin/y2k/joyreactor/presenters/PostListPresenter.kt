@@ -1,15 +1,11 @@
 package y2k.joyreactor.presenters
 
 import rx.Observable
-import y2k.joyreactor.Post
-import y2k.joyreactor.Tag
 import y2k.joyreactor.common.subscribeOnMain
+import y2k.joyreactor.enteties.Post
+import y2k.joyreactor.enteties.Tag
 import y2k.joyreactor.platform.Navigation
-import y2k.joyreactor.services.BroadcastService
-import y2k.joyreactor.services.LifeCycleService
-import y2k.joyreactor.services.ProfileService
-import y2k.joyreactor.services.TagService
-import y2k.joyreactor.services.requests.LikeDislikeService
+import y2k.joyreactor.services.*
 
 /**
  * Created by y2k on 9/26/15.
@@ -19,7 +15,8 @@ class PostListPresenter(
         private val service: TagService,
         private val userService: ProfileService,
         private val lifeCycleService: LifeCycleService,
-        private val likeDislikeService: LikeDislikeService) {
+        private val likeDislikeService: LikeDislikeService,
+        private val favoriteService: FavoriteService) {
 
     init {
         lifeCycleService.add(BroadcastService.TagSelected::class) { currentTagChanged(it.tag) }
@@ -103,8 +100,18 @@ class PostListPresenter(
                 }
     }
 
+    fun addToFavorite(post: Post): Unit {
+        favoriteService.addToFavorite(post.serverId).subscribeOnMain {
+            
+        }
+    }
+
+    fun deleteFromFavorite(post: Post): Unit {
+        favoriteService.deleteFromFavorite(post.serverId).subscribeOnMain { }
+    }
+
     fun showUserPosts(username: String) {
-       Navigation.instance.openUserPosts(username)
+        Navigation.instance.openUserPosts(username)
     }
 
     fun playClicked(post: Post) {
@@ -130,6 +137,8 @@ class PostListPresenter(
         fun getCurrentTag(): String?
 
         fun updatePostRating(post: Post)
+
+        fun updatePostFavoriteStatus(post: Post)
 
         fun setLikesDislikesEnable()
 

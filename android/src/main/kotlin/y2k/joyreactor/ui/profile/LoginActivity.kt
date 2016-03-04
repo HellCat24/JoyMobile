@@ -9,7 +9,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import y2k.joyreactor.R
-import y2k.joyreactor.common.ServiceLocator
+import y2k.joyreactor.common.ServiceInjector
 import y2k.joyreactor.presenters.LoginPresenter
 import y2k.joyreactor.ui.base.BaseFragmentActivity
 import y2k.joyreactor.ui.base.ToolBarActivity
@@ -25,7 +25,7 @@ class LoginActivity : ToolBarActivity(), LoginPresenter.View {
         setSupportActionBar(findViewById(R.id.toolbar) as Toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        val presenter = ServiceLocator.resolve(this)
+        val presenter = ServiceInjector.resolve(this)
 
         findViewById(R.id.login).setOnClickListener {
             val username = (findViewById(R.id.username) as TextView).text.toString()

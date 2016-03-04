@@ -9,13 +9,14 @@ import y2k.joyreactor.R
  */
 abstract class ToolBarActivity : BaseFragmentActivity() {
 
-    lateinit var toolbar: Toolbar
+    var toolbar: Toolbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutId)
-        toolbar = findViewById(R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
+        toolbar = findViewById(R.id.toolbar) as Toolbar?
+        if (toolbar != null)
+            setSupportActionBar(toolbar)
     }
 
     protected abstract val layoutId: Int

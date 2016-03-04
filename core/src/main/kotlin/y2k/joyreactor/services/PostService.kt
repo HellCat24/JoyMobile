@@ -1,16 +1,13 @@
 package y2k.joyreactor.services
 
 import rx.Observable
-import y2k.joyreactor.CommentGroup
-import y2k.joyreactor.Image
-import y2k.joyreactor.Post
-import y2k.joyreactor.SimilarPost
 import y2k.joyreactor.common.PartialResult
 import y2k.joyreactor.common.ioObservable
-import y2k.joyreactor.services.repository.DataContext
-import y2k.joyreactor.services.requests.LikeDislikeRequest
-import y2k.joyreactor.services.requests.OriginalImageRequestFactory
-import y2k.joyreactor.services.requests.PostRequest
+import y2k.joyreactor.enteties.CommentGroup
+import y2k.joyreactor.enteties.Post
+import y2k.joyreactor.repository.DataContext
+import y2k.joyreactor.requests.factory.OriginalImageRequestFactory
+import y2k.joyreactor.requests.PostRequest
 import java.io.File
 import java.util.*
 
@@ -37,7 +34,7 @@ class PostService(private val imageRequestFactory: OriginalImageRequestFactory,
         val parent = buffer.comments.first { it.id == parentCommentId }
         val children = buffer.comments
                 .filter { it.parentId == parentCommentId }
-                .toList()
+                .toMutableList()
         return Observable.just(CommentGroup.OneLevel(parent, children))
     }
 
@@ -53,24 +50,12 @@ class PostService(private val imageRequestFactory: OriginalImageRequestFactory,
                         firstLevelComments.contains(s.parentId)
                     }
                 }
-                .toList()
+                .toMutableList()
         return Observable.just(CommentGroup.TwoLevel(items))
     }
 
     fun getFromCache(postId: String): Observable<Post> {
         return dataContext.applyUse { Posts.first { it.serverId == postId } }
-    }
-
-    fun getPostImages(): Observable<List<Image>> {
-        val postAttachments = buffer.attachments.map { it.image }
-        val commentAttachments = buffer.comments
-                .filter { it.attachmentObject != null }
-                .map { it.attachmentObject!! }
-        return Observable.just(postAttachments.union(commentAttachments).toList())
-    }
-
-    fun getSimilarPosts(postId: Long): Observable<List<SimilarPost>> {
-        return Observable.just(buffer.similarPosts)
     }
 
     fun mainImage(serverPostId: String): Observable<File> {

@@ -2,7 +2,6 @@ package y2k.joyreactor.image;
 
 import android.content.Context;
 import android.graphics.Point;
-import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -18,7 +17,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 
-import y2k.joyreactor.Image;
+import y2k.joyreactor.enteties.Image;
+
 
 public class JoyImageUtils {
 

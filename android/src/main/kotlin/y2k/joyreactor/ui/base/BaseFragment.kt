@@ -1,7 +1,7 @@
 package y2k.joyreactor.ui.base
 
 import android.support.v4.app.Fragment
-import y2k.joyreactor.common.ServiceLocator
+import y2k.joyreactor.common.ServiceInjector
 import y2k.joyreactor.services.BroadcastService
 import y2k.joyreactor.services.LifeCycleService
 
@@ -10,7 +10,7 @@ import y2k.joyreactor.services.LifeCycleService
  */
 open class BaseFragment : Fragment() {
 
-    val lifeCycleService = LifeCycleService(ServiceLocator.resolve(BroadcastService::class))
+    val lifeCycleService = LifeCycleService(ServiceInjector.resolve(BroadcastService::class))
 
     override fun onResume() {
         super.onResume()

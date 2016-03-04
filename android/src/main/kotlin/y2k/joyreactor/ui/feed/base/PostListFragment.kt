@@ -7,10 +7,10 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import y2k.joyreactor.Post
+import y2k.joyreactor.enteties.Post
 import y2k.joyreactor.R
 import y2k.joyreactor.ui.base.BaseFragment
-import y2k.joyreactor.common.ServiceLocator
+import y2k.joyreactor.common.ServiceInjector
 import y2k.joyreactor.image.JoyImageUtils
 import y2k.joyreactor.presenters.PostListPresenter
 import y2k.joyreactor.ui.adapter.EndlessRecyclerOnScrollListener
@@ -32,7 +32,7 @@ abstract class PostListFragment() : BaseFragment(), PostListPresenter.View {
         list.layoutManager = PreLoadLayoutManager(activity)
         list.addOnScrollListener(LoadMoreListener(list.layoutManager as LinearLayoutManager))
 
-        presenter = ServiceLocator.resolve(lifeCycleService, this)
+        presenter = ServiceInjector.resolve(lifeCycleService, this)
 
         adapter = PostAdapter(presenter)
         list.adapter = adapter
@@ -66,7 +66,11 @@ abstract class PostListFragment() : BaseFragment(), PostListPresenter.View {
     }
 
     override fun setBusy(isBusy: Boolean) {
-        //refreshLayout.isRefreshing = isBusy
+        //TODO
+    }
+
+    override fun updatePostFavoriteStatus(post: Post) {
+        //TODO
     }
 
     override fun reloadPosts(posts: List<Post>, divider: Int?) {

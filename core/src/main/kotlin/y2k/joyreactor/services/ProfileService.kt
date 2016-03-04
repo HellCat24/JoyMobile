@@ -1,11 +1,11 @@
 package y2k.joyreactor.services
 
 import rx.Observable
-import y2k.joyreactor.Profile
 import y2k.joyreactor.common.ioObservable
+import y2k.joyreactor.enteties.Profile
 import y2k.joyreactor.http.HttpClient
-import y2k.joyreactor.services.requests.LoginRequestFactory
-import y2k.joyreactor.services.requests.ProfileRequestFactory
+import y2k.joyreactor.requests.factory.LoginRequestFactory
+import y2k.joyreactor.requests.factory.ProfileRequestFactory
 
 /**
  * Created by y2k on 11/25/15.
