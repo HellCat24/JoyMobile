@@ -14,27 +14,27 @@ import y2k.joyreactor.common.ServiceInjector
 import y2k.joyreactor.image.JoyImageUtils
 import y2k.joyreactor.presenters.PostListPresenter
 import y2k.joyreactor.ui.adapter.EndlessRecyclerOnScrollListener
-import y2k.joyreactor.ui.adapter.PostAdapter
+import y2k.joyreactor.ui.adapter.PostsAdapter
 
 /**
  * Created by y2k on 9/26/15.
  */
 abstract class PostListFragment() : BaseFragment(), PostListPresenter.View {
 
-    lateinit var adapter: PostAdapter
+    lateinit var adapter: PostsAdapter
     lateinit var presenter: PostListPresenter
-    lateinit var list: RecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_posts, container, false)
 
-        list = view.findViewById(R.id.list) as RecyclerView
+        var list = view.findViewById(R.id.list) as RecyclerView
+
         list.layoutManager = PreLoadLayoutManager(activity)
         list.addOnScrollListener(LoadMoreListener(list.layoutManager as LinearLayoutManager))
 
         presenter = ServiceInjector.resolve(lifeCycleService, this)
 
-        adapter = PostAdapter(presenter)
+        adapter = PostsAdapter(presenter)
         list.adapter = adapter
 
         return view
@@ -83,7 +83,7 @@ abstract class PostListFragment() : BaseFragment(), PostListPresenter.View {
 
     inner class LoadMoreListener(val linearLayoutManager: LinearLayoutManager) : EndlessRecyclerOnScrollListener(linearLayoutManager) {
 
-        override fun onLoadMore(current_page: Int) {
+        override fun onLoadMore() {
             presenter.loadMore()
         }
     }

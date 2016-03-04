@@ -1,166 +1,155 @@
 package y2k.joyreactor.ui.adapter
 
-import android.support.v7.widget.CardView
+import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.TextView
 import y2k.joyreactor.R
 import y2k.joyreactor.common.ComplexViewHolder
+import y2k.joyreactor.common.inflate
+import y2k.joyreactor.enteties.Comment
+import y2k.joyreactor.enteties.CommentGroup
 import y2k.joyreactor.enteties.Image
 import y2k.joyreactor.enteties.Post
-import y2k.joyreactor.image.JoyImageUtils
-import y2k.joyreactor.presenters.PostListPresenter
-import java.util.*
+import y2k.joyreactor.presenters.PostPresenter
+import y2k.joyreactor.view.LargeImageView
+import y2k.joyreactor.view.WebImageView
+import java.io.File
 
 /**
- * Created by y2k on 1/31/16.
+ * Created by Oleg on 04.03.2016.
  */
-class PostAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapter<ComplexViewHolder>() {
+class PostAdapter(var presenter : PostPresenter) : RecyclerView.Adapter<ComplexViewHolder>() {
 
-    private val posts = ArrayList<Post?>()
-    private var isLikesDislikesEnabled = false;
+    private var comments: CommentGroup? = null
+    private var post: Post? = null
+    private var imagePath: File? = null
+    private var images: List<Image> = emptyList()
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, itemType: Int): ComplexViewHolder {
-        return PostViewHolder(viewGroup)
+    init {
+        setHasStableIds(true)
     }
 
-    override fun onBindViewHolder(h: ComplexViewHolder, position: Int) {
-        h.bind()
+    override fun getItemId(position: Int): Long {
+        return if (position == 0) 0 else comments!!.get(position - 1).id
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return Math.min(1, position)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComplexViewHolder {
+        if (viewType == 0) return HeaderViewHolder(parent)
+        return CommentViewHolder(parent)
+    }
+
+    override fun onBindViewHolder(holder: ComplexViewHolder, position: Int) {
+        holder.bind()
     }
 
     override fun getItemCount(): Int {
-        return posts.size
+        return 1 + (if (comments == null) 0 else comments!!.size())
     }
 
-    fun addData(posts: List<Post>) {
-        var startRange = this.posts.size
-        var endRange = startRange + posts.size
-        this.posts.addAll(posts)
-        notifyItemRangeChanged(startRange, endRange)
-    }
-
-    fun reloadData(posts: List<Post>) {
-        this.posts.clear()
-        this.posts.addAll(posts)
-    }
-
-    fun setLikesDislikesEnable() {
-        isLikesDislikesEnabled = true;
+    fun updatePostComments(comments: CommentGroup) {
+        this.comments = comments
         notifyDataSetChanged()
     }
 
-    fun updatePostRating(post: Post) {
-        var index = posts.indexOf(post)
-        posts[index] = post
-        notifyItemChanged(index)
+    fun addUserComment(comment: Comment) {
+        if (comments == null) {
+            var commentList = listOf(comment).toMutableList()
+            comments = CommentGroup.TwoLevel(commentList)
+            notifyItemChanged(1)
+            return
+        }
+        comments?.add(comment)
+        var commentCount = 0
+        if (comments != null) {
+            commentCount = (comments as CommentGroup).size()
+        }
+        notifyItemInserted(1 + commentCount)
     }
 
-    inner class PostViewHolder(parent: ViewGroup) : ComplexViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_feed, parent, false)) {
+    fun updatePostDetails(post: Post) {
+        this.post = post
+        notifyItemChanged(0)
+    }
 
-        val baseView: CardView
-        val image: ImageView
-        val userImage: ImageView
-        val videoMark: View
-        val commentCount: TextView
-        val userName: TextView
-        val rating: TextView
-        val textContent: TextView
-        val likeDislikeHolder: View
-        val imageContainer: FrameLayout
-        val btnExpand: TextView
+    fun updatePostImages(images: List<Image>) {
+        this.images = images
+        notifyItemChanged(0)
+    }
+
+    fun setImageFile(file: File) {
+        imagePath = file
+        notifyItemChanged(0)
+    }
+
+    internal inner class HeaderViewHolder(parent: ViewGroup) : ComplexViewHolder(parent.inflate(R.layout.layout_post)) {
+
+        var image: LargeImageView
 
         init {
-            baseView = itemView.findViewById(R.id.cardview) as CardView
-            image = itemView.findViewById(R.id.image) as ImageView
-            userImage = itemView.findViewById(R.id.userImage) as ImageView
-            videoMark = itemView.findViewById(R.id.videoMark)
-            commentCount = itemView.findViewById(R.id.commentCount) as TextView
-            userName = itemView.findViewById(R.id.userName) as TextView
-            rating = itemView.findViewById(R.id.txt_rating) as TextView
-            textContent = itemView.findViewById(R.id.text_content) as TextView
-            btnExpand = itemView.findViewById(R.id.btn_expand) as TextView
-            likeDislikeHolder = itemView.findViewById(R.id.like_dislike_holder) as View
-            imageContainer = itemView.findViewById(R.id.image_container) as FrameLayout
-
-            itemView.findViewById(R.id.cardview).setOnClickListener { presenter.postClicked(posts[adapterPosition]!!) }
-            itemView.findViewById(R.id.videoMark).setOnClickListener { presenter.playClicked(posts[adapterPosition]!!) }
-            itemView.findViewById(R.id.btn_post_like).setOnClickListener { presenter.like(posts[adapterPosition]!!) }
-            itemView.findViewById(R.id.btn_post_dislike).setOnClickListener { presenter.disLike(posts[adapterPosition]!!) }
-            itemView.findViewById(R.id.btn_post_favorite).setOnClickListener { presenter.addToFavorite(posts[adapterPosition]!!) }
+            image = itemView.findViewById(R.id.image) as LargeImageView
         }
 
         override fun bind() {
-            val post = posts[adapterPosition]!!
-
-            userName.setOnClickListener { presenter.showUserPosts(post.userName) }
-
-            userName.text = post.userName
-            rating.text = post.rating.toString()
-            //userImage.setImage(post.getUserImage2().toImage())
-            commentCount.text = post.commentCount.toString() + " comments"
-            videoMark.visibility = if (post.image?.isYouTube ?: false) View.VISIBLE else View.GONE
-
-            processPostImage(post)
-            processLikesDislike(post)
-            setExpandListener(post)
-            processPostTitle(post)
+            imagePath?.let { image.setImage(it) }
         }
+    }
 
-        private fun processPostTitle(post: Post) {
-            if (!post.title.isEmpty()) {
-                textContent.visibility = View.VISIBLE
-                textContent.text = post.title
-            } else {
-                textContent.visibility = View.GONE
-            }
-        }
+    internal inner class CommentViewHolder(parent: ViewGroup) :
+            ComplexViewHolder(parent.inflate(R.layout.item_comment)) {
 
-        private fun processPostImage(post: Post) {
-            if (post.image == null || post.image?.url?.isEmpty()!!) {
-                imageContainer.visibility = View.GONE
-            } else {
-                btnExpand.visibility = if (post.images.size > 1) View.VISIBLE else View.GONE
-                if (post.image!!.isCoub) {
-                    image.visibility = View.GONE
-                } else {
-                    loadImage(post.image as Image)
+        var rating: TextView
+        var text: TextView
+        var replies: TextView
+        var avatar: WebImageView
+        var attachment: WebImageView
+
+        init {
+            rating = itemView.findViewById(R.id.rating) as TextView
+            text = itemView.findViewById(R.id.text) as TextView
+            avatar = itemView.findViewById(R.id.avatar) as WebImageView
+            replies = itemView.findViewById(R.id.replies) as TextView
+            attachment = itemView.findViewById(R.id.attachment) as WebImageView
+
+            //TODO Open in another activity
+            itemView.findViewById(R.id.action).setOnClickListener { v -> presenter.selectComment(comments!!.getId(realPosition)) }
+
+            val commentButton = itemView.findViewById(R.id.commentMenu)
+            commentButton.setOnClickListener { v ->
+                val menu = PopupMenu(parent.context, commentButton)
+                menu.setOnMenuItemClickListener { menuItem ->
+                    if (menuItem.itemId == R.id.reply)
+                        presenter.replyToComment(post, comments!!.get(realPosition))
+                    true
                 }
+                menu.inflate(R.menu.comment)
+                menu.show()
             }
         }
 
-        private fun setExpandListener(post: Post) {
-            btnExpand.setOnClickListener {
-                var images = post.images.subList(1, post.images.size)
-                for (img in images) {
-                    var imgView: ImageView = ImageView(image.context, null)
-                    imageContainer.addView(imgView)
-                    loadImage(img);
-                }
-                notifyItemChanged(adapterPosition)
-            }
+        override fun bind() {
+            (itemView.layoutParams as ViewGroup.MarginLayoutParams).leftMargin = if (comments!!.isChild(realPosition)) toPx(64) else toPx(8)
+
+            val c = comments!!.get(realPosition)
+            text.text = c.text
+            avatar.setImage(c.userImageObject.toImage())
+            rating.text = "" + c.rating
+            replies.text = "" + c.replies
+
+            attachment.visibility = if (c.attachmentObject == null) View.GONE else View.VISIBLE
+            attachment.setImage(c.attachmentObject)
         }
 
-        private fun processLikesDislike(post: Post) {
-            if (isLikesDislikesEnabled) {
-                if (post.isLiked) {
-                    likeDislikeHolder.visibility = View.GONE
-                    rating.visibility = View.VISIBLE
-                } else {
-                    likeDislikeHolder.visibility = View.VISIBLE
-                    rating.visibility = View.GONE
-                }
-            } else {
-                likeDislikeHolder.visibility = View.GONE
-                rating.visibility = View.VISIBLE
-            }
-        }
+        private val realPosition: Int
+            get() = adapterPosition - 1
 
-        private fun loadImage(i: Image) {
-            JoyImageUtils.load(image, i)
+        private fun toPx(dip: Int): Int {
+            return (dip * itemView.resources.displayMetrics.density).toInt()
         }
     }
 }

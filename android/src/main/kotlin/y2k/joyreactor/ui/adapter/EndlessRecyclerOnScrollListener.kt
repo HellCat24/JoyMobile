@@ -5,21 +5,19 @@ import android.support.v7.widget.RecyclerView
 
 open class EndlessRecyclerOnScrollListener(val mLinearLayoutManager: LinearLayoutManager) : RecyclerView.OnScrollListener() {
 
-    private var previousTotal = 0 // The total number of items in the dataset after the last load
-    private var loading = true // True if we are still waiting for the last set of data to load.
-    private val visibleThreshold = 5 // The minimum amount of items to have below your current scroll position before loading more.
-    internal var firstVisibleItem: Int = 0
-    internal var visibleItemCount: Int = 0
+    private var previousTotal = 0
+    private var loading = true
+    private val visibleThreshold = 5
     internal var totalItemCount: Int = 0
-
-    private var current_page = 1
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
 
-        visibleItemCount = recyclerView.childCount
+        var visibleItemCount = recyclerView.childCount
+        var firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition()
+
         totalItemCount = mLinearLayoutManager.itemCount
-        firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition()
+
 
         if (loading) {
             if (totalItemCount > previousTotal) {
@@ -28,11 +26,10 @@ open class EndlessRecyclerOnScrollListener(val mLinearLayoutManager: LinearLayou
             }
         }
         if (!loading && totalItemCount - visibleItemCount <= firstVisibleItem + visibleThreshold) {
-            current_page++
-            onLoadMore(current_page)
+            onLoadMore()
             loading = true
         }
     }
 
-     open fun onLoadMore(current_page: Int) {}
+     open fun onLoadMore() {}
 }

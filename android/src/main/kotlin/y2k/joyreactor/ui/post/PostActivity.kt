@@ -7,43 +7,38 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import y2k.joyreactor.R
-import y2k.joyreactor.common.*
+import y2k.joyreactor.common.ServiceInjector
+import y2k.joyreactor.common.compatAnimate
+import y2k.joyreactor.common.find
+import y2k.joyreactor.common.isVisible
 import y2k.joyreactor.enteties.Comment
 import y2k.joyreactor.enteties.CommentGroup
 import y2k.joyreactor.enteties.Image
 import y2k.joyreactor.enteties.Post
 import y2k.joyreactor.presenters.PostPresenter
+import y2k.joyreactor.ui.adapter.PostAdapter
 import y2k.joyreactor.ui.base.ToolBarActivity
 import y2k.joyreactor.ui.comments.CreateCommentActivity
-import y2k.joyreactor.view.LargeImageView
-import y2k.joyreactor.view.WebImageView
 import java.io.File
 
 class PostActivity : ToolBarActivity() {
 
     lateinit var presenter: PostPresenter
-    val adapter = Adapter()
-
-    var imagePath: File? = null
+    lateinit var adapter: PostAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val list = find<RecyclerView>(R.id.list)
-        list.adapter = adapter
-        list.layoutManager = LinearLayoutManager(this)
 
         val createComment = findViewById(R.id.createComment)
 
@@ -75,8 +70,7 @@ class PostActivity : ToolBarActivity() {
             }
 
             override fun updatePostImage(image: File) {
-                this@PostActivity.imagePath = image
-                adapter.notifyItemChanged(0)
+                adapter.setImageFile(image)
                 val imageProgress = find<ProgressBar>(R.id.imageProgress)
                 imageProgress.visibility = View.GONE
             }
@@ -87,6 +81,10 @@ class PostActivity : ToolBarActivity() {
                 imageProgress.max = maxProgress
             }
         })
+
+        adapter = PostAdapter(presenter)
+        list.adapter = adapter
+        list.layoutManager = LinearLayoutManager(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -103,9 +101,7 @@ class PostActivity : ToolBarActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.reply)
-        //presenter.replyToPost()
-        else if (item.itemId == R.id.openInBrowser)
+        if (item.itemId == R.id.openInBrowser)
             presenter.openPostInBrowser()
         else if (item.itemId == R.id.saveImageToGallery)
             saveImageToGallery()
@@ -124,138 +120,6 @@ class PostActivity : ToolBarActivity() {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
         }
     }
-
-    inner class Adapter : RecyclerView.Adapter<ComplexViewHolder>() {
-
-        private var comments: CommentGroup? = null
-        private var post: Post? = null
-        private var images: List<Image> = emptyList()
-
-        init {
-            setHasStableIds(true)
-        }
-
-        override fun getItemId(position: Int): Long {
-            return if (position == 0) 0 else comments!!.get(position - 1).id
-        }
-
-        override fun getItemViewType(position: Int): Int {
-            return Math.min(1, position)
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComplexViewHolder {
-            if (viewType == 0) return HeaderViewHolder(parent)
-            return CommentViewHolder(parent)
-        }
-
-        override fun onBindViewHolder(holder: ComplexViewHolder, position: Int) {
-            holder.bind()
-        }
-
-        override fun getItemCount(): Int {
-            return 1 + (if (comments == null) 0 else comments!!.size())
-        }
-
-        fun updatePostComments(comments: CommentGroup) {
-            this.comments = comments
-            notifyDataSetChanged()
-        }
-
-        fun addUserComment(comment: Comment) {
-            if (comments == null) {
-                var commentList = listOf(comment).toMutableList()
-                comments = CommentGroup.TwoLevel(commentList)
-                notifyItemChanged(1)
-                return
-            }
-            comments?.add(comment)
-            var commentCount = 0
-            if (comments != null) {
-                commentCount = (comments as CommentGroup).size()
-            }
-            notifyItemInserted(1 + commentCount)
-        }
-
-        fun updatePostDetails(post: Post) {
-            this.post = post
-            notifyItemChanged(0)
-        }
-
-        fun updatePostImages(images: List<Image>) {
-            this.images = images
-            notifyItemChanged(0)
-        }
-
-        internal inner class HeaderViewHolder(parent: ViewGroup) :
-                ComplexViewHolder(parent.inflate(R.layout.layout_post)) {
-
-            var image: LargeImageView
-
-            init {
-                image = itemView.findViewById(R.id.image) as LargeImageView
-            }
-
-            override fun bind() {
-                imagePath?.let { image.setImage(it) }
-            }
-        }
-
-        internal inner class CommentViewHolder(parent: ViewGroup) :
-                ComplexViewHolder(parent.inflate(R.layout.item_comment)) {
-
-            var rating: TextView
-            var text: TextView
-            var replies: TextView
-            var avatar: WebImageView
-            var attachment: WebImageView
-
-            init {
-                rating = itemView.findViewById(R.id.rating) as TextView
-                text = itemView.findViewById(R.id.text) as TextView
-                avatar = itemView.findViewById(R.id.avatar) as WebImageView
-                replies = itemView.findViewById(R.id.replies) as TextView
-                attachment = itemView.findViewById(R.id.attachment) as WebImageView
-
-                //TODO Open in another activity
-                itemView.findViewById(R.id.action).setOnClickListener { v -> presenter.selectComment(comments!!.getId(realPosition)) }
-
-                val commentButton = itemView.findViewById(R.id.commentMenu)
-                commentButton.setOnClickListener { v ->
-                    val menu = PopupMenu(parent.context, commentButton)
-                    menu.setOnMenuItemClickListener { menuItem ->
-                        if (menuItem.itemId == R.id.reply)
-                            presenter.replyToComment(post, comments!!.get(realPosition))
-                        true
-                    }
-                    menu.inflate(R.menu.comment)
-                    menu.show()
-                }
-            }
-
-            override fun bind() {
-                (itemView.layoutParams as ViewGroup.MarginLayoutParams).leftMargin = if (comments!!.isChild(realPosition)) toPx(64) else toPx(8)
-
-                val c = comments!!.get(realPosition)
-                text.text = c.text
-                avatar.setImage(c.userImageObject.toImage())
-                rating.text = "" + c.rating
-                replies.text = "" + c.replies
-
-                attachment.visibility = if (c.attachmentObject == null) View.GONE else View.VISIBLE
-                attachment.setImage(c.attachmentObject)
-            }
-
-            private val realPosition: Int
-                get() = adapterPosition - 1
-
-            private fun toPx(dip: Int): Int {
-                return (dip * itemView.resources.displayMetrics.density).toInt()
-            }
-        }
-    }
-
-    override val fragmentContentId: Int
-        get() = throw UnsupportedOperationException()
 
     override val layoutId: Int
         get() = R.layout.activity_post
