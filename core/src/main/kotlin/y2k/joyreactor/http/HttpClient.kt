@@ -2,8 +2,7 @@ package y2k.joyreactor.http
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import rx.Observable
-import y2k.joyreactor.common.ioObservable
+import y2k.joyreactor.ParseUtils
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStream
@@ -71,10 +70,6 @@ open class HttpClient protected constructor() {
         }
     }
 
-    fun getDocumentAsync(url: String): Observable<Document> {
-        return ioObservable { getDocument(url) }
-    }
-
     open fun getDocument(url: String): Document {
         var stream: InputStream? = null
         try {
@@ -86,6 +81,17 @@ open class HttpClient protected constructor() {
                 saveSessionToken(parse.html())
             }
             return parse
+        } finally {
+            if (stream != null) stream.close()
+        }
+    }
+
+    open fun getRawString(url: String): String {
+        var stream: InputStream? = null
+        try {
+            val conn = createConnection(url)
+            stream = getInputStream(conn)
+            return ParseUtils.d(stream)
         } finally {
             if (stream != null) stream.close()
         }

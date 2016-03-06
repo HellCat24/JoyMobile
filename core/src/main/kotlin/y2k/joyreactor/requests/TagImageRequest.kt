@@ -3,6 +3,7 @@ package y2k.joyreactor.requests
 import y2k.joyreactor.common.PersistentMap
 import y2k.joyreactor.http.HttpClient
 import y2k.joyreactor.repository.IconStorage
+import y2k.joyreactor.requests.const.URLConst
 import java.net.URLEncoder
 
 /**
@@ -32,7 +33,7 @@ class TagImageRequest {
     }
 
     private fun getFromWeb(tag: String): String {
-        val doc = HttpClient.instance.getDocument("http://joyreactor.cc/tag/" + URLEncoder.encode(tag))
+        val doc = HttpClient.instance.getDocument(URLConst.TAG_REQUEST + URLEncoder.encode(tag))
         val result = doc.select("img.blog_avatar").first().attr("src")
         println("Not found in cache | $tag | $result")
         return result

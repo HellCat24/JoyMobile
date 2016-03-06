@@ -26,6 +26,8 @@ interface Navigation {
 
     fun openYouTube(url: String)
 
+    fun openLongPost(post: Post): Unit
+
     fun openImageView(post: Post)
 
     fun showBlogPostList(tag: String, title : String)

@@ -11,10 +11,11 @@ import java.util.*
 import java.util.regex.Pattern
 import kotlin.properties.Delegates
 
+
 /**
  * Created by y2k on 9/26/15.
  */
-class PostsForTagRequest {
+class PostsListRequest {
 
     fun requestAsync(tagId: Tag, pageId: String? = null, type: String): Observable<Data> {
         return Observable
@@ -24,10 +25,10 @@ class PostsForTagRequest {
 
                     val posts = ArrayList<Post>()
                     for (e in doc.select("div.postContainer"))
-                        posts.add(PostsForTagRequest.Companion.newPost(e))
+                        posts.add(PostsListRequest.Companion.newPost(e))
 
                     val next = doc.select("a.next").first()
-                    PostsForTagRequest.Data(posts, next?.let { extractNumberFromEnd(next.attr("href")) })
+                    PostsListRequest.Data(posts, next?.let { extractNumberFromEnd(next.attr("href")) })
                 }
                 .subscribeOn(Schedulers.io())
     }
@@ -37,7 +38,7 @@ class PostsForTagRequest {
         val commentCount: Int
             get() {
                 val e = element.select("a.commentnum").first()
-                val m = PostsForTagRequest.PostParser.Companion.COMMENT_COUNT_REGEX.matcher(e.text())
+                val m = PostsListRequest.PostParser.Companion.COMMENT_COUNT_REGEX.matcher(e.text())
                 if (!m.find()) throw IllegalStateException()
                 return Integer.parseInt(m.group())
             }
@@ -45,7 +46,7 @@ class PostsForTagRequest {
         val rating: Float
             get() {
                 val e = element.select("span.post_rating > span").first()
-                val m = PostsForTagRequest.PostParser.Companion.RATING_REGEX.matcher(e.text())
+                val m = PostsListRequest.PostParser.Companion.RATING_REGEX.matcher(e.text())
                 return if (m.find()) java.lang.Float.parseFloat(m.group()) else 0f
             }
 
@@ -95,7 +96,7 @@ class PostsForTagRequest {
 
         fun load(): Image? {
             val iframe = element.select("iframe.youtube-player").first() ?: return null
-            val m = PostsForTagRequest.YoutubeThumbnailParser.Companion.SRC_PATTERN.matcher(iframe.attr("src"))
+            val m = PostsListRequest.YoutubeThumbnailParser.Companion.SRC_PATTERN.matcher(iframe.attr("src"))
             if (!m.find()) throw IllegalStateException(iframe.attr("src"))
             return Image(
                     "http://img.youtube.com/vi/" + m.group(1) + "/0.jpg",
@@ -143,13 +144,13 @@ class PostsForTagRequest {
     companion object {
 
         internal fun newPost(element: Element): Post {
-            val imageThumbnailParser = PostsForTagRequest.ImageThumbnailParser(element)
+            val imageThumbnailParser = PostsListRequest.ImageThumbnailParser(element)
             var image = imageThumbnailParser.load()
-            if (image == null) image = PostsForTagRequest.YoutubeThumbnailParser(element).load()
-            if (image == null) image = PostsForTagRequest.GifThumbnailParser(element).load()
-            if (image == null) image = PostsForTagRequest.CoubThumbnailParser(element).load()
+            if (image == null) image = PostsListRequest.YoutubeThumbnailParser(element).load()
+            if (image == null) image = PostsListRequest.GifThumbnailParser(element).load()
+            if (image == null) image = PostsListRequest.CoubThumbnailParser(element).load()
 
-            val parser = PostsForTagRequest.PostParser(element)
+            val parser = PostsListRequest.PostParser(element)
 
             return Post(
                     element.select("div.post_content").text(),

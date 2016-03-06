@@ -2,6 +2,7 @@ package y2k.joyreactor.services
 
 import rx.Observable
 import y2k.joyreactor.common.ioObservable
+import y2k.joyreactor.repository.MemoryBuffer
 import y2k.joyreactor.requests.factory.CreateCommentRequestFactory
 import y2k.joyreactor.requests.PostRequest
 

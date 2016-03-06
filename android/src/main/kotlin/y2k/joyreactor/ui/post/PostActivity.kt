@@ -42,7 +42,7 @@ class PostActivity : ToolBarActivity() {
 
         val createComment = findViewById(R.id.createComment)
 
-        presenter = ServiceInjector.resolve(object : PostPresenter.View {
+        presenter = ServiceInjector.inject(object : PostPresenter.View {
 
             override fun setEnableCreateComments() {
                 createComment.compatAnimate().scaleX(1f).scaleY(1f).setInterpolator(AccelerateInterpolator())

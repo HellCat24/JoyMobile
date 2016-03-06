@@ -52,6 +52,9 @@ class Image(
     val isYouTube: Boolean
         get() = url != null && url.contains("youtube")
 
+    val isPlaylable : Boolean
+        get() = isGif || isYouTube || isCoub
+
     val getYouTubeLink: String
         get() = url?.replace("img.", "")!!.replace("vi/","watch?v=").replace("/0.jpg", "")
 

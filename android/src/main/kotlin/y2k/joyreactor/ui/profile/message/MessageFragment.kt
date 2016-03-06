@@ -29,7 +29,7 @@ class MessageFragment : BaseFragment() {
         list.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         list.adapter = MessageAdapter()
 
-        val presenter = ServiceInjector.resolve(lifeCycleService,
+        val presenter = ServiceInjector.inject(lifeCycleService,
             object : MessagesPresenter.View {
 
                 override fun clearMessage() {

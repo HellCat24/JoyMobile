@@ -45,6 +45,6 @@ class MessagesActivity() : ToolBarActivity() {
     //TODO Refactore this
     override fun onPostResume() {
         super.onPostResume()
-        ServiceInjector.resolve(BroadcastService::class).broadcast(BroadcastService.ThreadSelectedMessage(currentDialog!!))
+        ServiceInjector.inject(BroadcastService::class).broadcast(BroadcastService.ThreadSelectedMessage(currentDialog!!))
     }
 }

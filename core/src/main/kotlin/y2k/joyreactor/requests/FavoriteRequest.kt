@@ -1,8 +1,9 @@
-package y2k.joyreactor.services
+package y2k.joyreactor.requests
 
 import rx.Observable
 import rx.schedulers.Schedulers
 import y2k.joyreactor.http.HttpClient
+import y2k.joyreactor.requests.const.URLConst
 import java.util.*
 
 /**
@@ -19,7 +20,7 @@ class FavoriteRequest {
                             .putHeader("X-Requested-With", "XMLHttpRequest")
                             .putHeader("Referer", "http://joyreactor.cc/")
                             .put("rand", rand.toString())
-                            .get("http://joyreactor.cc/favorite/create/" + postId)
+                            .get(URLConst.ADD_FAVORITE_REQUEST + postId)
                     doc.text().equals("Ok");
                 }.subscribeOn(Schedulers.io())
     }
@@ -33,7 +34,7 @@ class FavoriteRequest {
                             .putHeader("X-Requested-With", "XMLHttpRequest")
                             .putHeader("Referer", "http://joyreactor.cc/")
                             .put("rand", rand.toString())
-                            .get("http://joyreactor.cc/favorite/delete/" + postId)
+                            .get(URLConst.DELETE_FAVORITE_REQUEST + postId)
                     doc.text().equals("Ok");
                 }.subscribeOn(Schedulers.io())
     }

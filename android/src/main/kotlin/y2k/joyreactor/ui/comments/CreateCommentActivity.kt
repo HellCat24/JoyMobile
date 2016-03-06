@@ -45,7 +45,7 @@ class CreateCommentActivity : ToolBarActivity() {
         val serverId = intent.getStringExtra(VideoActivity.BUNDLE_POST)
         val parentId = intent.getLongExtra(BUNDLE_PARENT_ID, 0)
 
-        val presenter = ServiceInjector.resolve(
+        val presenter = ServiceInjector.inject(
                 object : CreateCommentPresenter.View {
 
                     override fun addComment(comment: Comment) {

@@ -35,7 +35,7 @@ class TagsFragment : BaseFragment() {
         val adapter = TagsAdapter()
         list.adapter = adapter
 
-        presenter = ServiceInjector.resolve(lifeCycleService, object : TagListPresenter.View {
+        presenter = ServiceInjector.inject(lifeCycleService, object : TagListPresenter.View {
 
             override fun reloadData(tags: List<Tag>) {
                 adapter.updateData(tags)

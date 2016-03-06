@@ -16,9 +16,8 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'kotlin'
 
-version 'unspecified'
-//sourceCompatibility = 1.8
-//targetCompatibility = 1.8
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 repositories {
     jcenter()
@@ -34,7 +33,4 @@ dependencies {
     compile 'org.jsoup:jsoup:1.8.3'
     compile 'org.ocpsoft.prettytime:prettytime:3.2.7.Final'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-all:1.10.19'
 }

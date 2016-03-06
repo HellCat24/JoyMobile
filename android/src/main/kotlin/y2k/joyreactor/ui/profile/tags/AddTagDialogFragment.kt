@@ -27,7 +27,7 @@ class AddTagDialogFragment : AppCompatDialogFragment() {
         val okButton = view.findViewById(R.id.ok)
         val tagView = view.findViewById(R.id.tag) as TextView
 
-        val presenter = ServiceInjector.resolve(
+        val presenter = ServiceInjector.inject(
             object : AddTagPresenter.View {
 
                 override fun setIsBusy(isBusy: Boolean) {

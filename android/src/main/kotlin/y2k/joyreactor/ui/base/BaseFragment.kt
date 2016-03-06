@@ -10,7 +10,7 @@ import y2k.joyreactor.services.LifeCycleService
  */
 open class BaseFragment : Fragment() {
 
-    val lifeCycleService = LifeCycleService(ServiceInjector.resolve(BroadcastService::class))
+    val lifeCycleService = LifeCycleService(ServiceInjector.inject(BroadcastService::class))
 
     override fun onResume() {
         super.onResume()

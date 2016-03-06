@@ -2,16 +2,27 @@ package y2k.joyreactor.ui.post
 
 import android.app.Activity
 import android.content.Intent
+import android.media.AudioManager
+import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
-import pl.droidsonroids.gif.GifTextureView
-import pl.droidsonroids.gif.InputSource
-import y2k.joyreactor.enteties.Post
+import android.view.View
+import android.widget.ImageView
+import android.widget.VideoView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import org.json.JSONObject
 import y2k.joyreactor.R
+import y2k.joyreactor.common.ServiceInjector
+import y2k.joyreactor.common.ioObservable
+import y2k.joyreactor.common.subscribeOnMain
+import y2k.joyreactor.enteties.Post
+import y2k.joyreactor.http.HttpClient
+import y2k.joyreactor.image.JoyGlide
+import y2k.joyreactor.presenters.VideoPresenter
 import y2k.joyreactor.ui.base.ToolBarActivity
-import java.io.BufferedInputStream
-import java.io.IOException
-import java.io.InputStream
+import java.io.File
 
 class VideoActivity : ToolBarActivity() {
 
@@ -26,10 +37,8 @@ class VideoActivity : ToolBarActivity() {
         }
     }
 
-    override val fragmentContentId: Int
-        get() = throw UnsupportedOperationException()
-    override val layoutId: Int
-        get() = R.layout.activity_video
+    lateinit var mediaPlayer: MediaPlayer
+    lateinit var videoPlayer: VideoView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,33 +47,79 @@ class VideoActivity : ToolBarActivity() {
         val post = intent.getSerializableExtra(BUNDLE_POST) as Post?
         title = post?.title
 
-        val assManager = getAssets()
-        var inputStream: InputStream? = null
-        try {
-            inputStream = assManager.open("tes_gif.gif")
-        } catch (e: IOException) {
-            e.printStackTrace()
+        var progress = findViewById(R.id.progress)
+        var image = findViewById(R.id.imageView) as  ImageView
+
+        if (post?.image!!.isGif) {
+            JoyGlide.load(image, post?.image)
         }
 
-        val caInput = BufferedInputStream(inputStream)
-        (findViewById(R.id.gif_view) as  GifTextureView).setInputSource(InputSource.InputStreamSource(caInput))
+        if (post?.image!!.isCoub) {
+            loadVideo(progress)
+        }
 
-        /*  val videoView = findViewById(R.id.video) as VideoView
-         videoView.setOnPreparedListener { mp -> mp.isLooping = true }
+        videoPlayer = findViewById(R.id.video) as VideoView
+        videoPlayer.setOnPreparedListener {
+            mp ->
+            mp.isLooping = true
+            progress.visibility = View.GONE
+        }
 
-        //TODO Refactor
-         ServiceLocator.resolve(
-                 object : VideoPresenter.View {
+        mediaPlayer = MediaPlayer();
+        mediaPlayer.setOnPreparedListener {
+            mp ->
+            mp.isLooping = true
+            mp.start()
+        }
 
-                     override fun showVideo(videoFile: File) {
-                         videoView.setVideoURI(Uri.parse("https://coubsecure-a.akamaihd.net/get/b85/p/coub/simple/cw_file/1ec34ad130f/af257fc7b0baeaf0fe73e/iphone_1434643353_iphone.mp4"))
-                         videoView.start()
-                     }
+         ServiceInjector.inject(
+                    object : VideoPresenter.View {
 
-                     override fun setBusy(isBusy: Boolean) {
-                         findViewById(R.id.progress).visibility = if (isBusy) View.VISIBLE else View.GONE
-                     }
-                 }).loadVideo(post)*/
+                        override fun showVideo(videoFile: File) {
+
+                        }
+
+                        override fun setBusy(isBusy: Boolean) {
+
+                        }
+                    }).loadVideo(post)
+    }
+
+    private fun loadVideo(progress: View) {
+        var videoUrl = ""
+        var audioUrl = ""
+
+        progress.visibility = View.VISIBLE
+
+        ioObservable {
+
+            var jsonObject = JSONObject(HttpClient.instance.getRawString("https://coub.com/api/v2/coubs/5u5n1"))
+
+            var imageUrl = jsonObject.getString("picture")
+            var filesObject = jsonObject.getJSONObject("file_versions").getJSONObject("iphone")
+
+            audioUrl = jsonObject.getJSONObject("file_versions").getJSONObject("mobile").getString("audio_url");
+            videoUrl = filesObject.getString("url");
+        }.subscribeOnMain {
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaPlayer.setDataSource(audioUrl)
+            mediaPlayer.prepareAsync()
+            videoPlayer.setVideoURI(Uri.parse(videoUrl))
+            videoPlayer.start()
+        }
+    }
+
+    override val fragmentContentId: Int
+        get() = throw UnsupportedOperationException()
+    override val layoutId: Int
+        get() = R.layout.activity_video
+
+    override fun onStop() {
+        super.onStop()
+        if (mediaPlayer != null) {
+            mediaPlayer.release()
+            videoPlayer.stopPlayback()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

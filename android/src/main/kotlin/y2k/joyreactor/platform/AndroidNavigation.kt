@@ -15,6 +15,7 @@ import y2k.joyreactor.ui.base.BaseFragmentActivity
 import y2k.joyreactor.ui.blog.BlogPostListActivity
 import y2k.joyreactor.ui.blog.BlogPostListFragment
 import y2k.joyreactor.ui.comments.CreateCommentActivity
+import y2k.joyreactor.ui.post.LongPostActivity
 import y2k.joyreactor.ui.post.PostActivity
 import y2k.joyreactor.ui.post.VideoActivity
 import y2k.joyreactor.ui.profile.LoginActivity
@@ -122,6 +123,11 @@ open class AndroidNavigation(app: Application) : Navigation {
 
     override fun openVideo(post: Post) {
         VideoActivity.startActivity(currentActivity, post)
+        currentActivity?.overridePendingTransition(0, 0);
+    }
+
+    override fun openLongPost(post: Post) {
+       LongPostActivity.startActivity(currentActivity, post)
         currentActivity?.overridePendingTransition(0, 0);
     }
 

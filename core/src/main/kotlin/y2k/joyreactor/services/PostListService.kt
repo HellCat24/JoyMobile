@@ -5,19 +5,23 @@ import y2k.joyreactor.common.peek
 import y2k.joyreactor.enteties.Post
 import y2k.joyreactor.enteties.Tag
 import y2k.joyreactor.repository.DataContext
-import y2k.joyreactor.requests.PostsForTagRequest
+import y2k.joyreactor.requests.FavoriteRequest
+import y2k.joyreactor.requests.LikeDislikeRequest
+import y2k.joyreactor.requests.PostsListRequest
 import y2k.joyreactor.services.synchronizers.PostMerger
 
 /**
  * Created by y2k on 11/24/15.
  */
-class TagService(private val dataContext: DataContext.Factory,
-                 private val postsRequest: PostsForTagRequest,
+class PostListService(private val dataContext: DataContext.Factory,
+                 private val postsRequest: PostsListRequest,
+                 private val likeDislikeRequest: LikeDislikeRequest,
+                 private val requestFactory: FavoriteRequest,
                  private val merger: PostMerger) {
 
     private lateinit var tag: Tag
     private lateinit var type: String
-    private @Volatile lateinit var lastPage: PostsForTagRequest.Data
+    private @Volatile lateinit var lastPage: PostsListRequest.Data
 
     val divider: Int?
         get() = merger.divider
@@ -62,7 +66,7 @@ class TagService(private val dataContext: DataContext.Factory,
                 .flatMap { getFromRepository() }
     }
 
-    fun requestAsync(page: String? = null): Observable<PostsForTagRequest.Data> {
+    fun requestAsync(page: String? = null): Observable<PostsListRequest.Data> {
         return postsRequest
                 .requestAsync(tag, page, type)
                 .peek { lastPage = it }
@@ -78,5 +82,25 @@ class TagService(private val dataContext: DataContext.Factory,
                     .filter { it.tagId == tag.id }
                     .map { link -> entities.Posts.first { it.id == link.postId } }
         }
+    }
+
+    fun like(postId: String): Observable<Float> {
+        return likeDislikeRequest
+                .like(postId)
+                .map { it -> it.toFloat() }
+    }
+
+    fun dislike(postId: String): Observable<Float> {
+        return likeDislikeRequest
+                .disLike(postId)
+                .map { it -> it.toFloat() }
+    }
+
+    fun addToFavorite(postId: String): Observable<Boolean> {
+        return requestFactory.addToFavorite(postId)
+    }
+
+    fun deleteFromFavorite(postId: String): Observable<Boolean> {
+        return requestFactory.deleteFromFavorite(postId)
     }
 }

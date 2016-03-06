@@ -42,7 +42,7 @@ class BaseBlogListFragment() : BaseFragment(), BlogListPresenter.View {
         blogUrl = arguments.getString(BUNDLE_BLOG_URL)
 
         list = view.findViewById(R.id.blog_list) as ListView
-        presenter = ServiceInjector.resolve(this)
+        presenter = ServiceInjector.inject(this)
         adapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, android.R.id.text1, ArrayList())
         list.adapter = adapter
         list.onItemClickListener = AdapterView.OnItemClickListener { view, parent, i, l -> presenter.showBlogPostList(i) }

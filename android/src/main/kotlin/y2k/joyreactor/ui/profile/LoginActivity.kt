@@ -25,7 +25,7 @@ class LoginActivity : ToolBarActivity(), LoginPresenter.View {
         setSupportActionBar(findViewById(R.id.toolbar) as Toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        val presenter = ServiceInjector.resolve(this)
+        val presenter = ServiceInjector.inject(this)
 
         findViewById(R.id.login).setOnClickListener {
             val username = (findViewById(R.id.username) as TextView).text.toString()

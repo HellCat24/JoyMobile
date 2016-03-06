@@ -23,7 +23,7 @@ class ProfileFragment : BaseFragment() {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         var navigationView = view.findViewById(R.id.navigation_view) as NavigationView
 
-        presenter = ServiceInjector.resolve(object : ProfilePresenter.View {
+        presenter = ServiceInjector.inject(object : ProfilePresenter.View {
 
             override fun hideProfileMenu() {
                 navigationView.visibility = View.GONE

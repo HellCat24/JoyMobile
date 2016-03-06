@@ -19,7 +19,7 @@ import java.util.*
 /**
  * Created by y2k on 1/31/16.
  */
-class PostsAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapter<ComplexViewHolder>() {
+class PostListAdapter(private val presenter: PostListPresenter) : RecyclerView.Adapter<ComplexViewHolder>() {
 
     private val posts = ArrayList<Post?>()
     private var isLikesDislikesEnabled = false;
@@ -91,6 +91,7 @@ class PostsAdapter(private val presenter: PostListPresenter) : RecyclerView.Adap
             itemView.findViewById(R.id.btn_post_like).setOnClickListener { presenter.like(posts[adapterPosition]!!) }
             itemView.findViewById(R.id.btn_post_dislike).setOnClickListener { presenter.disLike(posts[adapterPosition]!!) }
             itemView.findViewById(R.id.btn_post_favorite).setOnClickListener { presenter.addToFavorite(posts[adapterPosition]!!) }
+            btnExpand.setOnClickListener { presenter.showLongPost(posts[adapterPosition]!!) }
         }
 
         override fun bind() {
@@ -102,11 +103,10 @@ class PostsAdapter(private val presenter: PostListPresenter) : RecyclerView.Adap
             rating.text = post.rating.toString()
             //userImage.setImage(post.getUserImage2().toImage())
             commentCount.text = post.commentCount.toString() + " comments"
-            videoMark.visibility = if (post.image?.isYouTube ?: false) View.VISIBLE else View.GONE
+            videoMark.visibility = if (post.image?.isPlaylable ?: false) View.VISIBLE else View.GONE
 
             processPostImage(post)
             processLikesDislike(post)
-            setExpandListener(post)
             processPostTitle(post)
         }
 
@@ -124,23 +124,7 @@ class PostsAdapter(private val presenter: PostListPresenter) : RecyclerView.Adap
                 imageContainer.visibility = View.GONE
             } else {
                 btnExpand.visibility = if (post.images.size > 1) View.VISIBLE else View.GONE
-                if (post.image!!.isCoub) {
-                    image.visibility = View.GONE
-                } else {
-                    loadImage(post.image as Image)
-                }
-            }
-        }
-
-        private fun setExpandListener(post: Post) {
-            btnExpand.setOnClickListener {
-                var images = post.images.subList(1, post.images.size)
-                for (img in images) {
-                    var imgView: ImageView = ImageView(image.context, null)
-                    imageContainer.addView(imgView)
-                    loadImage(img);
-                }
-                notifyItemChanged(adapterPosition)
+                loadImage(post.image as Image)
             }
         }
 

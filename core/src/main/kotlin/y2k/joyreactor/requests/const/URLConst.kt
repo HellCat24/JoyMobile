@@ -18,8 +18,8 @@ class URLConst {
         val ADD_REQUEST = ""
         val LIKE_REQUEST = BASE_URL + "/post_vote/add/"
         val DISLIKE_REQUEST = ""
-        val ADD_FAVORITE_REQUEST = ""
-        val DELETE_FAVORITE_REQUEST = ""
+        val ADD_FAVORITE_REQUEST = BASE_URL + "/favorite/create/"
+        val DELETE_FAVORITE_REQUEST = BASE_URL + "/favorite/delete/"
         val POST_REQUEST = ""
 
 

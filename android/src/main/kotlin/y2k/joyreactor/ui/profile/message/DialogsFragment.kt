@@ -27,7 +27,7 @@ class DialogsFragment : BaseFragment() {
     private var presenter: MessageThreadsPresenter? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.fragment_threads, container, false)
+        val view = inflater!!.inflate(R.layout.fragment_list, container, false)
 
         val list = view.findViewById(R.id.list) as RecyclerView
         list.layoutManager = LinearLayoutManager(context)
@@ -36,7 +36,7 @@ class DialogsFragment : BaseFragment() {
 
         val progress = view.findViewById(R.id.progress)
 
-        presenter = ServiceInjector.resolve(
+        presenter = ServiceInjector.inject(
             object : MessageThreadsPresenter.View {
 
                 override fun setIsBusy(isBusy: Boolean) {

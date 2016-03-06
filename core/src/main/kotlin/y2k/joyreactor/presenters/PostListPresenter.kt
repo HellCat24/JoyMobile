@@ -1,25 +1,26 @@
 package y2k.joyreactor.presenters
 
-import rx.Observable
 import y2k.joyreactor.common.subscribeOnMain
 import y2k.joyreactor.enteties.Post
 import y2k.joyreactor.enteties.Tag
 import y2k.joyreactor.platform.Navigation
-import y2k.joyreactor.services.*
+import y2k.joyreactor.services.PostListService
+import y2k.joyreactor.services.ProfileService
+import y2k.joyreactor.services.synchronizers.PostMerger
+import java.util.*
 
 /**
  * Created by y2k on 9/26/15.
  */
 class PostListPresenter(
         private val view: PostListPresenter.View,
-        private val service: TagService,
+        private val service: PostListService,
         private val userService: ProfileService,
-        private val lifeCycleService: LifeCycleService,
-        private val likeDislikeService: LikeDislikeService,
-        private val favoriteService: FavoriteService) {
+        private val merger: PostMerger) {
+
+    private lateinit var currentPostList: MutableList<Post>
 
     init {
-        lifeCycleService.add(BroadcastService.TagSelected::class) { currentTagChanged(it.tag) }
         currentTagChanged(tag())
     }
 
@@ -39,27 +40,23 @@ class PostListPresenter(
     fun currentTagChanged(newTag: Tag) {
         service.setTag(newTag)
         service.setType(view.getPostType())
-        service.requestAsync().subscribeOnMain { data ->
-            view.setHasNewPosts(false)
-            view.addNewPosts(data.posts)
-        }
-
+        service.requestAsync()
+                .subscribeOnMain { data ->
+                    currentPostList = data.posts.toMutableList()
+                    view.addNewPosts(data.posts)
+                }
         userService
                 .isAuthorized()
                 .subscribeOnMain { if (it) view.setLikesDislikesEnable() }
     }
 
-    fun applyNew() {
-        service.applyNew()
-                .subscribeOnMain { posts ->
-                    view.setHasNewPosts(false)
-                    view.reloadPosts(posts, service.divider)
-                }
-    }
-
     fun loadMore() {
         service.loadNextPage()
+                .map { data -> merger.mergePosts(currentPostList, data as ArrayList<Post>) }
                 .subscribeOnMain { posts ->
+
+                    (currentPostList).addAll(posts)
+
                     view.addNewPosts(posts)
                     view.setBusy(false)
                 }
@@ -74,16 +71,12 @@ class PostListPresenter(
                 }
     }
 
-    private fun getFromRepository(): Observable<List<Post>> {
-        return service.queryAsync()
-    }
-
     fun postClicked(post: Post) {
         Navigation.instance.openPost(post.serverId!!)
     }
 
     fun like(post: Post) {
-        likeDislikeService.like(post.serverId)
+        service.like(post.serverId)
                 .subscribeOnMain { it ->
                     post.isLiked = true
                     post.rating = it
@@ -92,7 +85,7 @@ class PostListPresenter(
     }
 
     fun disLike(post: Post) {
-        likeDislikeService.dislike(post.serverId)
+        service.dislike(post.serverId)
                 .subscribeOnMain { it ->
                     post.isLiked = true
                     post.rating = it
@@ -101,13 +94,18 @@ class PostListPresenter(
     }
 
     fun addToFavorite(post: Post): Unit {
-        favoriteService.addToFavorite(post.serverId).subscribeOnMain {
-            
+        service.addToFavorite(post.serverId).subscribeOnMain {
+
         }
     }
 
+    fun showLongPost(post: Post): Unit {
+        Navigation.instance.openLongPost(post)
+
+    }
+
     fun deleteFromFavorite(post: Post): Unit {
-        favoriteService.deleteFromFavorite(post.serverId).subscribeOnMain { }
+        service.deleteFromFavorite(post.serverId).subscribeOnMain { }
     }
 
     fun showUserPosts(username: String) {
@@ -117,6 +115,8 @@ class PostListPresenter(
     fun playClicked(post: Post) {
         if (post.image!!.isYouTube) {
             Navigation.instance.openYouTube(post.image.getYouTubeLink)
+        } else if (post.image.isCoub || post.image.isGif) {
+            Navigation.instance.openVideo(post)
         } else Navigation.instance.openImageView(post)
     }
 
@@ -127,8 +127,6 @@ class PostListPresenter(
         fun addNewPosts(posts: List<Post>)
 
         fun reloadPosts(posts: List<Post>, divider: Int?)
-
-        fun setHasNewPosts(hasNewPosts: Boolean)
 
         fun getPostType(): String?
 

@@ -11,7 +11,6 @@ import java.util.regex.Pattern
 class PostRequest {
 
     var post: Post? = null
-        private set
     private val commentsRequest = PostCommentsRequest()
     private val attachments = ArrayList<Attachment>()
 
@@ -22,7 +21,7 @@ class PostRequest {
         val page = HttpClient.instance.getDocument(getPostUrl(postId))
 
         val postNode = page.select("div.postContainer").first()
-        post = PostsForTagRequest.newPost(postNode) // TODO:
+        post = PostsListRequest.newPost(postNode) // TODO:
 
         commentsRequest.request(page)
 

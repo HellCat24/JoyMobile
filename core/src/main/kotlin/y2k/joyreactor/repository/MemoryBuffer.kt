@@ -1,4 +1,4 @@
-package y2k.joyreactor.services
+package y2k.joyreactor.repository
 
 import y2k.joyreactor.enteties.*
 import y2k.joyreactor.requests.PostRequest
