@@ -12,6 +12,7 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.squareup.picasso.Downloader;
 import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
@@ -36,7 +37,8 @@ public class JoyImageUtils {
         display.getSize(size);
         mDisplayWidth = size.x;
 
-        //Picasso.with(context).setIndicatorsEnabled(true);
+        Picasso.with(context).setIndicatorsEnabled(true);
+        Picasso.with(context).setLoggingEnabled(true);
     }
 
     public static void preload(Context context, final Image image) {
@@ -57,7 +59,7 @@ public class JoyImageUtils {
             Picasso.with(imageView.getContext())
                     .load(image.getUrl())
                     .resize(400, 0)
-                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    //.memoryPolicy(MemoryPolicy.NO_CACHE)
                     .into(imageView);
         }
     }

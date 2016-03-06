@@ -1,4 +1,4 @@
-package y2k.joyreactor.ui.profile
+package y2k.joyreactor.ui.user
 
 import android.os.Bundle
 import y2k.joyreactor.ui.blog.BlogPostListFragment

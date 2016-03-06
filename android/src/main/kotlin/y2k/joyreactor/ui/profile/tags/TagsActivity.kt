@@ -1,7 +1,7 @@
 package y2k.joyreactor.ui.profile.tags
 
 import android.os.Bundle
-import y2k.joyreactor.MenuFragment
+import y2k.joyreactor.ui.tags.TagsFragment
 import y2k.joyreactor.R
 import y2k.joyreactor.ui.base.ToolBarActivity
 
@@ -18,7 +18,7 @@ class TagsActivity : ToolBarActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        replaceFragment(MenuFragment())
+        replaceFragment(TagsFragment())
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeButtonEnabled(true);
     }

@@ -64,7 +64,7 @@
                 android:value=".ui.MainActivity"/>
         </activity>
         <activity
-            android:name=".ui.profile.UserPostActivity"
+            android:name=".ui.user.UserPostActivity"
             android:label="@string/favorite">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

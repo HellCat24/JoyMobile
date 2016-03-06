@@ -1,4 +1,4 @@
-package y2k.joyreactor
+package y2k.joyreactor.ui.tags
 
 /**
  * Created by Oleg on 14.02.2016.
@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import y2k.joyreactor.R
 import y2k.joyreactor.common.ServiceInjector
 import y2k.joyreactor.enteties.Tag
 import y2k.joyreactor.presenters.TagListPresenter
@@ -20,7 +21,7 @@ import y2k.joyreactor.view.WebImageView
 /**
  * Created by y2k on 11/12/15.
  */
-class MenuFragment : BaseFragment() {
+class TagsFragment : BaseFragment() {
 
     lateinit var presenter: TagListPresenter
 

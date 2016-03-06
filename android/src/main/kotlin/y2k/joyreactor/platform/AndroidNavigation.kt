@@ -18,7 +18,7 @@ import y2k.joyreactor.ui.comments.CreateCommentActivity
 import y2k.joyreactor.ui.post.PostActivity
 import y2k.joyreactor.ui.post.VideoActivity
 import y2k.joyreactor.ui.profile.LoginActivity
-import y2k.joyreactor.ui.profile.UserPostActivity
+import y2k.joyreactor.ui.user.UserPostActivity
 import y2k.joyreactor.ui.profile.message.DialogsActivity
 import y2k.joyreactor.ui.profile.message.MessagesActivity
 import y2k.joyreactor.ui.profile.tags.AddTagDialogFragment

@@ -13,9 +13,9 @@ internal class UrlBuilder {
         if(type.length > 0)
             url += type
         if (tag.isFavorite)
-            url += "user/" + tag.username
+            url += "/user/" + tag.username
         else if (tag.serverId != null)
-            url += "tag/" + tag.serverId
+            url += "/tag/" + tag.serverId
         if (pageId != null) url += "/" + pageId
         return url
     }
