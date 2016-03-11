@@ -1,2 +1,2 @@
-include ':core', ':android'
+include ':presentation', ':data', ':domain'
 
